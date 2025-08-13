@@ -14,7 +14,7 @@ import Pro10 from "./pro10.png";
 import Adsimg from "./adsimg.png";
 import Tick from "./tick.png";
 import Mail from "./mail.png";
-import Phone from "./Phone.png";
+import Phone from "./phone.png";
 import Clock from "./clock.png";
 import Message from "./message.png";
 import Mobile from "./mobile.png";
