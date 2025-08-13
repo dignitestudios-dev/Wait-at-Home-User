@@ -1,0 +1,126 @@
+import React, { useState } from "react";
+import GlobalInputs from "../../global/GlobalInputs";
+import { IoChevronDown } from "react-icons/io5";
+import GlobalButton from "../../global/GlobalButton";
+import { useFormik } from "formik";
+import { AddPet } from "../../../init/app/PetForm";
+import { FaCheck } from "react-icons/fa";
+import { RxCross2 } from "react-icons/rx";
+import { AddPetSchema } from "../../../schema/app/PetFormSchema";
+
+const AddPetForm = ({ isOpen, onClose, setAddPetSuccess, setAddPetModal }) => {
+  const [checked, setChecked] = useState(false);
+  const [passwordError, setPasswordError] = useState("");
+
+  const {
+    values,
+    handleBlur,
+    handleChange,
+    handleSubmit,
+    errors,
+    touched,
+    setFieldValue,
+  } = useFormik({
+    initialValues: AddPet,
+    validationSchema: AddPetSchema,
+    onSubmit: async (values) => {
+      setAddPetModal(false);
+      setAddPetSuccess(true);
+ 
+    },
+  });
+
+  if (!isOpen) return null;
+
+  return (
+    <div className="fixed inset-0 z-50 bg-black bg-opacity-40 flex items-center justify-center">
+      <div className="relative bg-gradient-to-br  from-[#A0E6E1] to-[#C3B4D3] rounded-2xl w-[471px] max-w-xl p-6 shadow-lg max-h-[90vh] overflow-y-auto">
+        <div className="flex  justify-between border-b border-[#FFFFFF] pb-2 ">
+          <h2 className="text-[18px] font-[600] text-[#212121] mb-2 ">
+            Add Pet Information
+          </h2>
+          <button
+            onClick={onClose}
+            className=" h-[36px] w-[36px]  flex justify-center items-center rounded-full right-4 text-xl font-bold text-gray-700 hover:text-black"
+          >
+            <RxCross2 />
+          </button>
+        </div>
+        <form onSubmit={handleSubmit} className="space-y-3 mt-4">
+          <GlobalInputs
+            placeholder="Enter Pet’s Name"
+            value={values.petName}
+            type="text"
+            name="petName"
+            id="petName"
+            onChange={handleChange}
+            onBlur={handleBlur}
+            error={errors.petName}
+            touched={touched.petName}
+            max={50}
+          />
+          <div className="relative w-full">
+            <select
+              value={values.petType}
+              onChange={handleChange}
+              name="petType"
+              id="petType"
+              onBlur={handleBlur}
+              className={`appearance-none w-full rounded-xl px-4 py-3 h-[49px] pr-10 text-[14px] bg-white text-[#616161] border placeholder:text-gray-400 outline-none transition ${
+                errors.petType && touched.petType
+                  ? "border-red-500 ring-1 ring-red-500"
+                  : "border focus:border-[#10C0B6] focus:ring-2 focus:ring-[#10C0B6]"
+              }`}
+            >
+              <option value="">Select Pet Type</option>
+              <option value="dog">Dog</option>
+              <option value="cat">Cat</option>
+              <option value="bird">Bird</option>
+              <option value="rabbit">Rabbit</option>
+              <option value="other">Other</option>
+            </select>
+            <div className="pointer-events-none absolute inset-y-0 right-3 flex items-center text-[#616161]">
+              <IoChevronDown />
+            </div>
+            {errors.petType && touched && (
+              <p className="text-red-500 text-[12px] mt-1 font-medium">
+                {errors.petType}
+              </p>
+            )}
+          </div>
+
+          <GlobalInputs
+            placeholder="Enter Pet Breed"
+            value={values.petBreed}
+            type="text"
+            name="petBreed"
+            id="petBreed"
+            onChange={handleChange}
+            onBlur={handleBlur}
+            error={errors.petBreed}
+            touched={touched.petBreed}
+            max={50}
+          />
+
+          <GlobalInputs
+            placeholder="Enter Pet Age"
+            value={values.petAge}
+            type="text"
+            name="petAge"
+            id="petAge"
+            onChange={handleChange}
+            onBlur={handleBlur}
+            error={errors.petAge}
+            touched={touched.petAge}
+          />
+
+          <div className="pt-4">
+            <GlobalButton type="submit" children={"Add"} />
+          </div>
+        </form>
+      </div>
+    </div>
+  );
+};
+
+export default AddPetForm;
