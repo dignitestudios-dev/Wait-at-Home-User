@@ -8,7 +8,8 @@ import GlobalButton from "../../components/global/GlobalButton";
 import { LoginSchema } from "../../schema/authentication/LoginSchema";
 import { IoIosArrowRoundBack } from "react-icons/io";
 import * as Yup from "yup";
-
+import { ErrorToast, SuccessToast } from "../../components/global/Toaster";
+import axios from "../../axios";
 const ForgotPassword = () => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
@@ -23,12 +24,24 @@ const ForgotPassword = () => {
       }),
       validateOnChange: true,
       validateOnBlur: true,
-      onSubmit: async (values, action) => {
+      onSubmit: async (values) => {
         const data = {
           email: values?.email,
           password: values?.password,
         };
-        navigate("/auth/otp-forgot");
+        setLoading(true);
+        try {
+          const response = await axios.post("/auth/forgot-password", data);
+          if (response?.status === 200) {
+            SuccessToast(response?.data?.message);
+            navigate("/auth/otp-forgot");
+            sessionStorage.setItem("email", values?.email);
+          }
+        } catch (error) {
+          ErrorToast(error?.response?.data?.message);
+        } finally {
+          setLoading(false);
+        }
       },
     });
 
@@ -85,7 +98,7 @@ const ForgotPassword = () => {
             />
           </div>
 
-          <GlobalButton children={"Get OTP"} type="submit" />
+          <GlobalButton loading={loading} children={"Get OTP"} type="submit" />
         </form>
       </div>
     </div>

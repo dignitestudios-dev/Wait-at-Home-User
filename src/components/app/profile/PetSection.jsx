@@ -1,26 +1,16 @@
 import React from "react";
 import { EditIcon, IconCat, IconDog, PlusIcon } from "../../../assets/export";
 import { LuTrash } from "react-icons/lu";
-const pets = [
-  {
-    name: "Bella",
-    type: "Golden Retriever",
-    age: "1.3 Yrs",
-    image: IconDog,
-  },
-  {
-    name: "Whiskers",
-    type: "Maine Coon",
-    age: "1.6 Yrs",
-    image: IconCat,
-  },
-];
+import axios from "../../../axios";
+import { ErrorToast, SuccessToast } from "../../global/Toaster";
 
 const PetSection = ({
   setAddPetModal,
   setEditPetModal,
   setDeletePet,
   petProfileData,
+  setSelectedPet,
+  setUpdate,
 }) => {
   return (
     <div>
@@ -37,19 +27,33 @@ const PetSection = ({
               <img src={IconDog} className="w-[27px] h-[27px] " alt="" />
             </div>
             <div className="flex-1">
-              <p className="font-semibold text-gray-800 text-sm">{pet.petName}</p>
-              {/* <p className="text-[14px] text-[#565656] font-[500] ">
-                {pet.type} {pet.age}
-              </p> */}
+              <p className="font-semibold text-gray-800 text-sm inline-block max-w-[110px] truncate align-middle">
+                {pet.petName}
+              </p>
+              <p className="text-[14px] text-[#565656] font-[500] ">
+                {pet?.petType}
+                {"  "}
+                {pet?.petAge} Yrs
+              </p>
             </div>
             <div className="flex gap-2 cursor-pointer">
               <img
-                onClick={() => setEditPetModal(true)}
+                onClick={() => {
+                  {
+                    setSelectedPet(pet);
+                    setEditPetModal(true);
+                  }
+                }}
                 src={EditIcon}
                 className="w-[20px] h-[20px] "
                 alt=""
               />
-              <div onClick={() => setDeletePet(true)}>
+              <div
+                onClick={() => {
+                  setSelectedPet(pet);
+                  setDeletePet(true);
+                }}
+              >
                 <LuTrash className="text-red-500 cursor-pointer" />
               </div>
             </div>

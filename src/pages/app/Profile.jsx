@@ -11,7 +11,8 @@ import RemovePet from "../../components/app/profile/RemovePet";
 import { AppContext } from "../../context/AppContext";
 import { useGlobal } from "../../hooks/api/Get";
 import { ProfileInfoSkeleton } from "../../components/global/Skeleton";
-
+import axios from "../../axios";
+import { ErrorToast, SuccessToast } from "../../components/global/Toaster";
 const Profile = () => {
   const { userData, handleLogOut } = useContext(AppContext);
   const [activeTab, setActiveTab] = useState("profile");
@@ -23,8 +24,26 @@ const Profile = () => {
   const [editPetSuccess, setEditPetSuccess] = useState(false);
   const [deletePet, setDeletePet] = useState(false);
   const [deletePetSuccess, setDeletePetSuccess] = useState(false);
-  const { loading, data } = useGlobal("/user/get-user-profile");
-  console.log(data, "data");
+  const [update, setUpdate] = useState(false);
+  const [selectedPet, setSelectedPet] = useState(null);
+  const [deleteLoading, setDeleteLoading] = useState(false);
+  const { loading, data } = useGlobal("/user/get-user-profile", update);
+  const handleDeletePet = async (petId) => {
+    setDeleteLoading(true);
+    try {
+      const response = await axios.delete(`/user/delete-pet/${petId}`);
+      if (response.status === 200) {
+        SuccessToast(response?.data?.message);
+        setUpdate((prev) => !prev);
+        setDeletePet(false)
+        setDeletePetSuccess(true)
+      }
+    } catch (error) {
+      ErrorToast(error?.response?.data?.message);
+    } finally {
+      setDeleteLoading(false);
+    }
+  };
   return (
     <div className="flex min-h-screen border border-white/20 rounded-[30px]  bg-[#83c9ce]">
       <ProfileSidebar
@@ -45,6 +64,8 @@ const Profile = () => {
                 setAddPetModal={setAddPetModal}
                 setEditPetModal={setEditPetModal}
                 setDeletePet={setDeletePet}
+                setSelectedPet={setSelectedPet}
+                setUpdate={setUpdate}
               />
             )}
             {activeTab === "setting" && <SettingMainContent />}
@@ -56,6 +77,8 @@ const Profile = () => {
         onClose={() => setEditModal(false)}
         setUpdatedEdit={setUpdatedEdit}
         setEditModal={setEditModal}
+        userProfileData={data}
+        setUpdate={setUpdate}
       />
       <ProfileUpdated
         isOpen={updatedEdit}
@@ -66,6 +89,7 @@ const Profile = () => {
         isOpen={addPetModal}
         setAddPetModal={setAddPetModal}
         setAddPetSuccess={setAddPetSuccess}
+        setUpdate={setUpdate}
       />
       <AddPetSuccess
         onClose={() => setAddPetSuccess(false)}
@@ -78,6 +102,8 @@ const Profile = () => {
         isOpen={editPetModal}
         setEditPetModal={setEditPetModal}
         setEditPetSuccess={setEditPetSuccess}
+        petData={selectedPet}
+        setUpdate={setUpdate}
       />
       <AddPetSuccess
         onClose={() => setEditPetSuccess(false)}
@@ -89,9 +115,11 @@ const Profile = () => {
         onClose={() => setDeletePet(false)}
         isOpen={deletePet}
         handleCLick={() => {
-          setDeletePet(false);
-          setDeletePetSuccess(true);
+          if (selectedPet?._id) {
+            handleDeletePet(selectedPet._id);
+          }
         }}
+        deleteLoading={deleteLoading}
       />
       <AddPetSuccess
         onClose={() => setDeletePetSuccess(false)}

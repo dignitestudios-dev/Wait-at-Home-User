@@ -1,13 +1,27 @@
-import React, { useRef, useState } from "react";
+import React, { useContext, useRef, useState } from "react";
 import { Mail, Phone } from "../../../assets/export";
 import GlobalButton from "../../global/GlobalButton";
 import { IoIosArrowRoundBack } from "react-icons/io";
-
-const VerifyPhone = ({ isOpen, onClose, handleClick, phone }) => {
-  const [otp, setOtp] = useState(Array(6).fill(""));
-  const inputsRef = useRef([]);
-
+import { AppContext } from "../../../context/AppContext";
+import { ErrorToast, SuccessToast } from "../../global/Toaster";
+import CountDown from "../../global/CountDown";
+import axios from "../../../axios";
+const VerifyPhone = ({
+  isOpen,
+  onClose,
+  handleClick,
+  phone,
+  email,
+  setVirtualListModal,
+}) => {
   if (!isOpen) return null;
+  const { Auth } = useContext(AppContext);
+  const [otp, setOtp] = useState(Array(4).fill(""));
+  const inputsRef = useRef([]);
+  const [loading, setLoading] = useState(false);
+  const [resendLoading, setResendLoading] = useState(false);
+  const [isActive, setIsActive] = useState(true);
+  const [seconds, setSeconds] = useState(30);
 
   const handleChange = (e, index) => {
     const value = e.target.value.replace(/[^0-9]/g, "");
@@ -15,7 +29,10 @@ const VerifyPhone = ({ isOpen, onClose, handleClick, phone }) => {
       const newOtp = [...otp];
       newOtp[index] = value;
       setOtp(newOtp);
-      if (index < 5) inputsRef.current[index + 1].focus();
+
+      if (index < otp.length - 1) {
+        inputsRef.current[index + 1]?.focus();
+      }
     }
   };
 
@@ -29,6 +46,65 @@ const VerifyPhone = ({ isOpen, onClose, handleClick, phone }) => {
       } else if (index > 0) {
         inputsRef.current[index - 1].focus();
       }
+    }
+  };
+  const getOtpValue = () => {
+    return parseInt(otp.join(""), 10);
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const isOtpFilled = otp.every((digit) => digit !== "");
+
+    if (!isOtpFilled) {
+      ErrorToast("Please enter all OTP digits");
+      return;
+    }
+
+    setLoading(true);
+    try {
+      let obj = {
+        email: email,
+        phone: true,
+        otp: getOtpValue(),
+      };
+
+      const response = await axios.post("/auth/verify-reset-otp", obj);
+
+      if (response.status === 200) {
+        SuccessToast(response?.data?.message);
+        Auth(response?.data);
+        setVirtualListModal(true);
+        onClose();
+      }
+    } catch (err) {
+      setOtp(Array(4).fill(""));
+      ErrorToast(err?.response?.data?.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+  const handleRestart = () => {
+    setSeconds(30);
+    setIsActive(true);
+  };
+  const handleResendOtp = async () => {
+    try {
+      setResendLoading(true);
+      let obj = { email: email };
+
+      const response = await axios.post("/auth/request-email-otp", obj);
+
+      if (response.status === 200) {
+        SuccessToast(response?.data?.message);
+        setResendLoading(false);
+        setOtp(Array(4).fill(""));
+        handleRestart();
+      }
+    } catch (err) {
+      ErrorToast(err?.response?.data?.message);
+    } finally {
+      setResendLoading(false);
     }
   };
 
@@ -53,32 +129,51 @@ const VerifyPhone = ({ isOpen, onClose, handleClick, phone }) => {
           <p className="text-[16px] font-[400] text-[#565656]">
             OTP code sent to your {phone}
           </p>
+          <form onSubmit={handleSubmit}>
+            <div className="flex gap-10 mb-2 justify-center mt-2">
+              {otp.map((digit, idx) => (
+                <input
+                  key={idx}
+                  type="text"
+                  maxLength="1"
+                  value={digit}
+                  ref={(el) => (inputsRef.current[idx] = el)}
+                  onChange={(e) => handleChange(e, idx)}
+                  onKeyDown={(e) => handleKeyDown(e, idx)}
+                  className="w-[52px] h-[52px] text-center rounded-xl border border-[#DADADA] text-[20px] font-semibold bg-white outline-none"
+                />
+              ))}
+            </div>
 
-          <div className="flex gap-3 justify-center mt-2">
-            {otp.map((digit, idx) => (
-              <input
-                key={idx}
-                type="text"
-                maxLength="1"
-                value={digit}
-                ref={(el) => (inputsRef.current[idx] = el)}
-                onChange={(e) => handleChange(e, idx)}
-                onKeyDown={(e) => handleKeyDown(e, idx)}
-                className="w-[52px] h-[52px] text-center rounded-xl border border-[#DADADA] text-[20px] font-semibold bg-white outline-none"
+            <p className="text-sm text-[#565656]">
+              Didn’t receive code?{" "}
+              {isActive ? (
+                <CountDown
+                  isActive={isActive}
+                  setIsActive={setIsActive}
+                  seconds={seconds}
+                  setSeconds={setSeconds}
+                />
+              ) : (
+                <span
+                  type="button"
+                  disabled={resendLoading}
+                  onClick={handleResendOtp}
+                  className="text-[#181818] font-medium pl-1 cursor-pointer"
+                >
+                  {resendLoading ? "Resending..." : "Resend"}
+                </span>
+              )}
+            </p>
+
+            <div className="w-full pt-2">
+              <GlobalButton
+                loading={loading}
+                children={"Verify"}
+                type="submit"
               />
-            ))}
-          </div>
-
-          <p className="text-sm text-[#565656]">
-            Didn’t receive code?{" "}
-            <span className="font-semibold cursor-pointer underline">
-              Resend
-            </span>
-          </p>
-
-          <div className="w-full pt-2">
-            <GlobalButton children={"Verify"} onClick={handleClick} />
-          </div>
+            </div>
+          </form>
         </div>
       </div>
     </div>

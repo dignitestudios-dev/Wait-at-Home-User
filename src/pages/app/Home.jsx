@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import WaitingList from "../../components/app/home/WaitingList";
 import CurrentlyServing from "../../components/app/home/CurrentlyServing";
 import EstimatedTime from "../../components/app/home/EstimatedTime";
@@ -23,10 +23,17 @@ import CancelSuccessFull from "../../components/app/enrollmentForms/CancelSucces
 import axios from "../../axios";
 import { ErrorToast, SuccessToast } from "../../components/global/Toaster";
 import { useFetchById, useGlobal } from "../../hooks/api/Get";
-import Cookies from "js-cookie";
 import { AppContext } from "../../context/AppContext";
 const Home = () => {
-  const { Auth, appointmentData, clearAllCookies } = useContext(AppContext);
+  const {
+    Auth,
+    appointmentData,
+    clearAllCookies,
+    isPhoneVerified,
+    isVerifiedEmail,
+    petData,
+  } = useContext(AppContext);
+  console.log(isVerifiedEmail, "isVerifiedEmail");
   const [step, setStep] = useState(1);
   const [formModal, setFormModal] = useState(false);
   const [almostThere, setAlmostThere] = useState(false);
@@ -46,7 +53,6 @@ const Home = () => {
   const [loading, setLoading] = useState(false);
   const [update, setUpdate] = useState(false);
   const [cancelLoading, setCancelLoading] = useState(false);
-
   const validateSchema =
     step == 1 ? EnrollmentPersonalSchema : EnrollmentPetSchema;
 
@@ -61,7 +67,6 @@ const Home = () => {
   } = useFormik({
     initialValues: EnrollmentValues,
     validationSchema: validateSchema,
-
     onSubmit: async (values) => {
       const payload = {
         user: {
@@ -80,11 +85,6 @@ const Home = () => {
           petBreed: values.petBreed,
           age: values.petAge,
           symptoms: values.petDiscription,
-        },
-        appointment: {
-          AppointmentDate: new Date().toISOString().split("T")[0],
-          AppointmentTime: new Date(),
-          notes: "Hello",
         },
       };
 
@@ -157,6 +157,30 @@ const Home = () => {
       handleChange({ target: { name: e.target.name, value: rawValue } });
     }
   };
+  const handleCreateAppoitment = async () => {
+    const payload = {
+      AppointmentDate: new Date().toISOString().split("T")[0],
+      AppointmentTime: new Date(),
+      notes: "Hello",
+      petId: petData?._id,
+    };
+    try {
+      const response = await axios.post("/user/create-appointment", payload);
+      if (response?.status === 200) {
+        SuccessToast(response?.data?.message);
+        Auth(response?.data);
+        setUpdate((prev) => !prev);
+      }
+    } catch (error) {
+      ErrorToast(error?.response?.data?.message);
+    }
+  };
+
+  useEffect(() => {
+    if (isPhoneVerified && isVerifiedEmail) {
+      handleCreateAppoitment();
+    }
+  }, [isPhoneVerified, isVerifiedEmail]);
 
   const { loading: appointmentListLoader, data: appointmentList } = useGlobal(
     "/appointment/get-all-appointments",
@@ -165,11 +189,9 @@ const Home = () => {
 
   const { loading: appointmentNumberLoader, data: appointmentNumber } =
     useFetchById(
-      // appointmentData?.signUpRecord
-      //   ? `/appointment/get-user-appointment-number?userId=${appointmentData?.signUpRecord}`
-      //   : null,
-      `/appointment/get-user-appointment-number?userId=${appointmentData?.signUpRecord ? appointmentData?.signUpRecord : "123"}`,
-
+      `/appointment/get-user-appointment-number?userId=${
+        appointmentData?.signUpRecord ? appointmentData?.signUpRecord : "123"
+      }`,
       update
     );
 
@@ -242,12 +264,14 @@ const Home = () => {
         email={values.email}
       />
       <VerifyPhone
+        email={values.email}
         isOpen={verifyPhonelModal}
         onClose={() => setVerifyPhonelModal(false)}
         handleClick={() => {
           setVerifyPhonelModal(false);
           setVirtualListModal(true);
         }}
+        setVirtualListModal={setVirtualListModal}
         phone={values.phone}
       />
       <VirtualListModal

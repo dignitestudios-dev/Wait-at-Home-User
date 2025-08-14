@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { Alert, Clock, UserPro } from "../../../assets/export";
 import { RxCross2 } from "react-icons/rx";
 import GlobalInputs from "../../global/GlobalInputs";
@@ -8,16 +8,21 @@ import { EditProfileSchema } from "../../../schema/authentication/EditProfileSch
 import GlobalButton from "../../global/GlobalButton";
 import PhoneInputs from "../../global/PhoneInput";
 import { phoneFormater } from "../../../lib/helpers";
-
+import { ErrorToast, SuccessToast } from "../../global/Toaster";
+import axios from "../../../axios";
+import { AppContext } from "../../../context/AppContext";
 const EditProfileModal = ({
   isOpen,
   onClose,
   setUpdatedEdit,
   setEditModal,
+  userProfileData,
+  setUpdate,
 }) => {
   if (!isOpen) return null;
   const [preview, setPreview] = useState(null);
-
+  const [loading, setLoading] = useState(false);
+  const { Auth } = useContext(AppContext);
   const {
     values,
     handleBlur,
@@ -27,15 +32,43 @@ const EditProfileModal = ({
     touched,
     setFieldValue,
   } = useFormik({
-    initialValues: EditProfile,
+    enableReinitialize: true,
+    initialValues: {
+      name: userProfileData?.name || "",
+      email: userProfileData?.email || "",
+      phone: userProfileData?.phone || "",
+    },
     validationSchema: EditProfileSchema,
     validateOnChange: true,
     validateOnBlur: true,
 
     onSubmit: async (values, action) => {
-      setEditModal(false);
-      setUpdatedEdit(true);
-      console.log(values, "values==>");
+      setLoading(true);
+      try {
+        const formData = new FormData();
+        formData.append("name", values.name);
+        formData.append("email", values.email);
+        formData.append("phone", values.phone);
+        if (values.profilePic) {
+          formData.append("profilePic", values.profilePic);
+        }
+
+        const response = await axios.post(
+          "/user/update-user-profile",
+          formData
+        );
+        if (response.status === 200) {
+          SuccessToast(response?.data?.message);
+          Auth({ data: { user: response.data.data } });
+          setEditModal(false);
+          setUpdate((prev) => !prev);
+          setUpdatedEdit(true);
+        }
+      } catch (error) {
+        ErrorToast(error?.response?.data?.message);
+      } finally {
+        setLoading(false);
+      }
     },
   });
   const handlePhoneChange = (e) => {
@@ -117,6 +150,7 @@ const EditProfileModal = ({
                 value={values.email}
                 error={errors.email}
                 touched={touched.email}
+                disabled
                 max={250}
               />
               <PhoneInputs
@@ -131,7 +165,11 @@ const EditProfileModal = ({
               />
             </div>
             <div className="mt-3">
-              <GlobalButton children={"Update"} type="submit" />
+              <GlobalButton
+                children={"Update"}
+                loading={loading}
+                type="submit"
+              />
             </div>
           </form>
         </div>

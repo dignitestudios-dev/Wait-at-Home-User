@@ -15,7 +15,8 @@ import GlobalButton from "../../global/GlobalButton";
 import PasswordUpdated from "../../../pages/authentication/PasswordUpdated";
 import { ChangepassSchema } from "../../../schema/app/ChangepassValuesSchema";
 import { ChangepassValues } from "../../../init/app/ChangepassValues";
-
+import axios from "../../../axios";
+import { ErrorToast, SuccessToast } from "../../global/Toaster";
 const ChangePassword = () => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
@@ -26,13 +27,24 @@ const ChangePassword = () => {
       validationSchema: ChangepassSchema,
       validateOnChange: true,
       validateOnBlur: true,
-      onSubmit: async (values, action) => {
-        setIsUpdate(true);
+      onSubmit: async (values) => {
         const data = {
-          email: values?.email,
-          password: values?.password,
+          currentPassword: values?.currentpassword,
+          newPassword: values?.newpassword,
         };
-        // postData("/admin/login", false, null, data, processLogin);
+        setLoading(true);
+        try {
+          const response = await axios.post("/auth/change-password", data);
+          if (response?.status === 200) {
+            SuccessToast(response?.data?.message);
+            navigate("/app/home");
+            setIsUpdate(true);
+          }
+        } catch (error) {
+          ErrorToast(error?.response?.data?.message);
+        } finally {
+          setLoading(false);
+        }
       },
     });
 
@@ -120,7 +132,11 @@ const ChangePassword = () => {
                 />
               </div>
 
-              <GlobalButton children={"Change password"} type="submit" />
+              <GlobalButton
+                loading={loading}
+                children={"Change password"}
+                type="submit"
+              />
             </form>
           </div>
         </div>

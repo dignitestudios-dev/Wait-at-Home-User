@@ -49,7 +49,7 @@ const WaitingListModal = ({
                         </div>
                       )}
 
-                      <span className="text-[#3F3F3F] font-[600] text-[14px]">
+                      <span className="text-[#3F3F3F] font-[600] w-[250px] text-[14px] whitespace-normal break-words align-middle">
                         {item?.pets?.map((pet) => pet?.petName).join(", ")} -{" "}
                         {item?.signUpRecord?.name.charAt(0)}
                       </span>

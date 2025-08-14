@@ -3,37 +3,58 @@ import GlobalInputs from "../../global/GlobalInputs";
 import { IoChevronDown } from "react-icons/io5";
 import GlobalButton from "../../global/GlobalButton";
 import { useFormik } from "formik";
-import { AddPet } from "../../../init/app/PetForm";
-import { FaCheck } from "react-icons/fa";
 import { RxCross2 } from "react-icons/rx";
 import { AddPetSchema } from "../../../schema/app/PetFormSchema";
-
+import axios from "../../../axios";
+import { ErrorToast, SuccessToast } from "../../global/Toaster";
 const EditPetForm = ({
   isOpen,
   onClose,
   setEditPetSuccess,
   setEditPetModal,
+  petData,
+  setUpdate,
 }) => {
-  const [checked, setChecked] = useState(false);
-  const [passwordError, setPasswordError] = useState("");
+  const [loading, setLoading] = useState(false);
+  const { values, handleBlur, handleChange, handleSubmit, errors, touched } =
+    useFormik({
+      enableReinitialize: true,
+      initialValues: {
+        petName: petData?.petName || "",
+        petType: petData?.petType || "",
+        petBreed: petData?.petBreed || "",
+        petAge: petData?.petAge || "",
+        petDiscription: petData?.symptoms || "",
+      },
+      validationSchema: AddPetSchema,
 
-  const {
-    values,
-    handleBlur,
-    handleChange,
-    handleSubmit,
-    errors,
-    touched,
-    setFieldValue,
-  } = useFormik({
-    initialValues: AddPet,
-    validationSchema: AddPetSchema,
-    onSubmit: async (values) => {
-      setEditPetModal(false);
-      setEditPetSuccess(true);
-    
-    },
-  });
+      onSubmit: async (values) => {
+        setLoading(true);
+        try {
+          const payload = {
+            petName: values.petName,
+            petBreed: values.petBreed,
+            petType: values.petType,
+            petAge: values.petAge,
+            symptoms: values.symptoms,
+          };
+          const response = await axios.post(
+            "/user/update-user-profile",
+            payload
+          );
+          if (response.status === 200) {
+            SuccessToast(response?.data?.message);
+            setEditPetModal(false);
+            setEditPetSuccess(true);
+            setUpdate((prev) => !prev);
+          }
+        } catch (error) {
+          ErrorToast(error?.response?.data?.message);
+        } finally {
+          setLoading(false);
+        }
+      },
+    });
 
   if (!isOpen) return null;
 
@@ -118,9 +139,28 @@ const EditPetForm = ({
             error={errors.petAge}
             touched={touched.petAge}
           />
+          <textarea
+            name="petDiscription"
+            placeholder="Enter Symptoms or Reasons for the visit"
+            id="petDiscription"
+            value={values.petDiscription}
+            onChange={handleChange}
+            onBlur={handleBlur}
+            maxLength={250}
+            className={`bg-white w-full rounded-[20px] h-[113px] px-4 py-4 ${
+              errors.petDiscription && touched.petDiscription
+                ? "border-red-500 ring-1 ring-red-500"
+                : "border focus:border-[#10C0B6] focus:ring-2 focus:ring-[#10C0B6]"
+            } `}
+          ></textarea>
+          {errors.petDiscription && touched.petDiscription && (
+            <p className="text-red-500 text-[12px] mt-1 font-medium">
+              {errors.petDiscription}
+            </p>
+          )}
 
           <div className="pt-4">
-            <GlobalButton type="submit" children={"Update"} />
+            <GlobalButton type="submit" loading={loading} children={"Update"} />
           </div>
         </form>
       </div>

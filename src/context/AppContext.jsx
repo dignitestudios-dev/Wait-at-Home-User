@@ -8,7 +8,16 @@ export const AppContext = createContext();
 export const AppContextProvider = ({ children }) => {
   const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
-  const [appointmentList, setAppointmentList] = useState([]);
+  const [token, setToken] = useState(() => {
+    return Cookies.get("token") || null;
+  });
+  const [isVerifiedEmail, setIsVerifiedEmail] = useState(() => {
+    return Cookies.get("isEmailVerified") || null;
+  });
+  const [isPhoneVerified, setIsPhoneVerified] = useState(() => {
+    return Cookies.get("isPhoneVerified") || null;
+  });
+
   const [userData, setUserData] = useState(() => {
     const cookieData = Cookies.get("userData");
     return cookieData ? JSON.parse(cookieData) : null;
@@ -33,11 +42,27 @@ export const AppContextProvider = ({ children }) => {
       Cookies.set("petData", JSON.stringify(data.data.pet), { expires: 7 });
       setPetData(data.data.pet);
     }
-    if (data.data.appointment) {
-      Cookies.set("appointmentData", JSON.stringify(data.data.appointment), {
+    if (data.data) {
+      Cookies.set("appointmentData", JSON.stringify(data.data), {
         expires: 7,
       });
-      setAppointmentData(data.data.appointment);
+      setAppointmentData(data.data);
+    }
+    if (data?.data?.token) {
+      Cookies.set("token", data?.data?.token, { expires: 7 });
+      setToken(data.data.token);
+    }
+    if (data?.data?.isEmailVerified) {
+      Cookies.set("isEmailVerified", data?.data?.isEmailVerified, {
+        expires: 7,
+      });
+      setIsVerifiedEmail(data?.data?.isEmailVerified);
+    }
+    if (data?.data?.isPhoneVerified) {
+      Cookies.set("isPhoneVerified", data?.data?.isPhoneVerified, {
+        expires: 7,
+      });
+      setIsPhoneVerified(data?.data?.isPhoneVerified);
     }
   };
   const clearAllCookies = () => {
@@ -83,6 +108,9 @@ export const AppContextProvider = ({ children }) => {
         Auth,
         clearAllCookies,
         handleLogOut,
+        token,
+        isVerifiedEmail,
+        isPhoneVerified,
       }}
     >
       {children}

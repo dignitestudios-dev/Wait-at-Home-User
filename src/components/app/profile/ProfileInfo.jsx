@@ -61,7 +61,7 @@ const ProfileInfo = ({ setEditModal, userProfileData }) => {
           <p className="text-[#565656] font-[500] text-[14px]">Phone Number</p>
           <p className="font-[500] text-[#000000] text-[18px] ">
             {userProfileData?.phone
-              ? phoneFormater(userProfileData?.phone)
+              ? `+1 ${phoneFormater(userProfileData?.phone)}`
               : "Not Found"}
           </p>
         </div>

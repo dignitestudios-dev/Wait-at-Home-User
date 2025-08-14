@@ -1,14 +1,14 @@
-import React, { useRef, useState } from "react";
+import React, { useContext, useRef, useState } from "react";
 import { Mail } from "../../../assets/export";
 import GlobalButton from "../../global/GlobalButton";
 import { IoIosArrowRoundBack } from "react-icons/io";
 import { ErrorToast, SuccessToast } from "../../global/Toaster";
 import axios from "../../../axios";
 import CountDown from "../../global/CountDown";
-import Cookies from "js-cookie";
+import { AppContext } from "../../../context/AppContext";
 const VerifyEmail = ({ isOpen, onClose, setVerifyPhonelModal, email }) => {
   if (!isOpen) return null;
-
+  const { Auth } = useContext(AppContext);
   const [otp, setOtp] = useState(Array(4).fill(""));
   const inputsRef = useRef([]);
   const [loading, setLoading] = useState(false);
@@ -64,7 +64,7 @@ const VerifyEmail = ({ isOpen, onClose, setVerifyPhonelModal, email }) => {
 
       if (response.status === 200) {
         SuccessToast(response?.data?.message);
-        Cookies.set("token", response?.data?.data?.token, { expires: 7 });
+        Auth(response?.data);
         setVerifyPhonelModal(true);
         onClose();
       }
@@ -89,7 +89,7 @@ const VerifyEmail = ({ isOpen, onClose, setVerifyPhonelModal, email }) => {
       if (response.status === 200) {
         SuccessToast(response?.data?.message);
         setResendLoading(false);
-        setOtp(Array(4).fill("")); 
+        setOtp(Array(4).fill(""));
         handleRestart();
       }
     } catch (err) {

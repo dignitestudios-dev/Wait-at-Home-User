@@ -10,20 +10,7 @@ export const PublicRoutes = [
     url: "home",
     page: <Home />,
   },
-  {
-    url: "profile",
-    page: <Profile />,
-  },
 
-  {
-    url: "change-password",
-    page: <ChangePassword />,
-  },
-
-  {
-    url: "delete-account",
-    page: <DeletAccount />,
-  },
   {
     url: "notifications",
     page: <Notification />,

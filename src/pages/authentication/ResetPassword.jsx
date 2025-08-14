@@ -7,7 +7,8 @@ import { ResetValues } from "../../init/authentication/ResetValues";
 import { ResetSchema } from "../../schema/authentication/ResetSchema";
 import PasswordUpdated from "./PasswordUpdated";
 import { useNavigate } from "react-router";
-
+import axios from "../../axios";
+import { ErrorToast, SuccessToast } from "../../components/global/Toaster";
 const ResetPassword = () => {
   const navigate = useNavigate();
 
@@ -20,15 +21,25 @@ const ResetPassword = () => {
       validationSchema: ResetSchema,
       validateOnChange: true,
       validateOnBlur: true,
-      onSubmit: async (values, action) => {
+      onSubmit: async (values) => {
         const data = {
-          email: values?.password,
-          password: values?.Cpassword,
+          newPassword: values?.Cpassword,
         };
-        setIsUpdate(true);
-        setTimeout(() => {
-          navigate("/auth/login");
-        }, 2000);
+        setLoading(true);
+        try {
+          const response = await axios.post("/auth/reset-password", data);
+          if (response?.status === 200) {
+            SuccessToast(response?.data?.message);
+            setIsUpdate(true);
+            setTimeout(() => {
+              navigate("/auth/login");
+            }, 2000);
+          }
+        } catch (error) {
+          ErrorToast(error?.response?.data?.message);
+        } finally {
+          setLoading(false);
+        }
       },
     });
 
@@ -97,7 +108,11 @@ const ResetPassword = () => {
                 />
               </div>
 
-              <GlobalButton type="submit" children={"Set Password"} />
+              <GlobalButton
+                loading={loading}
+                type="submit"
+                children={"Set Password"}
+              />
             </form>
           </div>
         </div>

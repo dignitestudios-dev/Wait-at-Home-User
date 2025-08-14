@@ -27,11 +27,11 @@ const NotificationToogle = ({
           disabled={loader}
         />
         <div
-          className={`w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-white rounded-full peer dark:bg-gray-700 
+          className={`w-11 h-6 bg-[#94b8c0]  rounded-full    
                           ${
                             statusnoti
                               ? "peer-checked:bg-gradient-to-l to-[#63CFAC] from-[#29ABE2]"
-                              : "peer-checked:bg-white"
+                              : "peer-checked:bg-[#7698a1]"
                           } 
                           peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute 
                           after:top-0.5 after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full 

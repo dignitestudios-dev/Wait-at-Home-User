@@ -1,13 +1,14 @@
 import React from "react";
 import { Bgauth, Tick } from "../../../assets/export";
 import { FiTrash } from "react-icons/fi";
+import { RiLoader5Line } from "react-icons/ri";
 
-const RemovePet = ({ isOpen, onClose, handleCLick }) => {
+const RemovePet = ({ isOpen, onClose, handleCLick, deleteLoading }) => {
   if (!isOpen) return null;
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-60">
       <div
-        onClick={onClose}
+      
         className="bg-gradient-to-br h-[338px] cursor-pointer flex items-center justify-center     flex-col  from-[#A0E6E1] to-[#C3B4D3] w-[471px]   p-8 rounded-3xl shadow-lg relative text-gray-800 "
       >
         <div className="flex justify-center items-center">
@@ -26,7 +27,12 @@ const RemovePet = ({ isOpen, onClose, handleCLick }) => {
             onClick={handleCLick}
             className={`w-[203px] bg-white  text-[#00AAAD] text-[14px] font-[600] py-3 rounded-[12px] transition duration-200 `}
           >
-            Delete now
+            <div className="flex justify-center items-center">
+              <span className="mr-1"> Delete now</span>
+              {deleteLoading && (
+                <RiLoader5Line className="animate-spin text-lg " />
+              )}
+            </div>
           </button>
           <button
             onClick={onClose}

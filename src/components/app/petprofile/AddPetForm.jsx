@@ -7,28 +7,45 @@ import { AddPet } from "../../../init/app/PetForm";
 import { FaCheck } from "react-icons/fa";
 import { RxCross2 } from "react-icons/rx";
 import { AddPetSchema } from "../../../schema/app/PetFormSchema";
+import axios from "../../../axios";
+import { ErrorToast, SuccessToast } from "../../global/Toaster";
 
-const AddPetForm = ({ isOpen, onClose, setAddPetSuccess, setAddPetModal }) => {
-  const [checked, setChecked] = useState(false);
-  const [passwordError, setPasswordError] = useState("");
-
-  const {
-    values,
-    handleBlur,
-    handleChange,
-    handleSubmit,
-    errors,
-    touched,
-    setFieldValue,
-  } = useFormik({
-    initialValues: AddPet,
-    validationSchema: AddPetSchema,
-    onSubmit: async (values) => {
-      setAddPetModal(false);
-      setAddPetSuccess(true);
- 
-    },
-  });
+const AddPetForm = ({
+  isOpen,
+  onClose,
+  setAddPetSuccess,
+  setAddPetModal,
+  setUpdate,
+}) => {
+  const [loading, setLoading] = useState(false);
+  const { values, handleBlur, handleChange, handleSubmit, errors, touched } =
+    useFormik({
+      initialValues: AddPet,
+      validationSchema: AddPetSchema,
+      onSubmit: async (values) => {
+        setLoading(true);
+        try {
+          const payload = {
+            petName: values.petName,
+            petBreed: values.petBreed,
+            petType: values.petType,
+            petAge: values.petAge,
+            symptoms: values.petDiscription,
+          };
+          const response = await axios.post("/user/add-pet", payload);
+          if (response.status === 200) {
+            SuccessToast(response?.data?.message);
+            setUpdate((prev) => !prev);
+            setAddPetModal(false);
+            setAddPetSuccess(true);
+          }
+        } catch (error) {
+          ErrorToast(error.response.data.message);
+        } finally {
+          setLoading(false);
+        }
+      },
+    });
 
   if (!isOpen) return null;
 
@@ -113,9 +130,28 @@ const AddPetForm = ({ isOpen, onClose, setAddPetSuccess, setAddPetModal }) => {
             error={errors.petAge}
             touched={touched.petAge}
           />
+          <textarea
+            name="petDiscription"
+            placeholder="Enter Symptoms or Reasons for the visit"
+            id="petDiscription"
+            value={values.petDiscription}
+            onChange={handleChange}
+            onBlur={handleBlur}
+            maxLength={250}
+            className={`bg-white w-full rounded-[20px] h-[113px] px-4 py-4 ${
+              errors.petDiscription && touched.petDiscription
+                ? "border-red-500 ring-1 ring-red-500"
+                : "border focus:border-[#10C0B6] focus:ring-2 focus:ring-[#10C0B6]"
+            } `}
+          ></textarea>
+          {errors.petDiscription && touched.petDiscription && (
+            <p className="text-red-500 text-[12px] mt-1 font-medium">
+              {errors.petDiscription}
+            </p>
+          )}
 
           <div className="pt-4">
-            <GlobalButton type="submit" children={"Add"} />
+            <GlobalButton type="submit" children={"Add"} loading={loading} />
           </div>
         </form>
       </div>

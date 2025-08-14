@@ -48,8 +48,11 @@ const WaitingList = ({ appointmentList, appointmentListLoader }) => {
                         )}
 
                         <span className="text-[#3F3F3F] font-[600] text-[14px]">
-                          {item?.pets?.map((pet) => pet?.petName).join(", ")} -{" "}
-                          {item?.signUpRecord?.name.charAt(0)}
+                          <span className="inline-block max-w-[110px] truncate align-middle">
+                            {item?.pets?.map((pet) => pet?.petName).join(", ")}
+                          </span>
+                          {" - "}
+                          {item?.signUpRecord?.name?.charAt(0)}
                         </span>
                       </div>
                     </li>

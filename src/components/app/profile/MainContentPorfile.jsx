@@ -18,15 +18,22 @@ const MainContentPorfile = ({
   setEditPetModal,
   setDeletePet,
   userProfileData,
+  setSelectedPet,
+  setUpdate,
 }) => {
   return (
     <div className="">
-      <ProfileInfo userProfileData={userProfileData} setEditModal={setEditModal} />
+      <ProfileInfo
+        userProfileData={userProfileData}
+        setEditModal={setEditModal}
+      />
       <PetSection
-      petProfileData={userProfileData}
+      setUpdate={setUpdate}
+        petProfileData={userProfileData}
         setAddPetModal={setAddPetModal}
         setEditPetModal={setEditPetModal}
         setDeletePet={setDeletePet}
+        setSelectedPet={setSelectedPet}
       />
       <div className="rounded-2xl overflow-hidden shadow-md ">
         <img src={Adstwo} alt="Ads" className="w-full h-[232px] object-cover" />

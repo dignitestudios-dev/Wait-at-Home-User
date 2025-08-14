@@ -4,8 +4,14 @@ import AuthLayout from "./layouts/AuthLayout";
 import Home from "./pages/app/Home";
 import { AuthenticationRoutes } from "./routes/authentication/AuthenticationRoute";
 import { PublicRoutes } from "./routes/app/PublicRoutes";
-import DashboardLayout from '../src/layouts/DashboardLayout'
+import DashboardLayout from "../src/layouts/DashboardLayout";
+import Cookies from "js-cookie";
+import { ProtectedRoutes } from "./routes/app/ProtectedRoutes";
+import { useContext } from "react";
+import { AppContext } from "./context/AppContext";
 function App() {
+  const { token } = useContext(AppContext);
+  console.log(token, "token==>");
   return (
     <Routes>
       <Route path="/" element={<Navigate to={"/app/home"} />} />
@@ -15,8 +21,15 @@ function App() {
         {PublicRoutes?.map((Link, i) => (
           <Route path={Link.url} key={i} element={Link.page} />
         ))}
-      </Route>
 
+        {ProtectedRoutes?.map((Link, i) => (
+          <Route
+            key={i}
+            path={Link.url}
+            element={token ? Link.page : <Navigate to="/auth/login" />}
+          />
+        ))}
+      </Route>
       <Route path="auth" element={<AuthLayout />}>
         <Route index element={<div className="text-7xl">Page Not Found</div>} />
         {AuthenticationRoutes?.map((Link, i) => (

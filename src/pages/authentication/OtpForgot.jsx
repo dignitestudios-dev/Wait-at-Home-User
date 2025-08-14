@@ -1,21 +1,32 @@
-import React, { useRef, useState } from "react";
+import React, { useContext, useRef, useState } from "react";
 import { useNavigate } from "react-router";
 import { Bgauth, Tick } from "../../assets/export";
 import GlobalButton from "../../components/global/GlobalButton";
 import { IoIosArrowRoundBack } from "react-icons/io";
-
+import { ErrorToast, SuccessToast } from "../../components/global/Toaster";
+import axios from "../../axios";
+import CountDown from "../../components/global/CountDown";
+import { AppContext } from "../../context/AppContext";
 const OtpForgot = () => {
   const navigate = useNavigate();
-  const [otp, setOtp] = useState(Array(6).fill(""));
+  const { Auth } = useContext(AppContext);
+  const [otp, setOtp] = useState(Array(4).fill(""));
   const inputsRef = useRef([]);
-
+  const [loading, setLoading] = useState(false);
+  const [resendLoading, setResendLoading] = useState(false);
+  const [isActive, setIsActive] = useState(true);
+  const [seconds, setSeconds] = useState(30);
+  const email = sessionStorage.getItem("email");
   const handleChange = (e, index) => {
     const value = e.target.value.replace(/[^0-9]/g, "");
     if (value) {
       const newOtp = [...otp];
       newOtp[index] = value;
       setOtp(newOtp);
-      if (index < 5) inputsRef.current[index + 1].focus();
+
+      if (index < otp.length - 1) {
+        inputsRef.current[index + 1]?.focus();
+      }
     }
   };
 
@@ -31,7 +42,63 @@ const OtpForgot = () => {
       }
     }
   };
+  const getOtpValue = () => {
+    return parseInt(otp.join(""), 10);
+  };
 
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const isOtpFilled = otp.every((digit) => digit !== "");
+
+    if (!isOtpFilled) {
+      ErrorToast("Please enter all OTP digits");
+      return;
+    }
+
+    setLoading(true);
+    try {
+      let obj = {
+        email: email,
+        otp: getOtpValue(),
+      };
+
+      const response = await axios.post("/auth/verify-reset-otp", obj);
+
+      if (response.status === 200) {
+        SuccessToast(response?.data?.message);
+        Auth(response?.data);
+        navigate('/auth/reset-password')
+      }
+    } catch (error) {
+      setOtp(Array(4).fill(""));
+      ErrorToast(error?.response?.data?.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+  const handleRestart = () => {
+    setSeconds(30);
+    setIsActive(true);
+  };
+  const handleResendOtp = async () => {
+    try {
+      setResendLoading(true);
+      let obj = { email: email };
+
+      const response = await axios.post("/auth/request-email-otp", obj);
+
+      if (response.status === 200) {
+        SuccessToast(response?.data?.message);
+        setResendLoading(false);
+        setOtp(Array(4).fill(""));
+        handleRestart();
+      }
+    } catch (err) {
+      ErrorToast(err?.response?.data?.message);
+    } finally {
+      setResendLoading(false);
+    }
+  };
   return (
     <div
       className="min-h-screen rounded-[45px] bg-cover bg-center w-full
@@ -65,7 +132,7 @@ const OtpForgot = () => {
           </p>
         </div>
 
-        <form className="space-y-4">
+        <form className="space-y-4" onSubmit={handleSubmit}>
           <div className="flex gap-3 justify-center mt-2">
             {otp.map((digit, idx) => (
               <input
@@ -80,14 +147,28 @@ const OtpForgot = () => {
               />
             ))}
           </div>
-          <p className="text-sm text-center text-[#565656]">
+          <p className="text-sm flex justify-center gap-3 text-center text-[#565656]">
             Didn’t receive code?{" "}
-            <span className="font-[400] text-[#00AAAD] cursor-pointer underline">
-              Resend
-            </span>
+            {isActive ? (
+              <CountDown
+                isActive={isActive}
+                setIsActive={setIsActive}
+                seconds={seconds}
+                setSeconds={setSeconds}
+              />
+            ) : (
+              <span
+                type="button"
+                disabled={resendLoading}
+                onClick={handleResendOtp}
+                className="text-[#181818] font-medium pl-1 cursor-pointer"
+              >
+                {resendLoading ? "Resending..." : "Resend"}
+              </span>
+            )}
           </p>
 
-          <GlobalButton children={"Verify"} onClick={()=>navigate('/auth/reset-password')} />
+          <GlobalButton children={"Verify"} type="submit" loading={loading} />
         </form>
       </div>
     </div>
