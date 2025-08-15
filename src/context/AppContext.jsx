@@ -42,11 +42,11 @@ export const AppContextProvider = ({ children }) => {
       Cookies.set("petData", JSON.stringify(data.data.pet), { expires: 7 });
       setPetData(data.data.pet);
     }
-    if (data.data) {
-      Cookies.set("appointmentData", JSON.stringify(data.data), {
+    if (data.data.appointment) {
+      Cookies.set("appointmentData", JSON.stringify(data.data.appointment), {
         expires: 7,
       });
-      setAppointmentData(data.data);
+      setAppointmentData(data.data.appointment);
     }
     if (data?.data?.token) {
       Cookies.set("token", data?.data?.token, { expires: 7 });
@@ -77,6 +77,7 @@ export const AppContextProvider = ({ children }) => {
     setUserData(null);
     setPetData(null);
     setAppointmentData(null);
+    sessionStorage.clear();
   };
   const getAllAppoitment = async () => {
     try {
@@ -111,6 +112,8 @@ export const AppContextProvider = ({ children }) => {
         token,
         isVerifiedEmail,
         isPhoneVerified,
+        setIsPhoneVerified,
+        setIsVerifiedEmail,
       }}
     >
       {children}

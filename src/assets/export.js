@@ -34,9 +34,13 @@ import UserPro from "./userPro.png";
 import Adthree from "./adthree.png";
 import AdminImg from "./adminimg.png";
 import PurpleTick from "./purpleTick.png";
+import RadioActive from "./radioActive.png";
+import RadioInactive from "./radioInactive.png";
 
 export {
   Logo,
+  RadioActive,
+  RadioInactive,
   IconCat,
   Adthree,
   AdminImg,

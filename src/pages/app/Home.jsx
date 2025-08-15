@@ -24,6 +24,8 @@ import axios from "../../axios";
 import { ErrorToast, SuccessToast } from "../../components/global/Toaster";
 import { useFetchById, useGlobal } from "../../hooks/api/Get";
 import { AppContext } from "../../context/AppContext";
+import Cookies from "js-cookie";
+import ExistingPet from "../../components/app/registeredUser/ExistingPet";
 const Home = () => {
   const {
     Auth,
@@ -32,8 +34,11 @@ const Home = () => {
     isPhoneVerified,
     isVerifiedEmail,
     petData,
+    setIsVerifiedEmail,
+    setIsPhoneVerified,
+    userData,
+    token,
   } = useContext(AppContext);
-  console.log(isVerifiedEmail, "isVerifiedEmail");
   const [step, setStep] = useState(1);
   const [formModal, setFormModal] = useState(false);
   const [almostThere, setAlmostThere] = useState(false);
@@ -53,6 +58,7 @@ const Home = () => {
   const [loading, setLoading] = useState(false);
   const [update, setUpdate] = useState(false);
   const [cancelLoading, setCancelLoading] = useState(false);
+  const [existingPet, setExistingPet] = useState(false);
   const validateSchema =
     step == 1 ? EnrollmentPersonalSchema : EnrollmentPetSchema;
 
@@ -140,9 +146,13 @@ const Home = () => {
         setCancelSuccessFull(true);
         setCancelReason(false);
         setUpdate((prev) => !prev);
-
-        clearAllCookies();
+        if (userData?.isUserRegistered) {
+          Cookies.remove("appointmentData");
+        } else {
+          clearAllCookies();
+        }
       }
+      3;
     } catch (error) {
       ErrorToast(error.response.data.message);
     } finally {
@@ -169,6 +179,10 @@ const Home = () => {
       if (response?.status === 200) {
         SuccessToast(response?.data?.message);
         Auth(response?.data);
+        Cookies.remove("isPhoneVerified");
+        Cookies.remove("isEmailVerified");
+        setIsPhoneVerified(false);
+        setIsVerifiedEmail(false);
         setUpdate((prev) => !prev);
       }
     } catch (error) {
@@ -194,6 +208,11 @@ const Home = () => {
       }`,
       update
     );
+  const { loading: profileLoading, data: profileData } = useGlobal(
+    token ? "/user/get-user-profile" : null,
+    1,
+    true
+  );
 
   return (
     <div className="p-2">
@@ -212,10 +231,15 @@ const Home = () => {
             <JoinWaitList
               appointmentNumber={appointmentNumber}
               isWaitList={isWaitList}
-              handleModalOpen={() => setFormModal(true)}
+              handleModalOpen={() =>
+                userData?.isUserRegistered
+                  ? setExistingPet(true)
+                  : setFormModal(true)
+              }
               handleCancelEnrollment={() => setCancelEnrollment(true)}
               appointmentNumberLoader={appointmentNumberLoader}
             />
+
             <CurrentlyServing
               appointmentListLoader={appointmentListLoader}
               currentlyServing={appointmentList}
@@ -311,6 +335,14 @@ const Home = () => {
       <CancelSuccessFull
         isOpen={cancelSuccessFull}
         onClose={() => setCancelSuccessFull(false)}
+      />
+      <ExistingPet
+        isOpen={existingPet}
+        profileData={profileData}
+        setUpdate={setUpdate}
+        setVirtualListModal={setVirtualListModal}
+        setExistingPet={setExistingPet}
+        onClose={() => setExistingPet(false)}
       />
     </div>
   );

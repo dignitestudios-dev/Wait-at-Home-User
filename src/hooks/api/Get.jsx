@@ -2,13 +2,14 @@ import { useState, useEffect } from "react";
 import axios from "../../axios";
 import { processError } from "../../lib/utils";
 
-const useGlobal = (url, currentPage = 1) => {
+const useGlobal = (url, currentPage = 1,tokenRequired = false) => {
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState([]);
   const [pagination, setPagination] = useState({});
 
   const getGlobal = async () => {
     try {
+        if (!url) return;
       setLoading(true);
       const { data } = await axios.get(`${url}`);
       setData(data?.data);
@@ -22,7 +23,7 @@ const useGlobal = (url, currentPage = 1) => {
 
   useEffect(() => {
     getGlobal();
-  }, [currentPage]);
+  }, [url,currentPage]);
 
   return { loading, data, pagination };
 };
