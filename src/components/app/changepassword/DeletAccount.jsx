@@ -1,5 +1,5 @@
 import { useFormik } from "formik";
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { useNavigate } from "react-router";
 import { Bgauth, DesktopLoginLogo } from "../../../assets/export";
 import { IoIosArrowRoundBack } from "react-icons/io";
@@ -7,7 +7,9 @@ import GlobalInputs from "../../global/GlobalInputs";
 import GlobalButton from "../../global/GlobalButton";
 import * as Yup from "yup";
 import DeleteSuccess from "./DeleteSuccess";
-
+import axios from "../../../axios";
+import { ErrorToast, SuccessToast } from "../../global/Toaster";
+import { AppContext } from "../../../context/AppContext";
 const DeleteAccountSchema = Yup.object({
   password: Yup.string()
     .required("Password is required")
@@ -17,7 +19,7 @@ const DeletAccount = () => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [isUpdate, setIsUpdate] = useState(false);
-
+  const { handleLogOut } = useContext(AppContext);
   const { values, handleBlur, handleChange, handleSubmit, errors, touched } =
     useFormik({
       initialValues: {
@@ -26,13 +28,25 @@ const DeletAccount = () => {
       validationSchema: DeleteAccountSchema,
       validateOnChange: true,
       validateOnBlur: true,
+
       onSubmit: async (values, action) => {
-        setIsUpdate(true);
         const data = {
           email: values?.email,
           password: values?.password,
         };
-        // postData("/admin/login", false, null, data, processLogin);
+        setLoading(true);
+        try {
+          const response = await axios.post("/auth/delete-account", data);
+          if (response?.status === 200) {
+            SuccessToast(response?.data?.message);
+            setIsUpdate(true);
+            handleLogOut();
+          }
+        } catch (error) {
+          ErrorToast(error?.response?.data?.message);
+        } finally {
+          setLoading(false);
+        }
       },
     });
 
@@ -93,7 +107,11 @@ const DeletAccount = () => {
                 />
               </div>
 
-              <GlobalButton children={"Deactivate Account"} type="submit" />
+              <GlobalButton
+                loading={loading}
+                children={"Deactivate Account"}
+                type="submit"
+              />
             </form>
           </div>
         </div>

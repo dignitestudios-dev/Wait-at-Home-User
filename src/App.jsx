@@ -26,7 +26,7 @@ function App() {
           <Route
             key={i}
             path={Link.url}
-            element={token ? Link.page : <Navigate to="/auth/login" />}
+            element={token ? Link.page : <Navigate to="/app/home" />}
           />
         ))}
       </Route>

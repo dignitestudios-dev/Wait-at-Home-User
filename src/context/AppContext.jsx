@@ -96,6 +96,10 @@ export const AppContextProvider = ({ children }) => {
   }, []);
   const handleLogOut = () => {
     clearAllCookies();
+    setToken(null);
+    setUserData(null);
+    setPetData(null);
+    setAppointmentData(null);
     navigate("/app/home");
   };
   return (
@@ -114,6 +118,7 @@ export const AppContextProvider = ({ children }) => {
         isPhoneVerified,
         setIsPhoneVerified,
         setIsVerifiedEmail,
+        setPetData,
       }}
     >
       {children}

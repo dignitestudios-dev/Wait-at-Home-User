@@ -1,11 +1,31 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { CgLock } from "react-icons/cg";
 import { FaClock } from "react-icons/fa";
+import { useFetchById, useGlobal } from "../../../hooks/api/Get";
+import { AppContext } from "../../../context/AppContext";
 
-const EstimatedTime = () => {
-  const [time, setTime] = useState(5400); // 1 hour 30 minutes
+const EstimatedTime = ({ update }) => {
+  const [time, setTime] = useState(0); // default 00:00
+  const { appointmentData } = useContext(AppContext);
+
+  const { loading, data } = useGlobal(
+    appointmentData?.signUpRecord
+      ? `/appointment/get-estimated-wait-time?userId=${appointmentData?.signUpRecord}`
+      : null,
+    1,
+    update
+  );
 
   useEffect(() => {
+    if (data && typeof data.estimatedWaitMinutes === "number") {
+      setTime(data.estimatedWaitMinutes * 60);
+    } else {
+      setTime(0);
+    }
+  }, [data, appointmentData?.signUpRecord, update]);
+
+  useEffect(() => {
+    if (!time) return; // agar time 0 hai to countdown na chale
     const interval = setInterval(() => {
       setTime((prevTime) => {
         if (prevTime <= 0) {
@@ -16,20 +36,26 @@ const EstimatedTime = () => {
       });
     }, 1000);
     return () => clearInterval(interval);
-  }, []);
+  }, [time]);
 
   const formatTime = (seconds) => {
     const hrs = Math.floor(seconds / 3600);
     const mins = Math.floor((seconds % 3600) / 60);
-    const secs = seconds % 60;
     return `${hrs.toString().padStart(2, "0")}:${mins
       .toString()
-      .padStart(2, "0")}:${secs.toString().padStart(2, "0")}`;
+      .padStart(2, "0")}`;
   };
+
+  const maxTime = data?.estimatedWaitMinutes
+    ? data.estimatedWaitMinutes * 60
+    : 0; // agar API nahi call hui to 0 rakho
 
   const radius = 45;
   const circumference = 2 * Math.PI * radius;
-  const strokeDashoffset = circumference - (time / 5400) * circumference;
+  const strokeDashoffset =
+    maxTime > 0
+      ? circumference - (time / maxTime) * circumference
+      : circumference;
 
   return (
     <div className="bg-[#b5d8dc] border backdrop-blur-sm rounded-3xl p-8 w-full shadow-lg">
@@ -37,13 +63,12 @@ const EstimatedTime = () => {
         Estimated Wait Time
       </h2>
 
-      <div className="relative flex items-center justify-center ">
-        <div className="relative ">
+      <div className="relative flex items-center justify-center">
+        <div className="relative">
           <svg
             className="w-full h-full transform -rotate-90"
             viewBox="0 0 100 100"
           >
-            {/* Gradient Definition */}
             <defs>
               <linearGradient id="gradientStroke" x1="1" y1="0" x2="0" y2="1">
                 <stop offset="0%" stopColor="#10C0B6" />
@@ -51,7 +76,6 @@ const EstimatedTime = () => {
               </linearGradient>
             </defs>
 
-            {/* Background Circle */}
             <circle
               cx="50"
               cy="50"
@@ -61,7 +85,6 @@ const EstimatedTime = () => {
               strokeWidth="8"
             />
 
-            {/* Progress Circle with Gradient */}
             <circle
               cx="50"
               cy="50"
@@ -75,8 +98,7 @@ const EstimatedTime = () => {
             />
           </svg>
 
-          {/* Center Content */}
-          <div className="absolute inset-0  flex flex-col items-center justify-center">
+          <div className="absolute inset-0 flex flex-col items-center justify-center">
             <FaClock size={25} className=" text-[#10C0B6] mb-2" />
             <div className="text-[43.03px] font-bold text-[#684D7B]">
               {formatTime(time)}

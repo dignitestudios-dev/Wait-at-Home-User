@@ -26,6 +26,10 @@ import { useFetchById, useGlobal } from "../../hooks/api/Get";
 import { AppContext } from "../../context/AppContext";
 import Cookies from "js-cookie";
 import ExistingPet from "../../components/app/registeredUser/ExistingPet";
+import AddNewPet from "../../components/app/registeredUser/AddNewPet";
+import AddPetSuccess from "../../components/app/petprofile/AddPetSuccess";
+import { AddPet } from "../../init/app/PetForm";
+import { AddPetSchema } from "../../schema/app/PetFormSchema";
 const Home = () => {
   const {
     Auth,
@@ -38,6 +42,7 @@ const Home = () => {
     setIsPhoneVerified,
     userData,
     token,
+    setPetData,
   } = useContext(AppContext);
   const [step, setStep] = useState(1);
   const [formModal, setFormModal] = useState(false);
@@ -59,6 +64,9 @@ const Home = () => {
   const [update, setUpdate] = useState(false);
   const [cancelLoading, setCancelLoading] = useState(false);
   const [existingPet, setExistingPet] = useState(false);
+  const [addPetModal, setAddPetModal] = useState(false);
+  const [addPetSuccess, setAddPetSuccess] = useState(false);
+  const [creatAppoitmentLoading, setCreatAppoitmentLoading] = useState(false);
   const validateSchema =
     step == 1 ? EnrollmentPersonalSchema : EnrollmentPetSchema;
 
@@ -146,8 +154,12 @@ const Home = () => {
         setCancelSuccessFull(true);
         setCancelReason(false);
         setUpdate((prev) => !prev);
+        setCancelReasonDiscription("");
+
         if (userData?.isUserRegistered) {
           Cookies.remove("appointmentData");
+          Cookies.remove("petData");
+          setPetData(null);
         } else {
           clearAllCookies();
         }
@@ -167,13 +179,25 @@ const Home = () => {
       handleChange({ target: { name: e.target.name, value: rawValue } });
     }
   };
+
   const handleCreateAppoitment = async () => {
     const payload = {
       AppointmentDate: new Date().toISOString().split("T")[0],
       AppointmentTime: new Date(),
       notes: "Hello",
-      petId: petData?._id,
+      ...(petData?._id
+        ? { petId: petData._id }
+        : {
+            pet: {
+              petName: petNewValues.petName,
+              petType: petNewValues.petType,
+              petBreed: petNewValues.petBreed,
+              petAge: petNewValues.petAge,
+              symptoms: petNewValues.petDiscription,
+            },
+          }),
     };
+    setCreatAppoitmentLoading(true);
     try {
       const response = await axios.post("/user/create-appointment", payload);
       if (response?.status === 200) {
@@ -183,10 +207,15 @@ const Home = () => {
         Cookies.remove("isEmailVerified");
         setIsPhoneVerified(false);
         setIsVerifiedEmail(false);
+        setAddPetModal(false);
+        setExistingPet(false);
+
         setUpdate((prev) => !prev);
       }
     } catch (error) {
       ErrorToast(error?.response?.data?.message);
+    } finally {
+      setCreatAppoitmentLoading(false);
     }
   };
 
@@ -195,6 +224,23 @@ const Home = () => {
       handleCreateAppoitment();
     }
   }, [isPhoneVerified, isVerifiedEmail]);
+
+  const {
+    values: petNewValues,
+    handleBlur: handlePetBlur,
+    handleChange: handlePetChange,
+    handleSubmit: handlePetSubmit,
+    errors: peterror,
+    touched: petTouched,
+    resetForm,
+  } = useFormik({
+    initialValues: AddPet,
+    validationSchema: AddPetSchema,
+    onSubmit: async ({ resetForm }) => {
+      await handleCreateAppoitment();
+      resetForm();
+    },
+  });
 
   const { loading: appointmentListLoader, data: appointmentList } = useGlobal(
     "/appointment/get-all-appointments",
@@ -245,7 +291,7 @@ const Home = () => {
               currentlyServing={appointmentList}
             />
           </div>
-          <EstimatedTime />
+          <EstimatedTime update={update} />
         </div>
         <div className="flex justify-center lg:ms-auto">
           <AdScreen />
@@ -343,6 +389,28 @@ const Home = () => {
         setVirtualListModal={setVirtualListModal}
         setExistingPet={setExistingPet}
         onClose={() => setExistingPet(false)}
+        setAddPetModal={setAddPetModal}
+      />
+      <AddNewPet
+        onClose={() => setAddPetModal(false)}
+        isOpen={addPetModal}
+        setAddPetModal={setAddPetModal}
+        setAddPetSuccess={setAddPetSuccess}
+        setUpdate={setUpdate}
+        handleCreateAppoitment={handleCreateAppoitment}
+        errors={peterror}
+        handleSubmit={handlePetSubmit}
+        handleChange={handlePetChange}
+        handleBlur={handlePetBlur}
+        values={petNewValues}
+        touched={petTouched}
+        loading={creatAppoitmentLoading}
+      />
+      <AddPetSuccess
+        onClose={() => setAddPetSuccess(false)}
+        isOpen={addPetSuccess}
+        text={"Pet Profile Added"}
+        para={"New Pet Profile has been added successfully"}
       />
     </div>
   );

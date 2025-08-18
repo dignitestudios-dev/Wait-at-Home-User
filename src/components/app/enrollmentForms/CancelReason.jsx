@@ -44,7 +44,12 @@ const CancelReason = ({
             </p>
           )}
           <div className="flex flex-col justify-center items-center space-y-3 mt-10">
-            <div className="text-[18px] font-[600] text-[#00000080]">Skip</div>
+            <div
+              onClick={onClose}
+              className="text-[18px] cursor-pointer font-[600] text-[#00000080]"
+            >
+              Skip
+            </div>
             <button
               type="submit"
               className="w-full bg-[#00AAAD] hover:bg-[#00908b] text-white text-[14px] font-[600] py-3 rounded-[12px] transition duration-200"
