@@ -153,7 +153,10 @@ const ExistingPet = ({
 
           <div className="mt-10 space-y-6">
             <h2
-              onClick={() => setAddPetModal(true)}
+              onClick={() => {
+                setExistingPet(false);
+                setAddPetModal(true);
+              }}
               className="text-[#00000080] text-[18px] cursor-pointer font-[600] text-center "
             >
               Add new profile
