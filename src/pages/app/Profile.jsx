@@ -29,14 +29,15 @@ const Profile = () => {
   const [deleteLoading, setDeleteLoading] = useState(false);
   const { loading, data } = useGlobal("/user/get-user-profile", update);
   const handleDeletePet = async (petId) => {
+    console.log(petId, "petId==>");
     setDeleteLoading(true);
     try {
       const response = await axios.delete(`/user/delete-pet/${petId}`);
       if (response.status === 200) {
         SuccessToast(response?.data?.message);
         setUpdate((prev) => !prev);
-        setDeletePet(false)
-        setDeletePetSuccess(true)
+        setDeletePet(false);
+        setDeletePetSuccess(true);
       }
     } catch (error) {
       ErrorToast(error?.response?.data?.message);
@@ -115,8 +116,9 @@ const Profile = () => {
         onClose={() => setDeletePet(false)}
         isOpen={deletePet}
         handleCLick={() => {
-          if (selectedPet?._id) {
-            handleDeletePet(selectedPet._id);
+          console.log(selectedPet,"selectedPet")
+          if (selectedPet?.id) {
+            handleDeletePet(selectedPet.id);
           }
         }}
         deleteLoading={deleteLoading}

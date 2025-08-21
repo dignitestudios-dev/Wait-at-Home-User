@@ -7,10 +7,11 @@ import { AppContext } from "../../context/AppContext";
 
 const Navbar = () => {
   const navigate = useNavigate();
-  const { isOpen, userData } = useContext(AppContext);
+  const { isOpen, userData, petData } = useContext(AppContext);
   const [drawerOpen, setDrawerOpen] = useState(false);
   const location = useLocation();
   const path = location.pathname;
+  console.log(petData,"petData==>")
 
   return (
     <div
@@ -52,30 +53,50 @@ const Navbar = () => {
                 </div>
               </div>
             </div>
-
-            {userData && (
-              <div
-                onClick={() => navigate("/app/profile")}
-                className="flex justify-center items-center gap-2 rounded-[20px] bg-[#00AAAD] h-[42px] w-[42px] cursor-pointer"
-              >
-                <span className="text-[18px] font-[600] text-white">
-                  {userData?.name?.charAt(0)}
-                </span>
-              </div>
-            )}
-            {userData?.isUserRegistered ? (
-              <></>
-            ) : (
-              <>
+            {userData ? (
+              userData?.isUserRegistered ? (
                 <div
-                  onClick={() => navigate("/auth/login")}
-                  className="rounded-[20px] w-[106px] border-[1px] border-transparent bg-gradient-to-r from-[#10C0B6] to-[#684D7B] bg-origin-border"
+                  onClick={() => navigate("/app/profile")}
+                  className="h-[66px] rounded-[20px] border p-3 border-[#10C0B6] flex gap-2 items-center"
                 >
-                  <div className="rounded-[20px] bg-[#c3d8df] px-6 py-2 h-[66px] flex items-center justify-center text-black text-[18px] font-[500] cursor-pointer">
-                    Login
-                  </div>
+                  <img
+                    src={userData?.profilePicture}
+                    className="w-[42px] h-[42px] rounded-full object-cover"
+                    alt="Profile"
+                  />
+                  <h2 className="text-[18px] font-[500]">
+                  {userData?.name}
+                  </h2>
                 </div>
-              </>
+              ) : (
+                <>
+                  <div
+                    onClick={() => navigate("/app/profile")}
+                    className="flex justify-center items-center gap-2 rounded-[20px] bg-[#00AAAD] h-[42px] w-[42px] cursor-pointer"
+                  >
+                    <span className="text-[18px] font-[600] text-white">
+                      {userData?.name?.charAt(0)}
+                    </span>
+                  </div>
+                  <div
+                    onClick={() => navigate("/auth/login")}
+                    className="rounded-[20px] w-[106px] border-[1px] border-transparent bg-gradient-to-r from-[#10C0B6] to-[#684D7B] bg-origin-border"
+                  >
+                    <div className="rounded-[20px] bg-[#c3d8df] px-6 py-2 h-[66px] flex items-center justify-center text-black text-[18px] font-[500] cursor-pointer">
+                      Login
+                    </div>
+                  </div>
+                </>
+              )
+            ) : (
+              <div
+                onClick={() => navigate("/auth/login")}
+                className="rounded-[20px] w-[106px] border-[1px] border-transparent bg-gradient-to-r from-[#10C0B6] to-[#684D7B] bg-origin-border"
+              >
+                <div className="rounded-[20px] bg-[#c3d8df] px-6 py-2 h-[66px] flex items-center justify-center text-black text-[18px] font-[500] cursor-pointer">
+                  Login
+                </div>
+              </div>
             )}
           </div>
 

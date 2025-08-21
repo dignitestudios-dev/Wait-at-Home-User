@@ -34,9 +34,9 @@ const EditProfileModal = ({
   } = useFormik({
     enableReinitialize: true,
     initialValues: {
-      name: userProfileData?.name || "",
-      email: userProfileData?.email || "",
-      phone: userProfileData?.phone || "",
+      name: userProfileData?.user?.name || "",
+      email: userProfileData?.user?.email || "",
+      phone: userProfileData?.user?.phone || "",
     },
     validationSchema: EditProfileSchema,
     validateOnChange: true,
@@ -50,7 +50,7 @@ const EditProfileModal = ({
         formData.append("email", values.email);
         formData.append("phone", values.phone);
         if (values.profilePic) {
-          formData.append("profilePic", values.profilePic);
+          formData.append("profilePicture", values.profilePic);
         }
 
         const response = await axios.post(
@@ -59,7 +59,7 @@ const EditProfileModal = ({
         );
         if (response.status === 200) {
           SuccessToast(response?.data?.message);
-          Auth({ data: { user: response.data.data } });
+          Auth({ data: { user: response.data.data?.user } });
           setEditModal(false);
           setUpdate((prev) => !prev);
           setUpdatedEdit(true);
@@ -98,8 +98,10 @@ const EditProfileModal = ({
             <div className="flex gap-3 items-center my-4">
               <div className="w-[80px] h-[80px] rounded-full overflow-hidden bg-white shadow">
                 <img
-                  src={preview || UserPro}
-                  alt="Preview"
+                  src={
+                    preview || userProfileData?.user?.profilePicture || UserPro
+                  }
+                  alt="Profile"
                   className="w-full h-full object-cover"
                 />
               </div>

@@ -5,21 +5,22 @@ import { BiEditAlt } from "react-icons/bi";
 import { phoneFormater } from "../../../lib/helpers";
 
 const ProfileInfo = ({ setEditModal, userProfileData }) => {
+
   return (
     <div>
       <div className="flex flex-col lg:flex-row justify-between items-center">
         <div className="flex items-center gap-4 relative">
           <div className="relative w-20 h-20">
-            {userProfileData?.profilePicture ? (
+            {userProfileData?.user?.profilePicture ? (
               <img
-                src={Pro9}
+                src={userProfileData?.user?.profilePicture}
                 alt="avatar"
                 className="w-20 h-20 rounded-full object-cover"
               />
             ) : (
               <div className="flex justify-center items-center gap-2 rounded-full bg-[#00AAAD] h-20 w-20 cursor-pointer">
                 <span className="text-[18px] font-[600] text-white">
-                  {userProfileData?.name?.charAt(0)}
+                  {userProfileData?.user?.name?.charAt(0)}
                 </span>
               </div>
             )}
@@ -34,10 +35,10 @@ const ProfileInfo = ({ setEditModal, userProfileData }) => {
 
           <div className="text-center lg:text-left">
             <h2 className="text-[22px] font-[600] text-gray-800">
-              {userProfileData?.name}
+              {userProfileData?.user?.name}
             </h2>
             <p className="text-[#565656] font-[400] text-[14px]">
-              {userProfileData?.email}
+              {userProfileData?.user?.email}
             </p>
           </div>
         </div>
@@ -48,20 +49,20 @@ const ProfileInfo = ({ setEditModal, userProfileData }) => {
         <div className="border-r">
           <p className="text-[#565656] font-[500] text-[14px]">Full Name</p>
           <p className="font-[500] text-[#000000] text-[18px] ">
-            {userProfileData?.name}
+            {userProfileData?.user?.name}
           </p>
         </div>
         <div className="border-r">
           <p className="text-[#565656] font-[500] text-[14px]">Email Address</p>
           <p className="font-[500] text-[#000000] text-[18px] ">
-            {userProfileData?.email}
+            {userProfileData?.user?.email}
           </p>
         </div>
         <div>
           <p className="text-[#565656] font-[500] text-[14px]">Phone Number</p>
           <p className="font-[500] text-[#000000] text-[18px] ">
-            {userProfileData?.phone
-              ? `+1 ${phoneFormater(userProfileData?.phone)}`
+            {userProfileData?.user?.phone
+              ? `+1 ${phoneFormater(userProfileData?.user?.phone)}`
               : "Not Found"}
           </p>
         </div>

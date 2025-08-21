@@ -20,10 +20,10 @@ const EditPetForm = ({
     useFormik({
       enableReinitialize: true,
       initialValues: {
-        petName: petData?.petName || "",
-        petType: petData?.petType || "",
-        petBreed: petData?.petBreed || "",
-        petAge: petData?.petAge || "",
+        petName: petData?.name || "",
+        petType: petData?.type || "",
+        petBreed: petData?.breed || "",
+        petAge: petData?.age || "",
         petDiscription: petData?.symptoms || "",
       },
       validationSchema: AddPetSchema,

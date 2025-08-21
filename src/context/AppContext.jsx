@@ -38,9 +38,9 @@ export const AppContextProvider = ({ children }) => {
       Cookies.set("userData", JSON.stringify(data.data.user), { expires: 7 });
       setUserData(data?.data?.user);
     }
-    if (data.data.pet) {
-      Cookies.set("petData", JSON.stringify(data.data.pet), { expires: 7 });
-      setPetData(data.data.pet);
+    if (data.data.pets) {
+      Cookies.set("petData", JSON.stringify(data.data.pets), { expires: 7 });
+      setPetData(data.data.pets);
     }
     if (data.data.appointment) {
       Cookies.set("appointmentData", JSON.stringify(data.data.appointment), {

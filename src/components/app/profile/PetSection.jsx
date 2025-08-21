@@ -28,12 +28,12 @@ const PetSection = ({
             </div>
             <div className="flex-1">
               <p className="font-semibold text-gray-800 text-sm inline-block max-w-[110px] truncate align-middle">
-                {pet.petName}
+                {pet.name}
               </p>
               <p className="text-[14px] text-[#565656] font-[500] ">
-                {pet?.petType}
+                {pet?.type}
                 {"  "}
-                {pet?.petAge} Yrs
+                {pet?.age} Yrs
               </p>
             </div>
             <div className="flex gap-2 cursor-pointer">

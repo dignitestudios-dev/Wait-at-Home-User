@@ -100,9 +100,9 @@ const ExistingPet = ({
                   <div className="flex-1">
                     <div className="flex justify-between items-center">
                       <p className="font-semibold text-gray-800 text-sm inline-block max-w-[110px] truncate align-middle">
-                        {pet?.petName}
+                        {pet?.name}
                       </p>
-                      <div onClick={() => handlePetClick(idx, pet?._id)}>
+                      <div onClick={() => handlePetClick(idx, pet?.id)}>
                         <img
                           src={
                             activeIndex === idx ? RadioActive : RadioInactive
@@ -113,7 +113,7 @@ const ExistingPet = ({
                       </div>
                     </div>
                     <p className="text-[14px] text-[#565656] font-[500]">
-                      {pet?.petType} {pet?.petAge} Yrs
+                      {pet?.type} {pet?.age} Yrs
                     </p>
                   </div>
                 </div>
