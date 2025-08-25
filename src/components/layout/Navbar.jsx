@@ -11,7 +11,6 @@ const Navbar = () => {
   const [drawerOpen, setDrawerOpen] = useState(false);
   const location = useLocation();
   const path = location.pathname;
-  console.log(petData,"petData==>")
 
   return (
     <div
@@ -64,9 +63,7 @@ const Navbar = () => {
                     className="w-[42px] h-[42px] rounded-full object-cover"
                     alt="Profile"
                   />
-                  <h2 className="text-[18px] font-[500]">
-                  {userData?.name}
-                  </h2>
+                  <h2 className="text-[18px] font-[500]">{userData?.name}</h2>
                 </div>
               ) : (
                 <>

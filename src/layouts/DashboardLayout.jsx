@@ -3,14 +3,11 @@ import { useEffect, useState } from "react";
 import NoInternetModal from "../components/global/NoInternet";
 import { NoInternetImage } from "../assets/export";
 import Navbar from "../components/layout/Navbar";
-import Sidebar from "../components/layout/Sidebar";
-
 const DashboardLayout = () => {
   const [openNoInternet, setOpenNoInternet] = useState(false);
 
   useEffect(() => {
     if (!navigator.onLine) {
-      // Handle no internet connection
       setOpenNoInternet(true);
     }
   }, []);

@@ -15,7 +15,6 @@ function App() {
   return (
     <Routes>
       <Route path="/" element={<Navigate to={"/app/home"} />} />
-
       <Route path="app" element={<DashboardLayout />}>
         <Route index element={<Home />} />
         {PublicRoutes?.map((Link, i) => (
