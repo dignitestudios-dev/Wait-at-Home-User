@@ -16,15 +16,16 @@ const WaitingList = ({ appointmentList, appointmentListLoader }) => {
           <WaitingListSkeleton />
         ) : (
           <>
-            {appointmentList?.filter((item) => !item?.currentlyServing)
-              ?.length === 0 ? (
+            {appointmentList?.filter(
+              (item) => item?.appointmentStatus === "pending"
+            )?.length === 0 ? (
               <p className="text-center text-sm font-medium text-gray-500 my-8 relative z-20">
-                No appointments found
+                No pending bookings found
               </p>
             ) : (
               <ul className="relative z-20 max-h-[550px] overflow-y-auto pr-1 custom-scrollbar">
                 {appointmentList
-                  ?.filter((item) => !item?.currentlyServing)
+                  ?.filter((item) => item?.appointmentStatus === "pending")
                   ?.slice(0, 10)
                   ?.map((item, index) => (
                     <li key={index}>
@@ -32,7 +33,6 @@ const WaitingList = ({ appointmentList, appointmentListLoader }) => {
                         <span className="min-w-[20px] text-right text-[#3F3F3F] font-[600] text-[14px]">
                           {index + 1}
                         </span>
-
                         {item?.profilePicture ? (
                           <img
                             src={item?.profilePicture}
@@ -46,7 +46,6 @@ const WaitingList = ({ appointmentList, appointmentListLoader }) => {
                               ?.toUpperCase()}
                           </div>
                         )}
-
                         <span className="text-[#3F3F3F] font-[600] text-[14px]">
                           <span className="inline-block max-w-[110px] truncate align-middle">
                             {item?.pets?.map((pet) => pet?.petName).join(", ")}
@@ -62,8 +61,10 @@ const WaitingList = ({ appointmentList, appointmentListLoader }) => {
           </>
         )}
 
-        {appointmentList?.filter((item) => !item?.currentlyServing)?.length >=
-          10 && (
+        {appointmentList?.filter(
+          (item) =>
+            !item?.currentlyServing && item?.AppointmentStatus === "pending"
+        )?.length >= 10 && (
           <p
             className="text-center text-sm font-medium text-black mt-2 relative z-20 cursor-pointer"
             onClick={() => setShowModal(true)}

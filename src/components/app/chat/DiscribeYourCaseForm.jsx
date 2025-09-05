@@ -7,6 +7,7 @@ const DiscribeYourCaseForm = ({
   handleBlur,
   errors,
   touched,
+  loading,
   handleSubmit,
 }) => {
   return (
@@ -49,7 +50,7 @@ const DiscribeYourCaseForm = ({
             </p>
           )}
           <div className="w-[100px] ms-auto">
-            <GlobalButton type="submit" children={"Send"} />
+            <GlobalButton loading={loading} type="submit" children={"Send"} />
           </div>
         </div>
       </form>

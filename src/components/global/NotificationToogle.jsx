@@ -22,14 +22,14 @@ const NotificationToogle = ({
         <input
           type="checkbox"
           className="sr-only peer"
-          checked={checked}
+          checked={true}
           onChange={onChange}
           disabled={loader}
         />
         <div
           className={`w-11 h-6 bg-[#94b8c0]  rounded-full    
                           ${
-                            statusnoti
+                            true
                               ? "peer-checked:bg-gradient-to-l to-[#63CFAC] from-[#29ABE2]"
                               : "peer-checked:bg-[#7698a1]"
                           } 

@@ -112,8 +112,8 @@ const ExistingPet = ({
                         />
                       </div>
                     </div>
-                    <p className="text-[14px] text-[#565656] font-[500]">
-                      {pet?.type} {pet?.age} Yrs
+                    <p className="text-[14px] text-[#858585] font-[500]">
+                      {pet?.breed} {pet?.age} Yrs
                     </p>
                   </div>
                 </div>
@@ -134,9 +134,9 @@ const ExistingPet = ({
                           setErrors((prev) => ({ ...prev, reason: "" }));
                         }
                       }}
-                      className={`bg-white mt-4 w-full rounded-[20px] h-[113px] px-4 py-4 border ${
+                      className={`bg-white mt-4 w-full rounded-[20px] h-[113px] px-4 py-4 focus:outline-none ${
                         errors.reason
-                          ? "border-red-500 ring-1 ring-red-500"
+                          ? "border border-red-500 ring-1 ring-red-500"
                           : "focus:border-[#10C0B6] focus:ring-2 focus:ring-[#10C0B6]"
                       }`}
                     ></textarea>

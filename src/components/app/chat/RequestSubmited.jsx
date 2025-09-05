@@ -19,7 +19,7 @@ const RequestSubmited = ({ handleClick, chartStart }) => {
         </h2>
       </div>
       <div
-        onClick={handleClick}
+        // onClick={handleClick}
         className="bg-[#FFFFFF59] cursor-pointer text-[14px] font-[500] w-[178px] h-[48px] flex items-center justify-center  gap-2 mx-auto mt-4 rounded-[32px] "
       >
         {chartStart ? <LiaCheckDoubleSolid /> : <RxCounterClockwiseClock />}

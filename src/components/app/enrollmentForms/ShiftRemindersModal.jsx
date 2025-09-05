@@ -23,11 +23,14 @@ const ShiftRemindersModal = ({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-60">
-      <div className="bg-gradient-to-br  from-[#A0E6E1] to-[#C3B4D3] w-[471px] h-[472px] p-8 rounded-3xl shadow-lg relative text-gray-800">
-        <div className="flex flex-col items-center justify-center text-center space-y-5">
+      <div className="bg-gradient-to-br  from-[#A0E6E1] to-[#C3B4D3] w-[471px] h-[500px] p-8 rounded-3xl shadow-lg relative text-gray-800">
+        <div className="flex flex-col items-center justify-center text-center space-y-4">
           <h2 className="text-[24px] font-[600]">
-            How Would You Like to Receive Shift Reminders?
+            How Would You Like to Receive Shift Notifications?
           </h2>
+          <span className="text-gray-500 font-[500] ">
+            (Select all that apply)
+          </span>
 
           <div className="flex gap-4">
             <div
@@ -53,7 +56,7 @@ const ShiftRemindersModal = ({
 
           <p className="text-[16px] font-[400] text-[#565656] max-w-[350px]">
             Stay on top of your schedule! Choose your preferred way to receive
-            shift reminders—via email or phone number, so you never miss an
+            shift notifications—via email or phone number, so you never miss an
             update.
           </p>
         </div>

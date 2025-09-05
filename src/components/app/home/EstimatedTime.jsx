@@ -4,17 +4,9 @@ import { FaClock } from "react-icons/fa";
 import { useFetchById, useGlobal } from "../../../hooks/api/Get";
 import { AppContext } from "../../../context/AppContext";
 
-const EstimatedTime = ({ update }) => {
+const EstimatedTime = ({ update, data, loading }) => {
   const [time, setTime] = useState(0); // default 00:00
   const { appointmentData } = useContext(AppContext);
-
-  const { loading, data } = useGlobal(
-    appointmentData?.signUpRecord
-      ? `/appointment/get-estimated-wait-time?userId=${appointmentData?.signUpRecord}`
-      : null,
-    1,
-    update
-  );
 
   useEffect(() => {
     if (data && typeof data.estimatedWaitMinutes === "number") {

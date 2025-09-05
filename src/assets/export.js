@@ -36,10 +36,12 @@ import AdminImg from "./adminimg.png";
 import PurpleTick from "./purpleTick.png";
 import RadioActive from "./radioActive.png";
 import RadioInactive from "./radioInactive.png";
+import ClockHistory from "./clockhistory.png";
 
 export {
   Logo,
   RadioActive,
+  ClockHistory,
   RadioInactive,
   IconCat,
   Adthree,

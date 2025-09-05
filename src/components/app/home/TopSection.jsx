@@ -1,8 +1,10 @@
-import React from "react";
+import React, { useContext } from "react";
 import { IoAlertCircleOutline } from "react-icons/io5";
 import ChatAndNotiBtn from "../../global/ChatAndNotiBtn";
+import { AppContext } from "../../../context/AppContext";
 
 const TopSection = () => {
+  const { userData } = useContext(AppContext);
   return (
     <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4  p-4 rounded-xl">
       <div className="flex-1">
@@ -18,8 +20,7 @@ const TopSection = () => {
           </p>
         </div>
       </div>
-
-      <ChatAndNotiBtn />
+      {userData?.isUserRegistered && <ChatAndNotiBtn />}
     </div>
   );
 };

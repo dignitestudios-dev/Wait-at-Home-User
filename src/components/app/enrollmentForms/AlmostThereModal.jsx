@@ -2,6 +2,7 @@ import React from "react";
 import { Tick } from "../../../assets/export";
 import GlobalButton from "../../global/GlobalButton";
 import { IoIosArrowRoundBack } from "react-icons/io";
+import { phoneFormater } from "../../../lib/helpers";
 
 const AlmostThereModal = ({ isOpen, onClose, handleClick, email, phone }) => {
   if (!isOpen) return null;
@@ -9,9 +10,9 @@ const AlmostThereModal = ({ isOpen, onClose, handleClick, email, phone }) => {
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-60">
       <div className="bg-gradient-to-br from-[#A0E6E1] to-[#C3B4D3] w-[471px] p-6 rounded-3xl shadow-lg relative text-gray-800 flex flex-col">
-        <div className="bg-white w-[48px] h-[48px] flex justify-center items-center rounded-[14px] cursor-pointer mb-6">
+        {/* <div className="bg-white w-[48px] h-[48px] flex justify-center items-center rounded-[14px] cursor-pointer mb-6">
           <IoIosArrowRoundBack size={24} />
-        </div>
+        </div> */}
 
         <div className="flex flex-col items-center justify-center text-center space-y-2">
           <div className="bg-[#00AAAD80] flex justify-center items-center w-[107px] h-[107px] rounded-full">
@@ -27,13 +28,13 @@ const AlmostThereModal = ({ isOpen, onClose, handleClick, email, phone }) => {
           </p>
 
           <p className="text-[14px] font-[500]">
-            Note: The 6-digit OTP has been sent to your
+            Note: The 4-digit One-time password/code has been sent to your
           </p>
 
           <p className="text-[14px] font-[500] text-[#565656]">
             Email: <span className="text-black font-[500]">{email}</span>{" "}
             &nbsp;&nbsp;|&nbsp;&nbsp; Number:
-            <span className="text-black font-[500]"> {phone}</span>
+            <span className="text-black font-[500]">+1 {phoneFormater(phone)}</span>
           </p>
 
           <div className="w-full pt-4">

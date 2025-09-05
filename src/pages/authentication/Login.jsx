@@ -13,7 +13,7 @@ import { ErrorToast, SuccessToast } from "../../components/global/Toaster";
 const Login = () => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
-  const { Auth } = useContext(AppContext);
+  const { Auth, fcmToken } = useContext(AppContext);
   const { values, handleBlur, handleChange, handleSubmit, errors, touched } =
     useFormik({
       initialValues: loginValues,
@@ -24,6 +24,7 @@ const Login = () => {
         const data = {
           email: values?.email,
           password: values?.password,
+          fcmToken: fcmToken,
         };
         setLoading(true);
         try {

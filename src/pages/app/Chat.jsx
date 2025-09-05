@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import ChatAndNotiBtn from "../../components/global/ChatAndNotiBtn";
 import { AdminImg, Adthree } from "../../assets/export";
 import DiscribeYourCaseForm from "../../components/app/chat/DiscribeYourCaseForm";
@@ -7,10 +7,39 @@ import { ChatFormValues } from "../../init/app/ChatFormValues";
 import { useFormik } from "formik";
 import RequestSubmited from "../../components/app/chat/RequestSubmited";
 import ChatStarted from "../../components/app/chat/ChatStarted";
-
+import { ErrorToast, SuccessToast } from "../../components/global/Toaster";
+import axios from "../../axios";
+import Cookies from "js-cookie";
+import { AppContext } from "../../context/AppContext";
+import { checkExistingChat } from "../../firebase/messages";
+import { doc, onSnapshot } from "firebase/firestore";
+import { db } from "../../firebase/firebase";
 const Chat = () => {
+  const [messages, setMessages] = useState([]);
+  const [loading, setLoading] = useState(false);
   const [messageBox, setMessageBox] = useState(false);
+  const [roomId, setRoomId] = useState("");
   const [chartStart, setChatStarted] = useState(false);
+  const { userData } = useContext(AppContext);
+
+  useEffect(() => {
+    const fetchChat = async () => {
+      if (!userData?.signUpRecord) return;
+
+      const result = await checkExistingChat(userData.signUpRecord);
+
+      if (result.exists) {
+        setRoomId(result.roomId);
+        setMessageBox(true);
+        setChatStarted(true);
+      } else {
+        setMessageBox(false);
+        setChatStarted(false);
+      }
+    };
+
+    fetchChat();
+  }, [userData]);
 
   const { values, handleBlur, handleChange, handleSubmit, errors, touched } =
     useFormik({
@@ -19,18 +48,47 @@ const Chat = () => {
 
       onSubmit: async (values) => {
         const payload = {
-          title: values.title,
+          subject: values.title,
           description: values.description,
         };
-        setMessageBox(true);
-        console.log(payload, "Payload");
+        setLoading(true);
+        try {
+          const response = await axios.post("/user/create-chat-room", payload);
+          if (response?.status === 200) {
+            SuccessToast(response?.data?.message);
+            setMessageBox(true);
+            setRoomId(response?.data?.data?.chatRoomId);
+            Cookies.set("chatRoomId", response?.data?.data?.chatRoomId);
+          }
+        } catch (error) {
+          ErrorToast(error?.response?.data?.message);
+        } finally {
+          setLoading(false);
+        }
       },
     });
+  useEffect(() => {
+    if (!roomId) return;
 
+    // realtime listener for this user's chat room
+    const unsub = onSnapshot(doc(db, "Chat", roomId), (docSnap) => {
+      if (docSnap.exists()) {
+        const chatData = docSnap.data();
+
+        // ✅ agar chat initialized ho gaya to chartStart true
+        if (chatData.chatStatus === "initialized") {
+          setChatStarted(true);
+        }
+      }
+    });
+
+    return () => unsub();
+  }, [roomId]);
   return (
     <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 mt-3 px-2 sm:px-6">
-      <div className="col-span-1 lg:col-span-8">
-        <div className="w-full bg-white rounded-[20px] overflow-hidden shadow-md flex flex-col min-h-[80vh]">
+      <div className="col-span-1 lg:col-span-8  relative ">
+        <div className="overflow-y-auto custom-scrollbar max-h-[80vh]">
+        <div className="w-full bg-white  rounded-[20px]   shadow-md flex flex-col ">
           <div className="bg-white px-4 sm:px-6 py-4 flex items-center gap-3 border-b">
             <div className="border border-[#5E2E86] rounded-full p-1">
               <div className="w-10 h-10 rounded-full bg-[#5E2E86] border flex items-center justify-center">
@@ -59,7 +117,7 @@ const Chat = () => {
                   />
                 </div>
               </div>
-              <div className="bg-white px-4 py-2 rounded-xl text-sm max-w-md shadow text-gray-700">
+              <div className="bg-[#FFFFFF80] px-4 py-2 rounded-xl text-sm max-w-md  text-[#000000]">
                 Hello! 😊 Please describe your issue so we can assist you
                 better. Kindly fill out the details below:
               </div>
@@ -73,6 +131,7 @@ const Chat = () => {
               </div>
             ) : (
               <DiscribeYourCaseForm
+                loading={loading}
                 values={values}
                 handleChange={handleChange}
                 touched={touched}
@@ -81,8 +140,16 @@ const Chat = () => {
                 handleSubmit={handleSubmit}
               />
             )}
-          {chartStart && <ChatStarted />}
+            {chartStart && (
+              <ChatStarted
+                messages={messages}
+                setMessages={setMessages}
+                roomId={roomId}
+                userId={userData?.signUpRecord}
+              />
+            )}
           </div>
+        </div>
         </div>
       </div>
       <div className="col-span-1 lg:col-span-4">

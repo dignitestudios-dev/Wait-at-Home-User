@@ -43,6 +43,7 @@ const Home = () => {
     userData,
     token,
     setPetData,
+    fcmToken,
   } = useContext(AppContext);
   const [step, setStep] = useState(1);
   const [formModal, setFormModal] = useState(false);
@@ -69,7 +70,9 @@ const Home = () => {
   const [creatAppoitmentLoading, setCreatAppoitmentLoading] = useState(false);
   const validateSchema =
     step == 1 ? EnrollmentPersonalSchema : EnrollmentPetSchema;
-
+  const latestAppointment = Array.isArray(appointmentData)
+    ? appointmentData[appointmentData.length - 1]
+    : appointmentData;
   const {
     values,
     handleBlur,
@@ -91,7 +94,7 @@ const Home = () => {
           isUserRegistered: checked,
           role: "user",
           idToken: null,
-          fcmToken: "some_fcm_token",
+          fcmToken: values.password ? fcmToken : null,
         },
         pet: {
           petName: values.petName,
@@ -140,7 +143,7 @@ const Home = () => {
       return;
     }
     const payload = {
-      appointmentId: appointmentData?._id,
+      appointmentId: latestAppointment,
       cancelReason: cancelReasonDiscription,
     };
     setCancelLoading(true);
@@ -155,7 +158,9 @@ const Home = () => {
         setCancelReason(false);
         setUpdate((prev) => !prev);
         setCancelReasonDiscription("");
-
+        setTimeout(() => {
+          setCancelSuccessFull(false);
+        }, 2000);
         if (userData?.isUserRegistered) {
           Cookies.remove("appointmentData");
           Cookies.remove("petData");
@@ -164,7 +169,6 @@ const Home = () => {
           clearAllCookies();
         }
       }
-      3;
     } catch (error) {
       ErrorToast(error.response.data.message);
     } finally {
@@ -247,17 +251,30 @@ const Home = () => {
     update
   );
 
+  const userId = userData?.signUpRecord
+    ? userData.signUpRecord
+    : appointmentData?.signUpRecord
+    ? appointmentData.signUpRecord
+    : "123";
+
   const { loading: appointmentNumberLoader, data: appointmentNumber } =
     useFetchById(
-      `/appointment/get-user-appointment-number?userId=${
-        appointmentData?.signUpRecord ? appointmentData?.signUpRecord : "123"
-      }`,
+      `/appointment/get-user-appointment-number?userId=${userId}`,
       update
     );
+
   const { loading: profileLoading, data: profileData } = useGlobal(
     token ? "/user/get-user-profile" : null,
     1,
     true
+  );
+  const { loading: estimateLoader, data: estimateData } = useGlobal(
+    latestAppointment
+      ? `/appointment/get-estimated-wait-time?userId=${userId}`
+      : null,
+
+    1,
+    update
   );
 
   return (
@@ -291,7 +308,11 @@ const Home = () => {
               currentlyServing={appointmentList}
             />
           </div>
-          <EstimatedTime update={update} />
+          <EstimatedTime
+            data={estimateData}
+            loading={estimateLoader}
+            update={update}
+          />
         </div>
         <div className="flex justify-center lg:ms-auto">
           <AdScreen />

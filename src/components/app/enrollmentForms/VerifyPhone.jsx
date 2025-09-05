@@ -6,6 +6,7 @@ import { AppContext } from "../../../context/AppContext";
 import { ErrorToast, SuccessToast } from "../../global/Toaster";
 import CountDown from "../../global/CountDown";
 import axios from "../../../axios";
+import { phoneFormater } from "../../../lib/helpers";
 const VerifyPhone = ({
   isOpen,
   onClose,
@@ -111,26 +112,26 @@ const VerifyPhone = ({
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-60">
       <div className="bg-gradient-to-br from-[#A0E6E1] to-[#C3B4D3] w-[471px] p-6 rounded-3xl shadow-lg relative text-gray-800 flex flex-col">
-        <div
+        {/* <div
           className="bg-white w-[48px] h-[48px] flex justify-center items-center rounded-[14px] cursor-pointer mb-6"
           onClick={onClose}
         >
           <IoIosArrowRoundBack size={24} />
-        </div>
+        </div> */}
 
-        <div className="flex flex-col items-center justify-center text-center space-y-4">
+        <div className="flex flex-col items-center justify-center text-center ">
           <div className="bg-[#00AAAD80] flex justify-center items-center w-[107px] h-[107px] rounded-full">
             <img src={Phone} className="h-[62px] w-[62px]" alt="Mail Icon" />
           </div>
 
-          <h2 className="text-[24px] font-[600] capitalize">
-            Verify OTP on number
+          <h2 className="text-[19px] font-[600] capitalize mt-3">
+            Verify One-time password/code on number
           </h2>
-          <p className="text-[16px] font-[400] text-[#565656]">
-            OTP code sent to your {phone}
+          <p className="text-[13px] font-[400] text-[#565656] mt-2">
+            One-time password/code code sent to your +1 {phoneFormater(phone)}
           </p>
           <form onSubmit={handleSubmit}>
-            <div className="flex gap-10 mb-2 justify-center mt-2">
+            <div className="flex gap-10 mb-2 justify-center mt-4">
               {otp.map((digit, idx) => (
                 <input
                   key={idx}
@@ -144,28 +145,28 @@ const VerifyPhone = ({
                 />
               ))}
             </div>
-
-            <p className="text-sm text-[#565656]">
-              Didn’t receive code?{" "}
-              {isActive ? (
-                <CountDown
-                  isActive={isActive}
-                  setIsActive={setIsActive}
-                  seconds={seconds}
-                  setSeconds={setSeconds}
-                />
-              ) : (
-                <span
-                  type="button"
-                  disabled={resendLoading}
-                  onClick={handleResendOtp}
-                  className="text-[#181818] font-medium pl-1 cursor-pointer"
-                >
-                  {resendLoading ? "Resending..." : "Resend"}
-                </span>
-              )}
-            </p>
-
+            <div className="flex items-center justify-center gap-2  mt-4 mb-3 relative z-10">
+              <p className="text-sm flex gap-2 text-[#565656]">
+                Didn’t receive code?{" "}
+                {isActive ? (
+                  <CountDown
+                    isActive={isActive}
+                    setIsActive={setIsActive}
+                    seconds={seconds}
+                    setSeconds={setSeconds}
+                  />
+                ) : (
+                  <span
+                    type="button"
+                    disabled={resendLoading}
+                    onClick={handleResendOtp}
+                    className="text-[#181818] font-medium pl-1 cursor-pointer"
+                  >
+                    {resendLoading ? "Resending..." : "Resend"}
+                  </span>
+                )}
+              </p>
+            </div>
             <div className="w-full pt-2">
               <GlobalButton
                 loading={loading}

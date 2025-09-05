@@ -13,7 +13,6 @@ const PersonalInfo = ({
   touched,
   handleSubmit,
   handlePhoneChange,
-  
 }) => {
   return (
     <div className="mt-6">
@@ -53,7 +52,6 @@ const PersonalInfo = ({
             error={errors.phone}
             touched={touched.phone}
           />
-         
         </div>
         <div className=" p-3 absolute bottom-0 w-full right-0 left-0 ">
           <GlobalButton type={"submit"} children={"Next"} />
@@ -69,9 +67,7 @@ const PersonalInfo = ({
             Heads Up!
           </strong>
           <p className="text-[13px]  text-[#565656] ">
-            Before submitting, double-check your email and phone number, we'll
-            be sending a verification to both. Make sure they’re correct so you
-            don’t miss it!
+           Double-check email and phone. A code will be sent to both.
           </p>
         </span>
       </div>

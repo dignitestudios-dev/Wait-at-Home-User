@@ -37,7 +37,12 @@ const SettingMainContent = () => {
 
         <div className="border-b-2 pb-3">
           <div>
-            <h2 className="text-[16px] font-[600] capitalize">Reminders</h2>
+            <h2 className="text-[16px] font-[600] ">
+              Notifications{" "}
+              <span className="text-gray-500 font-[500] ">
+                (Select all that apply)
+              </span>{" "}
+            </h2>
             <p className="text-[13px] text-[#4E4E4E]">
               Lorem ipsum dolor sit amet consectetur. Ipsum aliquam est nam urna
               odio lectus a.
@@ -52,7 +57,7 @@ const SettingMainContent = () => {
           onClick={() => navigate("/app/change-password")}
         >
           <div>
-            <h2 className="text-[16px] font-[600] capitalize">
+            <h2 className="text-[16px] cursor-pointer font-[600] capitalize">
               Change password
             </h2>
             <p className="text-[13px] text-[#4E4E4E]">
@@ -68,7 +73,7 @@ const SettingMainContent = () => {
           className="flex justify-between border-b-2 pb-3"
         >
           <div>
-            <h2 className="text-[16px] font-[600] capitalize">
+            <h2 className="text-[16px] cursor-pointer font-[600] capitalize">
               Delete Account
             </h2>
             <p className="text-[13px] text-[#4E4E4E]">

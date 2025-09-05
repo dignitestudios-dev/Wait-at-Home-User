@@ -6,16 +6,16 @@ import { getMessaging } from "firebase/messaging";
 
 const firebaseConfig = {
   apiKey: import.meta.env.VITE_APP_FIREBASE_KEY,
-  // Update this api key with your own firebase api key
-  // authDomain: "rentibles-app.firebaseapp.com",
-  // projectId: "rentibles-app",
-  // storageBucket: "rentibles-app.firebasestorage.app",
-  // messagingSenderId: "366992554576",
-  // appId: "1:366992554576:web:8c8781df54b276fc1eef55",
-  // measurementId: "G-V0F642L156",
+  authDomain: "workathome-39c21.firebaseapp.com",
+  projectId: "workathome-39c21",
+  storageBucket: "workathome-39c21.firebasestorage.app",
+  messagingSenderId: "172347672770",
+  appId: "1:172347672770:web:c66cf535dd1e41424f135b",
+  measurementId: "G-L78ZKFMVPD",
 };
 
 const app = initializeApp(firebaseConfig);
+
 export const auth = getAuth(app);
 export const googleProvider = new GoogleAuthProvider();
 export const appleProvider = new OAuthProvider("apple.com");
@@ -27,4 +27,4 @@ const messaging = getMessaging(app);
 
 export { messaging };
 
-export default app; // Export the app if needed
+export default app;

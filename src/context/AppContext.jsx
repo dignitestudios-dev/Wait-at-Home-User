@@ -3,11 +3,19 @@ import Cookies from "js-cookie";
 import { ErrorToast } from "../components/global/Toaster";
 import axios from "../axios";
 import { useNavigate } from "react-router";
+import { onMessageListener } from "../firebase/messages";
+import { getFCMToken } from "../firebase/getFcmToken";
+
 export const AppContext = createContext();
 
 export const AppContextProvider = ({ children }) => {
   const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
+  const [notificationUpdate, setNotificationUpdate] = useState(false);
+  const [notification, setNotification] = useState({ title: "", body: "" });
+  const [show, setShow] = useState(false);
+  const [fcmToken, setFcmToken] = useState("");
+
   const [token, setToken] = useState(() => {
     return Cookies.get("token") || null;
   });
@@ -91,8 +99,36 @@ export const AppContextProvider = ({ children }) => {
       ErrorToast(error.response.data.message);
     }
   };
+
+  onMessageListener()
+    .then((payload) => {
+      console.log("🚀 ~ .then ~ payload:", payload);
+      setShow(true);
+      setNotification({
+        title: payload.notification.title,
+        body: payload.notification.body,
+      });
+      setNotificationUpdate((prev) => !prev);
+      setTimeout(() => {
+        setShow(false);
+        setNotification({ title: "", body: "" });
+      }, 3000);
+    })
+    .catch((err) => console.log("failed: ", err));
+
+  const getFcm = async () => {
+    try {
+      const fcmTokenResponse = await getFCMToken();
+      setFcmToken(fcmTokenResponse);
+    } catch (err) {
+      console.log("🚀 ~ getFcm ~ err:", err);
+      ErrorToast(err);
+    }
+  };
+
   useEffect(() => {
     getAllAppoitment();
+    getFcm();
   }, []);
   const handleLogOut = () => {
     clearAllCookies();
@@ -119,6 +155,13 @@ export const AppContextProvider = ({ children }) => {
         setIsPhoneVerified,
         setIsVerifiedEmail,
         setPetData,
+        show,
+        setShow,
+        notification,
+        setNotification,
+        notificationUpdate,
+        setNotificationUpdate,
+        fcmToken,
       }}
     >
       {children}

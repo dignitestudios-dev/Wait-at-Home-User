@@ -39,7 +39,7 @@ export const EnrollmentPersonalSchema = Yup.object({
 
   phone: Yup.string()
     .required("Please enter your phone number")
-    .matches(/^[0-9]{10,15}$/, "Phone number must be 10–15 digits"),
+    .matches(/^[0-9]{10,15}$/, "Phone number must be 10 digits"),
 });
 
 

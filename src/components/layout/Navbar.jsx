@@ -4,6 +4,8 @@ import { useContext, useState } from "react";
 import { HiOutlineMenuAlt3, HiX } from "react-icons/hi";
 import { useLocation, useNavigate } from "react-router";
 import { AppContext } from "../../context/AppContext";
+import { IoArrowBack } from "react-icons/io5";
+import { IoMdArrowBack } from "react-icons/io";
 
 const Navbar = () => {
   const navigate = useNavigate();
@@ -11,7 +13,11 @@ const Navbar = () => {
   const [drawerOpen, setDrawerOpen] = useState(false);
   const location = useLocation();
   const path = location.pathname;
-
+  const titles = {
+    "/app/chat": "Chat",
+    "/app/profile": "Profile",
+    "/app/notifications": "Notifications",
+  };
   return (
     <div
       className={`${
@@ -33,11 +39,23 @@ const Navbar = () => {
               alt="logo"
               className="h-[50px] w-auto block md:hidden"
             />
-            <img
-              src={Logo}
-              alt="logo"
-              className="h-[50px] w-auto hidden md:block"
-            />
+            {titles[path] ? (
+              <div
+                className="flex items-center gap-2"
+                onClick={() => navigate(-1)}
+              >
+                <IoMdArrowBack size={40} color="#5E2E86" />
+                <h2 className="text-[42px] font-[600] text-[#5E2E86]">
+                  {titles[path]}
+                </h2>
+              </div>
+            ) : (
+              <img
+                src={Logo}
+                alt="logo"
+                className="h-[50px] w-auto hidden md:block"
+              />
+            )}
           </div>
 
           <div className="hidden min-[769px]:flex items-center gap-4 flex-wrap">
@@ -58,11 +76,20 @@ const Navbar = () => {
                   onClick={() => navigate("/app/profile")}
                   className="h-[66px] rounded-[20px] border p-3 border-[#10C0B6] flex gap-2 items-center"
                 >
-                  <img
-                    src={userData?.profilePicture}
-                    className="w-[42px] h-[42px] rounded-full object-cover"
-                    alt="Profile"
-                  />
+                  {userData?.profilePicture ? (
+                    <img
+                      src={userData?.profilePicture}
+                      className="w-[42px] h-[42px] rounded-full object-cover"
+                      alt="Profile"
+                    />
+                  ) : (
+                    <div className="flex items-center justify-center gap-2 rounded-[20px] bg-[#00AAAD] h-[42px] w-[42px] cursor-pointer">
+                      <span className="text-[18px]  font-[600] text-white ">
+                        {userData?.name?.charAt(0)}
+                      </span>
+                    </div>
+                  )}
+
                   <h2 className="text-[18px] font-[500]">{userData?.name}</h2>
                 </div>
               ) : (
