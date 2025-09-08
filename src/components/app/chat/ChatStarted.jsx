@@ -24,7 +24,7 @@ const ChatStarted = ({ roomId, userId, setMessages, messages }) => {
   };
 
   return (
-    <div className="flex flex-col h-full ">
+    <div className="flex flex-col h-[60vh]">
       <div className="flex-1 space-y-4  p x-2 pb-10">
         {messages.map((msg) => {
           const isCurrentUser = msg.senderId === userId;
@@ -71,7 +71,7 @@ const ChatStarted = ({ roomId, userId, setMessages, messages }) => {
       </div>
 
       {/* Input */}
-      <div className="bg-white absolute bottom-0 right-0 left-0 rounded-br-[16px] rounded-bl-[16px] mt-4 h-[90px] border-t px-4 py-3 flex items-center gap-2">
+     <div className="sticky -bottom-2 rounded-[16px] h-[90px] bg-white border-t px-4 py-3 flex items-center gap-2 z-10">
         <input
           type="text"
           placeholder="Type Message"
@@ -79,10 +79,7 @@ const ChatStarted = ({ roomId, userId, setMessages, messages }) => {
           onChange={(e) => setInput(e.target.value)}
           className="flex-1 px-4 py-2 rounded-lg border border-gray-300 text-sm focus:outline-none"
         />
-        <button
-          onClick={handleSend}
-          className="bg-[#00b1b1] p-2 rounded-full text-white"
-        >
+        <button onClick={handleSend} className="bg-[#00b1b1] p-2 rounded-full text-white">
           <IoMdSend />
         </button>
       </div>

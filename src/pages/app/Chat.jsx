@@ -87,7 +87,7 @@ const Chat = () => {
   return (
     <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 mt-3 px-2 sm:px-6">
       <div className="col-span-1 lg:col-span-8  relative ">
-        <div className="overflow-y-auto custom-scrollbar max-h-[80vh]">
+        <div className="overflow-y-auto custom-scrollbar ">
         <div className="w-full bg-white  rounded-[20px]   shadow-md flex flex-col ">
           <div className="bg-white px-4 sm:px-6 py-4 flex items-center gap-3 border-b">
             <div className="border border-[#5E2E86] rounded-full p-1">
@@ -100,7 +100,7 @@ const Chat = () => {
             </h2>
           </div>
 
-          <div className="flex-1 bg-gradient-to-br from-[#b2d9de] to-[#d3e6e8] p-3 sm:p-4 space-y-4 overflow-y-auto">
+          <div className="flex-1 rounded-br-[20px] rounded-bl-[20px] bg-gradient-to-br from-[#b2d9de] to-[#d3e6e8] p-3 sm:p-4 space-y-4 overflow-y-auto roun">
             <div className="flex justify-end">
               <div className="bg-[#00b1b1] text-white px-4 py-2 rounded-xl text-sm max-w-xs">
                 Hi! I need some assistance
