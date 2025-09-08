@@ -18,34 +18,42 @@ const AddPetForm = ({
   setUpdate,
 }) => {
   const [loading, setLoading] = useState(false);
-  const { values, handleBlur, handleChange, handleSubmit, errors, touched } =
-    useFormik({
-      initialValues: AddPet,
-      validationSchema: AddPetSchema,
-      onSubmit: async (values) => {
-        setLoading(true);
-        try {
-          const payload = {
-            petName: values.petName,
-            petBreed: values.petBreed,
-            petType: values.petType,
-            petAge: values.petAge,
-            symptoms: values.petDiscription,
-          };
-          const response = await axios.post("/user/add-pet", payload);
-          if (response.status === 200) {
-            SuccessToast(response?.data?.message);
-            setUpdate((prev) => !prev);
-            setAddPetModal(false);
-            setAddPetSuccess(true);
-          }
-        } catch (error) {
-          ErrorToast(error.response.data.message);
-        } finally {
-          setLoading(false);
+  const {
+    values,
+    handleBlur,
+    handleChange,
+    handleSubmit,
+    errors,
+    touched,
+    resetForm,
+  } = useFormik({
+    initialValues: AddPet,
+    validationSchema: AddPetSchema,
+    onSubmit: async (values) => {
+      setLoading(true);
+      try {
+        const payload = {
+          petName: values.petName,
+          petBreed: values.petBreed,
+          petType: values.petType,
+          petAge: values.petAge,
+          symptoms: values.petDiscription,
+        };
+        const response = await axios.post("/user/add-pet", payload);
+        if (response.status === 200) {
+          SuccessToast(response?.data?.message);
+          setUpdate((prev) => !prev);
+          setAddPetModal(false);
+          setAddPetSuccess(true);
+          resetForm();
         }
-      },
-    });
+      } catch (error) {
+        ErrorToast(error.response.data.message);
+      } finally {
+        setLoading(false);
+      }
+    },
+  });
 
   if (!isOpen) return null;
 

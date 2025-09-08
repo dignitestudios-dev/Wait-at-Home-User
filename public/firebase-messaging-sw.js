@@ -57,7 +57,6 @@ let notification;
 
 // Handle background messages
 messaging.onBackgroundMessage((payload) => {
-  console.log("Received background message ", payload);
   const data = JSON.parse(payload?.data?.data);
   notification = data;
 

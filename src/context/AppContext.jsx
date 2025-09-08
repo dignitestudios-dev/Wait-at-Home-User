@@ -5,6 +5,7 @@ import axios from "../axios";
 import { useNavigate } from "react-router";
 import { onMessageListener } from "../firebase/messages";
 import { getFCMToken } from "../firebase/getFcmToken";
+import { useGlobal } from "../hooks/api/Get";
 
 export const AppContext = createContext();
 
@@ -15,7 +16,8 @@ export const AppContextProvider = ({ children }) => {
   const [notification, setNotification] = useState({ title: "", body: "" });
   const [show, setShow] = useState(false);
   const [fcmToken, setFcmToken] = useState("");
-
+  const [estimateData, setEstimateData] = useState(null);
+  const [estimateLoader, setEstimateLoader] = useState(false);
   const [token, setToken] = useState(() => {
     return Cookies.get("token") || null;
   });
@@ -100,21 +102,57 @@ export const AppContextProvider = ({ children }) => {
     }
   };
 
-  onMessageListener()
-    .then((payload) => {
-      console.log("🚀 ~ .then ~ payload:", payload);
-      setShow(true);
-      setNotification({
-        title: payload.notification.title,
-        body: payload.notification.body,
-      });
-      setNotificationUpdate((prev) => !prev);
-      setTimeout(() => {
-        setShow(false);
-        setNotification({ title: "", body: "" });
-      }, 3000);
-    })
-    .catch((err) => console.log("failed: ", err));
+  const getEstimateData = async () => {
+    if (!userData?.signUpRecord) return;
+    setEstimateLoader(true);
+
+    try {
+      const res = await axios.get(
+        `/appointment/get-estimated-wait-time?userId=${userData?.signUpRecord}`
+      );
+      if (res?.status === 200) {
+        setEstimateData(res?.data?.data);
+      }
+    } catch (err) {
+      console.error("Estimate fetch error:", err);
+    } finally {
+      setEstimateLoader(false);
+    }
+  };
+  useEffect(() => {
+    if (userData?.signUpRecord) {
+      getEstimateData(userData.signUpRecord);
+    }
+  }, [userData?.signUpRecord, notificationUpdate]);
+
+  useEffect(() => {
+    if (!userData?.signUpRecord) return;
+
+    const unsubscribe = onMessageListener()
+      .then(async (payload) => {
+        console.log("🚀 ~ Notification payload:", payload);
+
+        setShow(true);
+        setNotification({
+          title: payload?.notification?.title || "No title",
+          body: payload?.notification?.body || "No body",
+        });
+
+        // ✅ abhi userId hamesha milega
+        await getEstimateData(userData.signUpRecord);
+
+        setTimeout(() => {
+          setShow(false);
+          setNotification({ title: "", body: "" });
+        }, 3000);
+      })
+      .catch((err) => console.log("failed: ", err));
+
+    return () => {
+      // cleanup agar listener cancel karna ho
+      if (typeof unsubscribe === "function") unsubscribe();
+    };
+  }, [userData?.signUpRecord]);
 
   const getFcm = async () => {
     try {
@@ -162,6 +200,8 @@ export const AppContextProvider = ({ children }) => {
         notificationUpdate,
         setNotificationUpdate,
         fcmToken,
+        estimateData,
+        estimateLoader,
       }}
     >
       {children}

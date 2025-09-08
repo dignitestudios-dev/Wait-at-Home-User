@@ -25,7 +25,7 @@ const ChatStarted = ({ roomId, userId, setMessages, messages }) => {
 
   return (
     <div className="flex flex-col h-full ">
-      <div className="flex-1 space-y-4  px-2 pb-10">
+      <div className="flex-1 space-y-4  p x-2 pb-10">
         {messages.map((msg) => {
           const isCurrentUser = msg.senderId === userId;
           return (
@@ -35,7 +35,7 @@ const ChatStarted = ({ roomId, userId, setMessages, messages }) => {
                 isCurrentUser ? "justify-end" : "items-start gap-2"
               }`}
             >
-              {/* Admin/user avatar (sirf dusre ke liye dikhana hai) */}
+              
               {!isCurrentUser && (
                 <div className="border border-[#5E2E86] rounded-full p-[1px]">
                   <div className="w-8 h-8 rounded-full bg-[#5E2E86] flex items-center justify-center">
