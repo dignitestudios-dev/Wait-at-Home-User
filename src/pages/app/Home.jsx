@@ -44,8 +44,7 @@ const Home = () => {
     token,
     setPetData,
     fcmToken,
-    estimateLoader,
-    estimateData
+    estimateDataUpdate,
   } = useContext(AppContext);
   const [step, setStep] = useState(1);
   const [formModal, setFormModal] = useState(false);
@@ -271,14 +270,14 @@ const Home = () => {
     true
   );
 
-  // const { loading: estimateLoader, data: estimateData } = useGlobal(
-  //   latestAppointment
-  //     ? `/appointment/get-estimated-wait-time?userId=${userId}`
-  //     : null,
+  const { loading: estimateLoader, data: estimateData } = useGlobal(
+    latestAppointment
+      ? `/appointment/get-estimated-wait-time?userId=${userId}`
+      : null,
 
-  //   1,
-  //   update
-  // );
+    1,
+    update
+  );
 
   return (
     <div className="p-2">
