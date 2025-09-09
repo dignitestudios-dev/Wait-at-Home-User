@@ -35,7 +35,6 @@ const ChatStarted = ({ roomId, userId, setMessages, messages }) => {
                 isCurrentUser ? "justify-end" : "items-start gap-2"
               }`}
             >
-              
               {!isCurrentUser && (
                 <div className="border border-[#5E2E86] rounded-full p-[1px]">
                   <div className="w-8 h-8 rounded-full bg-[#5E2E86] flex items-center justify-center">
@@ -71,15 +70,24 @@ const ChatStarted = ({ roomId, userId, setMessages, messages }) => {
       </div>
 
       {/* Input */}
-     <div className="sticky -bottom-2 rounded-[16px] h-[90px] bg-white border-t px-4 py-3 flex items-center gap-2 z-10">
+      <div className="sticky -bottom-2 rounded-[16px] h-[90px] bg-white border-t px-4 py-3 flex items-center gap-2 z-10">
         <input
           type="text"
           placeholder="Type Message"
           value={input}
           onChange={(e) => setInput(e.target.value)}
+          onKeyDown={(e) => {
+            if (e.key === "Enter" && !e.shiftKey) {
+              e.preventDefault();
+              handleSend();
+            }
+          }}
           className="flex-1 px-4 py-2 rounded-lg border border-gray-300 text-sm focus:outline-none"
         />
-        <button onClick={handleSend} className="bg-[#00b1b1] p-2 rounded-full text-white">
+        <button
+          onClick={handleSend}
+          className="bg-[#00b1b1] p-2 rounded-full text-white"
+        >
           <IoMdSend />
         </button>
       </div>
