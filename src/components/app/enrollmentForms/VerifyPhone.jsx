@@ -73,7 +73,7 @@ const VerifyPhone = ({
       const response = await axios.post("/auth/verify-reset-otp", obj);
 
       if (response.status === 200) {
-        SuccessToast(response?.data?.message);
+        SuccessToast("Phone Otp Verified Successfully");
         Auth(response?.data);
         setVirtualListModal(true);
         onClose();

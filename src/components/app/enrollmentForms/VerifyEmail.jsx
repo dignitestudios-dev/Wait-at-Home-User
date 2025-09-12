@@ -63,7 +63,7 @@ const VerifyEmail = ({ isOpen, onClose, setVerifyPhonelModal, email }) => {
       const response = await axios.post("/auth/verify-reset-otp", obj);
 
       if (response.status === 200) {
-        SuccessToast(response?.data?.message);
+        SuccessToast("Email Otp Verified Successfully");
         Auth(response?.data);
         setVerifyPhonelModal(true);
         onClose();
