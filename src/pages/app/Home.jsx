@@ -11,7 +11,7 @@ import VerifyEmail from "../../components/app/enrollmentForms/VerifyEmail";
 import VerifyPhone from "../../components/app/enrollmentForms/VerifyPhone";
 import VirtualListModal from "../../components/app/enrollmentForms/VirtualListModal";
 import ShiftRemindersModal from "../../components/app/enrollmentForms/ShiftRemindersModal";
-import { useFormik } from "formik";
+import { Formik, useFormik } from "formik";
 import { EnrollmentValues } from "../../init/authentication/EnrollmentValues";
 import {
   EnrollmentPersonalSchema,
@@ -91,19 +91,20 @@ const Home = () => {
           name: values.name,
           email: values.email,
           phone: values.phone,
-          password: values.password,
+          password: checked ? values.password : null,
           isUserRegistered: checked,
           role: "user",
           idToken: null,
           fcmToken: values.password ? fcmToken : null,
         },
-        pet: {
-          petName: values.petName,
-          petType: values.petType,
-          petBreed: values.petBreed,
-          age: values.petAge,
-          symptoms: values.petDiscription,
-        },
+
+        pets: values.pets.map((pet) => ({
+          petName: pet.petName,
+          petType: pet.petType,
+          petBreed: pet.petBreed,
+          age: pet.petAge,
+          symptoms: pet.petDiscription,
+        })),
       };
 
       if (step === 1) {
@@ -137,16 +138,22 @@ const Home = () => {
       setErrorReasonDiscription("");
     }
   };
+  console.log(appointmentData, "appointmentData");
   const handleCancelSubmit = async (e) => {
     e.preventDefault();
     if (!cancelReasonDiscription.trim()) {
       setErrorReasonDiscription("Please fill in the description.");
       return;
     }
+
     const payload = {
-      appointmentId: latestAppointment,
+      appointmentId: appointmentData?.map((item) => item?._id),
       cancelReason: cancelReasonDiscription,
     };
+    if (!latestAppointment) {
+      ErrorToast("No appointment found to cancel.");
+      return;
+    }
     setCancelLoading(true);
     try {
       const response = await axios.post(
@@ -177,29 +184,25 @@ const Home = () => {
     }
   };
 
-  const handlePhoneChange = (e) => {
-    const rawValue = e.target.value.replace(/\D/g, "");
-
-    if (rawValue.length <= 10) {
-      handleChange({ target: { name: e.target.name, value: rawValue } });
-    }
-  };
-
   const handleCreateAppoitment = async () => {
     const payload = {
       AppointmentDate: new Date().toISOString().split("T")[0],
       AppointmentTime: new Date(),
       notes: "Hello",
-      ...(petData?._id
-        ? { petId: petData._id }
+      ...(petData && petData.length > 0
+        ? {
+            petId: petData.map((p) => ({ petId: p?._id })), // 👈 array of objects
+          }
         : {
-            pet: {
-              petName: petNewValues.petName,
-              petType: petNewValues.petType,
-              petBreed: petNewValues.petBreed,
-              petAge: petNewValues.petAge,
-              symptoms: petNewValues.petDiscription,
-            },
+            pet: [
+              {
+                petName: petNewValues.petName,
+                petType: petNewValues.petType,
+                petBreed: petNewValues.petBreed,
+                petAge: Number(petNewValues.petAge),
+                symptoms: petNewValues.petDiscription,
+              },
+            ],
           }),
     };
     setCreatAppoitmentLoading(true);
@@ -320,8 +323,82 @@ const Home = () => {
           <AdScreen />
         </div>
       </div>
+      <Formik
+        initialValues={EnrollmentValues}
+        validationSchema={
+          step === 1 ? EnrollmentPersonalSchema : EnrollmentPetSchema
+        }
+        enableReinitialize
+        onSubmit={async (values, { setSubmitting }) => {
+          if (step === 1) {
+            setStep(2);
+            setSubmitting(false);
+            return;
+          }
 
-      <EnrollmentForms
+          if (step === 2) {
+            if (checked && !values.password) {
+              setPasswordError("Password Required");
+              setSubmitting(false);
+              return;
+            }
+
+            const payload = {
+              user: {
+                name: values.name,
+                email: values.email,
+                phone: values.phone,
+                password: checked ? values.password : null,
+                isUserRegistered: checked,
+                role: "user",
+                idToken: null,
+                fcmToken: values.password ? fcmToken : null,
+              },
+              pet: values.pets.map((pet) => ({
+                petName: pet.petName,
+                petType: pet.petType,
+                petBreed: pet.petBreed,
+                age: pet.petAge,
+                symptoms: pet.petDiscription,
+              })),
+            };
+
+            setLoading(true);
+            try {
+              const response = await axios.post("/auth/signup", payload);
+              if (response.status === 200) {
+                SuccessToast(response?.data?.message);
+                Auth(response?.data);
+                setAlmostThere(true);
+                setFormModal(false);
+                setUpdate((prev) => !prev);
+              }
+            } catch (err) {
+              ErrorToast(err.response?.data?.message || "Something went wrong");
+            } finally {
+              setLoading(false);
+              setSubmitting(false);
+            }
+          }
+        }}
+      >
+        {(formikProps) => (
+          <EnrollmentForms
+            {...formikProps}
+            loading={loading}
+            step={step}
+            setStep={setStep}
+            isOpen={formModal}
+            onClose={() => setFormModal(false)}
+            passwordError={passwordError}
+            setPasswordError={setPasswordError}
+            setChecked={setChecked}
+            checked={checked}
+            setFieldValue={formikProps.setFieldValue}
+          />
+        )}
+      </Formik>
+      {/* <EnrollmentForms
         loading={loading}
         step={step}
         setStep={setStep}
@@ -339,7 +416,57 @@ const Home = () => {
         checked={checked}
         setFieldValue={setFieldValue}
         handlePhoneChange={handlePhoneChange}
-      />
+      /> */}
+
+      <Formik
+        initialValues={AddPet}
+        validationSchema={AddPetSchema}
+        enableReinitialize
+        onSubmit={async (values) => {
+          const payload = {
+            AppointmentDate: new Date().toISOString().split("T")[0],
+            AppointmentTime: new Date(),
+            notes: "Hello",
+            pet: values.pets.map((pet) => ({
+              petName: pet.petName,
+              petType: pet.petType,
+              petBreed: pet.petBreed,
+              petAge: Number(pet.petAge),
+              symptoms: pet.petDiscription,
+            })),
+          };
+          setCreatAppoitmentLoading(true);
+          try {
+            const response = await axios.post(
+              "/user/create-appointment",
+              payload
+            );
+            if (response?.status === 200) {
+              SuccessToast(response?.data?.message);
+              Auth(response?.data);
+              setIsPhoneVerified(false);
+              setIsVerifiedEmail(false);
+              setAddPetModal(false);
+              setExistingPet(false);
+              setUpdate((prev) => !prev);
+            }
+          } catch (error) {
+            ErrorToast(error?.response?.data?.message);
+          } finally {
+            setCreatAppoitmentLoading(false);
+          }
+        }}
+      >
+        {(formikProps) => (
+          <AddNewPet
+            {...formikProps}
+            isOpen={addPetModal}
+            onClose={() => setAddPetModal(false)}
+            loading={creatAppoitmentLoading}
+          />
+        )}
+      </Formik>
+
       <AlmostThereModal
         isOpen={almostThere}
         onClose={() => setAlmostThere(false)}
@@ -414,21 +541,7 @@ const Home = () => {
         onClose={() => setExistingPet(false)}
         setAddPetModal={setAddPetModal}
       />
-      <AddNewPet
-        onClose={() => setAddPetModal(false)}
-        isOpen={addPetModal}
-        setAddPetModal={setAddPetModal}
-        setAddPetSuccess={setAddPetSuccess}
-        setUpdate={setUpdate}
-        handleCreateAppoitment={handleCreateAppoitment}
-        errors={peterror}
-        handleSubmit={handlePetSubmit}
-        handleChange={handlePetChange}
-        handleBlur={handlePetBlur}
-        values={petNewValues}
-        touched={petTouched}
-        loading={creatAppoitmentLoading}
-      />
+
       <AddPetSuccess
         onClose={() => setAddPetSuccess(false)}
         isOpen={addPetSuccess}

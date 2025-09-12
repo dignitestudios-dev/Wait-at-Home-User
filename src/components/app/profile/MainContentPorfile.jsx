@@ -35,7 +35,8 @@ const MainContentPorfile = ({
         setDeletePet={setDeletePet}
         setSelectedPet={setSelectedPet}
       />
-      <div className="rounded-2xl overflow-hidden shadow-md ">
+      
+      <div className="rounded-2xl overflow-hidden shadow-md mt-5 ">
         <img src={Adstwo} alt="Ads" className="w-full h-[232px] object-cover" />
       </div>
     </div>

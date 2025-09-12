@@ -20,9 +20,16 @@ const EnrollmentModal = ({
   checked,
   setChecked,
   setFieldValue,
-  handlePhoneChange,
+
   loading,
 }) => {
+  const handlePhoneChange = (e) => {
+    const rawValue = e.target.value.replace(/\D/g, "");
+
+    if (rawValue.length <= 10) {
+      handleChange({ target: { name: e.target.name, value: rawValue } });
+    }
+  };
   if (!isOpen) return null;
 
   return (

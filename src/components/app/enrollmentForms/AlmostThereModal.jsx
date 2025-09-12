@@ -1,12 +1,13 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Tick } from "../../../assets/export";
 import GlobalButton from "../../global/GlobalButton";
 import { IoIosArrowRoundBack } from "react-icons/io";
 import { phoneFormater } from "../../../lib/helpers";
+import { AppContext } from "../../../context/AppContext";
 
 const AlmostThereModal = ({ isOpen, onClose, handleClick, email, phone }) => {
   if (!isOpen) return null;
-
+const{userData} =useContext(AppContext)
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-60">
       <div className="bg-gradient-to-br from-[#A0E6E1] to-[#C3B4D3] w-[471px] p-6 rounded-3xl shadow-lg relative text-gray-800 flex flex-col">
@@ -32,9 +33,9 @@ const AlmostThereModal = ({ isOpen, onClose, handleClick, email, phone }) => {
           </p>
 
           <p className="text-[14px] font-[500] text-[#565656]">
-            Email: <span className="text-black font-[500]">{email}</span>{" "}
+            Email: <span className="text-black font-[500]">{userData?.email}</span>{" "}
             &nbsp;&nbsp;|&nbsp;&nbsp; Number:
-            <span className="text-black font-[500]">+1 {phoneFormater(phone)}</span>
+            <span className="text-black font-[500]">+1 {phoneFormater(userData?.phone)}</span>
           </p>
 
           <div className="w-full pt-4">

@@ -8,7 +8,7 @@ import CountDown from "../../global/CountDown";
 import { AppContext } from "../../../context/AppContext";
 const VerifyEmail = ({ isOpen, onClose, setVerifyPhonelModal, email }) => {
   if (!isOpen) return null;
-  const { Auth } = useContext(AppContext);
+  const { Auth, userData } = useContext(AppContext);
   const [otp, setOtp] = useState(Array(4).fill(""));
   const inputsRef = useRef([]);
   const [loading, setLoading] = useState(false);
@@ -56,7 +56,7 @@ const VerifyEmail = ({ isOpen, onClose, setVerifyPhonelModal, email }) => {
     setLoading(true);
     try {
       let obj = {
-        email: email,
+        email: userData?.email,
         otp: getOtpValue(),
       };
 
@@ -82,7 +82,7 @@ const VerifyEmail = ({ isOpen, onClose, setVerifyPhonelModal, email }) => {
   const handleResendOtp = async () => {
     try {
       setResendLoading(true);
-      let obj = { email: email };
+      let obj = { email: userData?.email };
 
       const response = await axios.post("/auth/request-email-otp", obj);
 
@@ -114,10 +114,10 @@ const VerifyEmail = ({ isOpen, onClose, setVerifyPhonelModal, email }) => {
           </div>
 
           <h2 className="text-[21px] font-[600] capitalize mt-3">
-            Verify  One-time password/code On Mail
+            Verify One-time password/code On Mail
           </h2>
           <p className="text-[13px] font-[400] text-[#565656] mt-2">
-             One-time password/code  sent to your {email}
+            One-time password/code sent to your {email}
           </p>
           <form onSubmit={handleSubmit}>
             <div className="flex gap-10 mb-2 justify-center mt-4">

@@ -11,7 +11,7 @@ const SettingMainContent = () => {
   return (
     <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-20">
       <div className="lg:col-span-8 space-y-8">
-        <div className="flex flex-col md:flex-row md:justify-between border-b-2 pb-3">
+        {/* <div className="flex flex-col md:flex-row md:justify-between border-b-2 pb-3">
           <div>
             <h2 className="text-[16px] font-[600] capitalize">Notifications</h2>
             <p className="text-[13px] text-[#4E4E4E]">
@@ -20,7 +20,7 @@ const SettingMainContent = () => {
             </p>
           </div>
           <NotificationToogle />
-        </div>
+        </div> */}
 
         <div className="flex flex-col md:flex-row md:justify-between border-b-2 pb-3">
           <div>

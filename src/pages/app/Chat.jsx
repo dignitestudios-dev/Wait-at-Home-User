@@ -70,12 +70,10 @@ const Chat = () => {
   useEffect(() => {
     if (!roomId) return;
 
-    // realtime listener for this user's chat room
     const unsub = onSnapshot(doc(db, "Chat", roomId), (docSnap) => {
       if (docSnap.exists()) {
         const chatData = docSnap.data();
 
-        // ✅ agar chat initialized ho gaya to chartStart true
         if (chatData.chatStatus === "initialized") {
           setChatStarted(true);
         }
@@ -88,68 +86,72 @@ const Chat = () => {
     <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 mt-3 px-2 sm:px-6">
       <div className="col-span-1 lg:col-span-8  relative ">
         <div className="overflow-y-auto custom-scrollbar ">
-        <div className="w-full bg-white  rounded-[20px]   shadow-md flex flex-col ">
-          <div className="bg-white px-4 sm:px-6 py-4 flex items-center gap-3 border-b">
-            <div className="border border-[#5E2E86] rounded-full p-1">
-              <div className="w-10 h-10 rounded-full bg-[#5E2E86] border flex items-center justify-center">
-                <img src={AdminImg} className="w-[32px] h-[32px]" alt="admin" />
-              </div>
-            </div>
-            <h2 className="text-base sm:text-lg font-semibold text-[#5E2E86]">
-              Admin
-            </h2>
-          </div>
-
-          <div className="flex-1 rounded-br-[20px] rounded-bl-[20px] bg-gradient-to-br from-[#b2d9de] to-[#d3e6e8] p-3 sm:p-4 space-y-4 overflow-y-auto roun">
-            <div className="flex justify-end">
-              <div className="bg-[#00b1b1] text-white px-4 py-2 rounded-xl text-sm max-w-xs">
-                Hi! I need some assistance
-              </div>
-            </div>
-
-            <div className="flex items-start gap-2">
-              <div className="border border-[#5E2E86] rounded-full p-[1px]">
-                <div className="w-8 h-8 rounded-full bg-[#5E2E86] border flex items-center justify-center">
+          <div className="w-full bg-white  rounded-[20px]   shadow-md flex flex-col ">
+            <div className="bg-white px-4 sm:px-6 py-4 flex items-center gap-3 border-b">
+              <div className="border border-[#5E2E86] rounded-full p-1">
+                <div className="w-10 h-10 rounded-full bg-[#5E2E86] border flex items-center justify-center">
                   <img
                     src={AdminImg}
-                    className="w-[22px] h-[22px]"
+                    className="w-[32px] h-[32px]"
                     alt="admin"
                   />
                 </div>
               </div>
-              <div className="bg-[#FFFFFF80] px-4 py-2 rounded-xl text-sm max-w-md  text-[#000000]">
-                Hello! 😊 Please describe your issue so we can assist you
-                better. Kindly fill out the details below:
-              </div>
+              <h2 className="text-base sm:text-lg font-semibold text-[#5E2E86]">
+                Admin
+              </h2>
             </div>
-            {messageBox ? (
-              <div>
-                <RequestSubmited
-                  chartStart={chartStart}
-                  handleClick={() => setChatStarted(true)}
-                />
+
+            <div className="flex-1 rounded-br-[20px] rounded-bl-[20px] bg-gradient-to-br from-[#b2d9de] to-[#d3e6e8] p-3 sm:p-4 space-y-4 overflow-y-auto roun">
+              <div className="flex justify-end">
+                <div className="bg-[#00b1b1] text-white px-4 py-2 rounded-xl text-sm max-w-xs">
+                  Hi! I need some assistance
+                </div>
               </div>
-            ) : (
-              <DiscribeYourCaseForm
-                loading={loading}
-                values={values}
-                handleChange={handleChange}
-                touched={touched}
-                errors={errors}
-                handleBlur={handleBlur}
-                handleSubmit={handleSubmit}
-              />
-            )}
-            {chartStart && (
-              <ChatStarted
-                messages={messages}
-                setMessages={setMessages}
-                roomId={roomId}
-                userId={userData?.signUpRecord}
-              />
-            )}
+
+              <div className="flex items-start gap-2">
+                <div className="border border-[#5E2E86] rounded-full p-[1px]">
+                  <div className="w-8 h-8 rounded-full bg-[#5E2E86] border flex items-center justify-center">
+                    <img
+                      src={AdminImg}
+                      className="w-[22px] h-[22px]"
+                      alt="admin"
+                    />
+                  </div>
+                </div>
+                <div className="bg-[#FFFFFF80] px-4 py-2 rounded-xl text-sm max-w-md  text-[#000000]">
+                  Hello! 😊 Please describe your issue so we can assist you
+                  better. Kindly fill out the details below:
+                </div>
+              </div>
+              {messageBox ? (
+                <div>
+                  <RequestSubmited
+                    chartStart={chartStart}
+                    handleClick={() => setChatStarted(true)}
+                  />
+                </div>
+              ) : (
+                <DiscribeYourCaseForm
+                  loading={loading}
+                  values={values}
+                  handleChange={handleChange}
+                  touched={touched}
+                  errors={errors}
+                  handleBlur={handleBlur}
+                  handleSubmit={handleSubmit}
+                />
+              )}
+              {chartStart && (
+                <ChatStarted
+                  messages={messages}
+                  setMessages={setMessages}
+                  roomId={roomId}
+                  userId={userData?.signUpRecord}
+                />
+              )}
+            </div>
           </div>
-        </div>
         </div>
       </div>
       <div className="col-span-1 lg:col-span-4">

@@ -16,7 +16,7 @@ const VerifyPhone = ({
   setVirtualListModal,
 }) => {
   if (!isOpen) return null;
-  const { Auth } = useContext(AppContext);
+  const { Auth, userData } = useContext(AppContext);
   const [otp, setOtp] = useState(Array(4).fill(""));
   const inputsRef = useRef([]);
   const [loading, setLoading] = useState(false);
@@ -65,7 +65,7 @@ const VerifyPhone = ({
     setLoading(true);
     try {
       let obj = {
-        email: email,
+        email: userData?.email,
         phone: true,
         otp: getOtpValue(),
       };
@@ -92,7 +92,7 @@ const VerifyPhone = ({
   const handleResendOtp = async () => {
     try {
       setResendLoading(true);
-      let obj = { email: email };
+      let obj = { email: userData?.email };
 
       const response = await axios.post("/auth/request-email-otp", obj);
 

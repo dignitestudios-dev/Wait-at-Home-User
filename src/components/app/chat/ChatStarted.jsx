@@ -26,7 +26,7 @@ const ChatStarted = ({ roomId, userId, setMessages, messages }) => {
   return (
     <div className="flex flex-col h-[60vh]">
       <div className="flex-1 space-y-4  p x-2 pb-10">
-        {messages.map((msg) => {
+        {messages?.map((msg) => {
           const isCurrentUser = msg.senderId === userId;
           return (
             <div

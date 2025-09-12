@@ -13,15 +13,15 @@ const PetSection = ({
   setUpdate,
 }) => {
   return (
-    <div>
-      <h3 className="text-[18px] font-[600] text-[#000000] mb-3">
+    <div className="max-h-[30vh] overflow-y-auto custom-scrollbar">
+      <h3 className="text-[18px] font-[600] text-[#000000] mb-3 ">
         Pet Profiles
       </h3>
-      <div className="flex flex-wrap gap-4 mb-6">
+      <div className="flex flex-wrap gap-4 mb-6 ">
         {petProfileData?.pets?.map((pet, idx) => (
           <div
             key={idx}
-            className="bg-[#c7d9df] backdrop-blur rounded-2xl px-4 py-3 flex items-center gap-4 shadow-md w-full max-w-xs"
+            className="bg-[#c7d9df]  backdrop-blur rounded-2xl px-4 py-3 flex items-center gap-4 shadow-md w-full max-w-xs"
           >
             <div className="w-[48px] h-[48px] rounded-full bg-gradient-to-b from-[#10C0B6] to-[#684D7B] flex items-center justify-center">
               <img src={IconDog} className="w-[27px] h-[27px] " alt="" />

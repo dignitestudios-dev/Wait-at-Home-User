@@ -25,11 +25,11 @@ const JoinWaitList = ({
             <img src={Flag} className="w-[28px] h-[28px]" alt="" />
             <h2 className="text-[18px] font-[500]">Your Number</h2>
           </div>
-         <h2 className="bg-gradient-to-l text-center to-[#684D7B] from-[#10C0B6] bg-clip-text text-transparent text-[85px] font-[700]">
-  {appointmentNumber?.appointmentNumber < 10
-    ? `0${appointmentNumber?.appointmentNumber}`
-    : appointmentNumber?.appointmentNumber}
-</h2>
+          <h2 className="bg-gradient-to-l text-center to-[#684D7B] from-[#10C0B6] bg-clip-text text-transparent text-[85px] font-[700]">
+            {appointmentNumber?.appointmentNumber < 10
+              ? `0${appointmentNumber?.appointmentNumber}`
+              : appointmentNumber?.appointmentNumber}
+          </h2>
 
           <button
             className={`w-full bg-[#5E2E86] text-white text-[16px] font-[500] py-3 rounded-full transition duration-200`}
