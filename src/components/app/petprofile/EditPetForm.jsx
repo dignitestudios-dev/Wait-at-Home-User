@@ -43,7 +43,7 @@ const EditPetForm = ({
             payload
           );
           if (response.status === 200) {
-            SuccessToast(response?.data?.message);
+            SuccessToast("Pet Profile Updated");
             setEditPetModal(false);
             setEditPetSuccess(true);
             setUpdate((prev) => !prev);

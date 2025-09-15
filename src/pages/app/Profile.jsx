@@ -29,7 +29,7 @@ const Profile = () => {
   const [deleteLoading, setDeleteLoading] = useState(false);
   const { loading, data } = useGlobal("/user/get-user-profile", update);
   const handleDeletePet = async (petId) => {
-    console.log(petId, "petId==>");
+  
     setDeleteLoading(true);
     try {
       const response = await axios.delete(`/user/delete-pet/${petId}`);
