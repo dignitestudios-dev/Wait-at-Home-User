@@ -30,6 +30,7 @@ import AddNewPet from "../../components/app/registeredUser/AddNewPet";
 import AddPetSuccess from "../../components/app/petprofile/AddPetSuccess";
 import { AddPet } from "../../init/app/PetForm";
 import { AddPetSchema } from "../../schema/app/PetFormSchema";
+import GoogleAd from "../../components/global/GoogleAd";
 const Home = () => {
   const {
     Auth,
@@ -44,7 +45,7 @@ const Home = () => {
     token,
     setPetData,
     fcmToken,
-    estimateDataUpdate,
+    setIsRestrictByAdmin,
   } = useContext(AppContext);
   const [step, setStep] = useState(1);
   const [formModal, setFormModal] = useState(false);
@@ -277,11 +278,14 @@ const Home = () => {
     latestAppointment
       ? `/appointment/get-estimated-wait-time?userId=${userId}`
       : null,
-
     1,
     update
   );
-
+  useEffect(() => {
+    if (profileData?.user?.isRestrictedByAdmin === true) {
+      clearAllCookies();
+    }
+  }, [profileData]);
   return (
     <div className="p-2">
       <div className="mb-6">
@@ -320,7 +324,8 @@ const Home = () => {
           />
         </div>
         <div className="flex justify-center lg:ms-auto">
-          <AdScreen />
+          {/* <AdScreen /> */}
+          <GoogleAd dataAdSlot={'5642921217'} />
         </div>
       </div>
       <Formik
