@@ -324,8 +324,8 @@ const Home = () => {
           />
         </div>
         <div className="flex justify-center lg:ms-auto">
-          {/* <AdScreen /> */}
-          <GoogleAd dataAdSlot={'5642921217'} />
+          <AdScreen />
+          {/* <GoogleAd dataAdSlot={'5642921217'} /> */}
         </div>
       </div>
       <Formik

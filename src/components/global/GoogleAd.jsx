@@ -14,10 +14,11 @@ const GoogleAd = ({ dataAdSlot }) => {
     <ins
       className="adsbygoogle"
       style={{ display: "block" }}
-      data-ad-client="ca-pub-2521856853254381" // Replace with your publisher ID
+      data-ad-client="ca-pub-2521856853254381" 
       data-ad-slot={dataAdSlot}
       data-ad-format="auto"
       data-full-width-responsive="true"
+      data-adtest="on"
     ></ins>
   );
 };
