@@ -3,10 +3,11 @@ import React from "react";
 const NotificationToogle = ({
   loader,
   onClick,
-  checked,
-  onChange,
-  statusnoti,
+  setNotificationsToggle,
+  notificationsToggle,
+  userProfileData
 }) => {
+  console.log(userProfileData?.user?.notificationEnabled,"userProfileData")
   return (
     <div>
       <label
@@ -22,14 +23,15 @@ const NotificationToogle = ({
         <input
           type="checkbox"
           className="sr-only peer"
-          checked={true}
-          onChange={onChange}
+          checked={userProfileData?.user?.notificationEnabled}
+          onChange={setNotificationsToggle}
           disabled={loader}
         />
+
         <div
           className={`w-11 h-6 bg-[#94b8c0]  rounded-full    
                           ${
-                            true
+                            userProfileData?.user?.notificationEnabled
                               ? "peer-checked:bg-gradient-to-l to-[#63CFAC] from-[#29ABE2]"
                               : "peer-checked:bg-[#7698a1]"
                           } 

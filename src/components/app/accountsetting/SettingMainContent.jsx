@@ -1,13 +1,38 @@
-import React from "react";
+import React, { useState } from "react";
 import NotificationToogle from "../../global/NotificationToogle";
 import { FaCheck } from "react-icons/fa";
 import { IoIosArrowForward } from "react-icons/io";
 import ReminderOption from "./ReminderOption";
 import ChatAndNotiBtn from "../../global/ChatAndNotiBtn";
 import { useNavigate } from "react-router";
-
-const SettingMainContent = () => {
+import axios from "../../../axios";
+import { ErrorToast, SuccessToast } from "../../global/Toaster";
+const SettingMainContent = ({ userProfileData, setUpdate }) => {
   const navigate = useNavigate();
+  const [notificationsToggle, setNotificationsToggle] = useState(false);
+  const [loading, setLoading] = useState(false);
+
+  const handleToggle = async () => {
+    try {
+      setLoading(true);
+      const newValue = !notificationsToggle;
+      setNotificationsToggle(newValue);
+
+      const response = await axios.post("/user/notification-settings", {
+        isEnabled: newValue,
+      });
+
+      if (response?.status === 200) {
+        SuccessToast(response?.data?.message);
+        setUpdate((prev) => !prev);
+      }
+    } catch (error) {
+      ErrorToast(error?.response?.data?.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-20">
       <div className="lg:col-span-8 space-y-8">
@@ -32,7 +57,12 @@ const SettingMainContent = () => {
               odio lectus a.
             </p>
           </div>
-          <NotificationToogle />
+          <NotificationToogle
+            userProfileData={userProfileData}
+            loader={loading}
+            notificationsToggle={notificationsToggle}
+            setNotificationsToggle={handleToggle}
+          />
         </div>
 
         <div className="border-b-2 pb-3">

@@ -69,7 +69,7 @@ const Profile = () => {
                 setUpdate={setUpdate}
               />
             )}
-            {activeTab === "setting" && <SettingMainContent />}
+            {activeTab === "setting" && <SettingMainContent  setUpdate={setUpdate}  userProfileData={data} />}
           </>
         )}
       </div>
