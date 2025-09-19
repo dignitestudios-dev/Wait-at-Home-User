@@ -1,11 +1,12 @@
-import React from "react";
+import React, { useContext } from "react";
 import { EditIcon, Pro9 } from "../../../assets/export";
 import ChatAndNotiBtn from "../../global/ChatAndNotiBtn";
 import { BiEditAlt } from "react-icons/bi";
 import { phoneFormater } from "../../../lib/helpers";
+import { AppContext } from "../../../context/AppContext";
 
 const ProfileInfo = ({ setEditModal, userProfileData }) => {
-
+  const { userData } = useContext(AppContext);
   return (
     <div>
       <div className="flex flex-col lg:flex-row justify-between items-center">
@@ -42,7 +43,7 @@ const ProfileInfo = ({ setEditModal, userProfileData }) => {
             </p>
           </div>
         </div>
-        <ChatAndNotiBtn />
+        {userData?.isUserRegistered && <ChatAndNotiBtn />}
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4 my-8 border-b-2 pb-6 ">
