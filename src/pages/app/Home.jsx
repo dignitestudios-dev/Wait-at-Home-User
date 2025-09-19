@@ -139,7 +139,7 @@ const Home = () => {
       setErrorReasonDiscription("");
     }
   };
-  console.log(appointmentData, "appointmentData");
+
   const handleCancelSubmit = async (e) => {
     e.preventDefault();
     if (!cancelReasonDiscription.trim()) {
@@ -286,6 +286,27 @@ const Home = () => {
       clearAllCookies();
     }
   }, [profileData]);
+
+  const [reminderFrequency, setReminderFrequency] = useState(0); // default 30 min
+  const [notificationLoading, setNotificationLoading] = useState(false);
+
+  const handleToggle = async (payload) => {
+    try {
+      setNotificationLoading(true);
+      const response = await axios.post("/user/notification-settings", payload);
+
+      if (response?.status === 200) {
+        SuccessToast(response?.data?.message);
+        setReminderShiftModal(false);
+        setIsWaitList(true);
+        setUpdate((prev) => !prev);
+      }
+    } catch (error) {
+      ErrorToast(error?.response?.data?.message);
+    } finally {
+      setNotificationLoading(false);
+    }
+  };
   return (
     <div className="p-2">
       <div className="mb-6">
@@ -511,10 +532,10 @@ const Home = () => {
         isOpen={reminderShiftModal}
         selectedOptions={selectedOptions}
         setSelectedOptions={setSelectedOptions}
-        handleClick={() => {
-          setReminderShiftModal(false);
-          setIsWaitList(true);
-        }}
+        reminderFrequency={reminderFrequency}
+        setReminderFrequency={setReminderFrequency}
+        handleClick={handleToggle}
+        loading={notificationLoading}
       />
       <CancelEnrollment
         isOpen={cancelEnrollment}

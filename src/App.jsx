@@ -11,7 +11,7 @@ import { useContext } from "react";
 import { AppContext } from "./context/AppContext";
 function App() {
   const { token } = useContext(AppContext);
-  console.log(token, "token==>");
+  
   return (
     <Routes>
       <Route path="/" element={<Navigate to={"/app/home"} />} />

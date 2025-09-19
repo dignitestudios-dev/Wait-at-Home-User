@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import NotificationToogle from "../../global/NotificationToogle";
 import { FaCheck } from "react-icons/fa";
 import { IoIosArrowForward } from "react-icons/io";
@@ -7,19 +7,29 @@ import ChatAndNotiBtn from "../../global/ChatAndNotiBtn";
 import { useNavigate } from "react-router";
 import axios from "../../../axios";
 import { ErrorToast, SuccessToast } from "../../global/Toaster";
+import { useGlobal } from "../../../hooks/api/Get";
 const SettingMainContent = ({ userProfileData, setUpdate }) => {
   const navigate = useNavigate();
   const [notificationsToggle, setNotificationsToggle] = useState(false);
   const [loading, setLoading] = useState(false);
-
+  const [options, setOptions] = useState({
+    phone: false,
+    email: false,
+    notification: false,
+  });
+  const { loading: notificationLoader, data } = useGlobal(
+    "/user/get-notification-settings"
+  );
   const handleToggle = async () => {
-    try {
-      setLoading(true);
-      const newValue = !notificationsToggle;
-      setNotificationsToggle(newValue);
+    const newValue = !options.notification; // flip from options.notification
+    setOptions((prev) => ({ ...prev, notification: newValue })); // update state
+    setLoading(true);
 
+    try {
       const response = await axios.post("/user/notification-settings", {
         isEnabled: newValue,
+        isPhoneEnabled: options.phone,
+        isEmailEnabled: options.email,
       });
 
       if (response?.status === 200) {
@@ -28,8 +38,38 @@ const SettingMainContent = ({ userProfileData, setUpdate }) => {
       }
     } catch (error) {
       ErrorToast(error?.response?.data?.message);
+      // rollback agar API fail ho jaye
+      setOptions((prev) => ({ ...prev, notification: !newValue }));
     } finally {
       setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    if (data) {
+      setOptions({
+        notification: data?.isEnabled || false,
+        phone: data?.isPhoneEnabled || false,
+        email: data?.isEmailEnabled || false,
+      });
+    }
+  }, [data]);
+
+  const toggleOption = async (key) => {
+    try {
+      const newValue = !options[key];
+      setOptions((prev) => ({ ...prev, [key]: newValue }));
+
+      const response = await axios.post("/user/notification-settings", {
+        isPhoneEnabled: key === "phone" ? newValue : options.phone,
+        isEmailEnabled: key === "email" ? newValue : options.email,
+      });
+
+      if (response?.status === 200) {
+        SuccessToast("Updated successfully!");
+      }
+    } catch (error) {
+      ErrorToast(error?.response?.data?.message || "Something went wrong!");
     }
   };
 
@@ -60,8 +100,8 @@ const SettingMainContent = ({ userProfileData, setUpdate }) => {
           <NotificationToogle
             userProfileData={userProfileData}
             loader={loading}
-            notificationsToggle={notificationsToggle}
-            setNotificationsToggle={handleToggle}
+            notificationsToggle={options.notification}
+            onClick={handleToggle}
           />
         </div>
 
@@ -78,8 +118,20 @@ const SettingMainContent = ({ userProfileData, setUpdate }) => {
               odio lectus a.
             </p>
           </div>
-          <ReminderOption label="Number" />
-          <ReminderOption label="Email" />
+          <div>
+            <ReminderOption
+              label="Number"
+              checked={options.phone}
+              loading={notificationLoader}
+              onChange={() => toggleOption("phone")}
+            />
+            <ReminderOption
+              label="Email"
+              loading={notificationLoader}
+              checked={options.email}
+              onChange={() => toggleOption("email")}
+            />
+          </div>
         </div>
 
         <div

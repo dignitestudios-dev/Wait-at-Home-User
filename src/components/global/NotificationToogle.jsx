@@ -5,9 +5,9 @@ const NotificationToogle = ({
   onClick,
   setNotificationsToggle,
   notificationsToggle,
-  userProfileData
+  userProfileData,
 }) => {
-  console.log(userProfileData?.user?.notificationEnabled,"userProfileData")
+  console.log(userProfileData?.user?.notificationEnabled, "userProfileData");
   return (
     <div>
       <label
@@ -23,8 +23,8 @@ const NotificationToogle = ({
         <input
           type="checkbox"
           className="sr-only peer"
-          checked={userProfileData?.user?.notificationEnabled}
-          onChange={setNotificationsToggle}
+          checked={notificationsToggle}
+          onChange={onClick}
           disabled={loader}
         />
 
