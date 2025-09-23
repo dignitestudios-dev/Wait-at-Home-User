@@ -7,9 +7,9 @@ const WaitingList = ({ appointmentList, appointmentListLoader }) => {
   return (
     <>
       <div className="relative bg-transparent cursor-pointer border border-white w-[281px] p-4 rounded-[30px] shadow-md mb-6 overflow-hidden">
-        <div className="absolute inset-0 z-10 pointer-events-none rounded-[20px] backdrop-blur-[6px] bg-[#c3d8df]/70" />
+        <div className="absolute inset-0 z-10 pointer-events-none rounded-[20px] backdrop-blur-[6px] bg-gradient-to-b from-[#10C0B6] to-[#684D7B]" />
 
-        <h3 className="text-[18px] font-[500] text-black mb-4 z-20 relative">
+        <h3 className="text-[18px] font-[500] text-white mb-4 z-20 relative">
           Waiting List
         </h3>
         {appointmentListLoader ? (
@@ -19,7 +19,7 @@ const WaitingList = ({ appointmentList, appointmentListLoader }) => {
             {appointmentList?.filter(
               (item) => item?.appointmentStatus === "pending"
             )?.length === 0 ? (
-              <p className="text-center text-sm font-medium text-gray-500 my-8 relative z-20">
+              <p className="text-center text-sm font-medium text-white my-8 relative z-20">
                 No pending bookings found
               </p>
             ) : (
@@ -30,7 +30,7 @@ const WaitingList = ({ appointmentList, appointmentListLoader }) => {
                   ?.map((item, index) => (
                     <li key={index}>
                       <div className="flex gap-3 items-center py-2">
-                        <span className="min-w-[20px] text-right text-[#3F3F3F] font-[600] text-[14px]">
+                        <span className="min-w-[20px] text-right text-white font-[600] text-[14px]">
                           {index + 1}
                         </span>
                         {item?.profilePicture ? (
@@ -46,7 +46,7 @@ const WaitingList = ({ appointmentList, appointmentListLoader }) => {
                               ?.toUpperCase()}
                           </div>
                         )}
-                        <span className="text-[#3F3F3F] font-[600] text-[14px]">
+                        <span className="text-white font-[600] text-[14px]">
                           <span className="inline-block max-w-[110px] truncate align-middle">
                             {item?.pets?.map((pet) => pet?.petName).join(", ")}
                           </span>

@@ -8,6 +8,7 @@ import { RxCross2 } from "react-icons/rx";
 import { AddPetSchema } from "../../../schema/app/PetFormSchema";
 import axios from "../../../axios";
 import { ErrorToast, SuccessToast } from "../../global/Toaster";
+import { petBreeds } from "../../../static/staticData";
 
 const AddPetForm = ({
   isOpen,
@@ -80,104 +81,142 @@ const AddPetForm = ({
               <FieldArray name="pets">
                 {(arrayHelpers) => (
                   <>
-                    {values.pets.map((pet, index) => (
-                      <div key={index} className="mb-4 border-b pb-4">
-                        <GlobalInputs
-                          placeholder="Enter Pet’s Name"
-                          value={pet.petName}
-                          type="text"
-                          name={`pets.${index}.petName`}
-                          onChange={handleChange}
-                          onBlur={handleBlur}
-                          error={errors.pets?.[index]?.petName}
-                          touched={touched.pets?.[index]?.petName}
-                          max={50}
-                        />
+                   {values.pets.map((pet, index) => {
+                  const availableBreeds = petBreeds[pet.petType] || [];
+                  return (
+                    <div key={index} className="mb-2 border-b pb-2">
+                      {/* Pet Name */}
+                      <GlobalInputs
+                        placeholder="Enter Pet’s Name"
+                        value={pet.petName}
+                        type="text"
+                        name={`pets.${index}.petName`}
+                        onChange={handleChange}
+                        onBlur={handleBlur}
+                        error={errors.pets?.[index]?.petName}
+                        touched={touched.pets?.[index]?.petName}
+                        max={50}
+                      />
 
-                        <div className="relative w-full mb-2">
-                          <select
-                            value={pet.petType}
-                            onChange={handleChange}
-                            name={`pets.${index}.petType`}
-                            onBlur={handleBlur}
-                            className={`appearance-none w-full rounded-xl px-4 py-3 h-[49px] pr-10 text-[14px] bg-white text-[#616161] border ${
-                              errors.pets?.[index]?.petType &&
-                              touched.pets?.[index]?.petType
-                                ? "border-red-500 ring-1 ring-red-500"
-                                : "border focus:border-[#10C0B6] focus:ring-2 focus:ring-[#10C0B6]"
-                            }`}
-                          >
-                            <option value="">Select Pet Type</option>
-                            <option value="dog">Dog</option>
-                            <option value="cat">Cat</option>
-                            <option value="bird">Bird</option>
-                            <option value="rabbit">Rabbit</option>
-                            <option value="other">Other</option>
-                          </select>
-                          <div className="pointer-events-none absolute inset-y-0 right-3 flex items-center text-[#616161]">
-                            <IoChevronDown />
-                          </div>
-                          {errors.pets?.[index]?.petType &&
-                            touched.pets?.[index]?.petType && (
-                              <p className="text-red-500 text-[12px] mt-1 font-medium">
-                                {errors.pets[index].petType}
-                              </p>
-                            )}
-                        </div>
-
-                        <GlobalInputs
-                          placeholder="Enter Pet Breed"
-                          value={pet.petBreed}
-                          type="text"
-                          name={`pets.${index}.petBreed`}
-                          onChange={handleChange}
+                      {/* Pet Type */}
+                      <div className="relative w-full mb-2">
+                        <select
+                          value={pet.petType}
+                          onChange={(e) => {
+                            handleChange(e);
+                            // reset breed when type changes
+                            setFieldValue(`pets.${index}.petBreed`, "");
+                          }}
+                          name={`pets.${index}.petType`}
                           onBlur={handleBlur}
-                          error={errors.pets?.[index]?.petBreed}
-                          touched={touched.pets?.[index]?.petBreed}
-                        />
-
-                        <GlobalInputs
-                          placeholder="Enter Pet Age"
-                          value={pet.petAge}
-                          type="text"
-                          name={`pets.${index}.petAge`}
-                          onChange={handleChange}
-                          onBlur={handleBlur}
-                          error={errors.pets?.[index]?.petAge}
-                          touched={touched.pets?.[index]?.petAge}
-                        />
-
-                        <textarea
-                          name={`pets.${index}.petDiscription`}
-                          placeholder="Enter Symptoms or Reasons for the visit"
-                          value={pet.petDiscription}
-                          onChange={handleChange}
-                          onBlur={handleBlur}
-                          className={`bg-white w-full rounded-[20px] h-[113px] px-4 py-4 ${
-                            errors.pets?.[index]?.petDiscription &&
-                            touched.pets?.[index]?.petDiscription
+                          className={`appearance-none w-full rounded-xl px-4 py-3 h-[49px] pr-10 text-[14px] bg-white text-[#616161] border ${
+                            errors.pets?.[index]?.petType &&
+                            touched.pets?.[index]?.petType
                               ? "border-red-500 ring-1 ring-red-500"
                               : "border focus:border-[#10C0B6] focus:ring-2 focus:ring-[#10C0B6]"
                           }`}
-                        />
-                        {errors.pets?.[index]?.petDiscription &&
-                          touched.pets?.[index]?.petDiscription && (
+                        >
+                          <option value="">Select Pet Type</option>
+                          <option value="dog">Dog</option>
+                          <option value="cat">Cat</option>
+                          <option value="bird">Bird</option>
+                          <option value="rabbit">Rabbit</option>
+                          <option value="other">Other</option>
+                        </select>
+                        <div className="pointer-events-none absolute inset-y-0 right-3 flex items-center text-[#616161]">
+                          <IoChevronDown />
+                        </div>
+                        {errors.pets?.[index]?.petType &&
+                          touched.pets?.[index]?.petType && (
                             <p className="text-red-500 text-[12px] mt-1 font-medium">
-                              {errors.pets[index].petDiscription}
+                              {errors.pets[index].petType}
                             </p>
                           )}
-
-                        {index > 0 && (
-                          <button
-                            type="button"
-                            className="text-red-500 mt-2"
-                            onClick={() => arrayHelpers.remove(index)}
-                          >
-                            Remove
-                          </button>
-                        )}
                       </div>
-                    ))}
+
+                      {/* Pet Breed - Dynamic */}
+                      <div className="relative w-full mb-2">
+                        <select
+                          value={pet.petBreed}
+                          onChange={handleChange}
+                          name={`pets.${index}.petBreed`}
+                          onBlur={handleBlur}
+                          disabled={!pet.petType}
+                          className={`appearance-none w-full rounded-xl px-4 py-3 h-[49px] pr-10 text-[14px] bg-white text-[#616161] border ${
+                            errors.pets?.[index]?.petBreed &&
+                            touched.pets?.[index]?.petBreed
+                              ? "border-red-500 ring-1 ring-red-500"
+                              : "border focus:border-[#10C0B6] focus:ring-2 focus:ring-[#10C0B6]"
+                          }`}
+                        >
+                          <option value="">
+                            {pet.petType
+                              ? "Select Breed"
+                              : "Select Pet Type First"}
+                          </option>
+                          {availableBreeds.map((breed, i) => (
+                            <option key={i} value={breed}>
+                              {breed}
+                            </option>
+                          ))}
+                        </select>
+                        <div className="pointer-events-none absolute inset-y-0 right-3 flex items-center text-[#616161]">
+                          <IoChevronDown />
+                        </div>
+                        {errors.pets?.[index]?.petBreed &&
+                          touched.pets?.[index]?.petBreed && (
+                            <p className="text-red-500 text-[12px] mt-1 font-medium">
+                              {errors.pets[index].petBreed}
+                            </p>
+                          )}
+                      </div>
+
+                      {/* Pet Age */}
+                      <GlobalInputs
+                        placeholder="Enter Pet Age"
+                        value={pet.petAge}
+                        type="text"
+                        name={`pets.${index}.petAge`}
+                        onChange={handleChange}
+                        onBlur={handleBlur}
+                        error={errors.pets?.[index]?.petAge}
+                        touched={touched.pets?.[index]?.petAge}
+                      />
+
+                      {/* Pet Description */}
+                      <textarea
+                        name={`pets.${index}.petDiscription`}
+                        placeholder="Enter Symptoms or Reasons for the visit"
+                        value={pet.petDiscription}
+                        onChange={handleChange}
+                        onBlur={handleBlur}
+                        className={`bg-white w-full rounded-[20px] h-[113px] px-4 py-4 ${
+                          errors.pets?.[index]?.petDiscription &&
+                          touched.pets?.[index]?.petDiscription
+                            ? "border-red-500 ring-1 ring-red-500"
+                            : "border focus:border-[#10C0B6] focus:ring-2 focus:ring-[#10C0B6]"
+                        }`}
+                      />
+                      {errors.pets?.[index]?.petDiscription &&
+                        touched.pets?.[index]?.petDiscription && (
+                          <p className="text-red-500 text-[12px] mt-1 font-medium">
+                            {errors.pets[index].petDiscription}
+                          </p>
+                        )}
+
+                      {/* Remove Button */}
+                      {index > 0 && (
+                        <button
+                          type="button"
+                          className="text-red-500 mt-2"
+                          onClick={() => arrayHelpers.remove(index)}
+                        >
+                          Remove
+                        </button>
+                      )}
+                    </div>
+                  );
+                })}
                     <div className="flex justify-end">
                       <div className="w-[200px]">
                         <GlobalButton
@@ -191,7 +230,6 @@ const AddPetForm = ({
                             })
                           }
                           children={" + Add More"}
-                          
                         />
                       </div>
                     </div>

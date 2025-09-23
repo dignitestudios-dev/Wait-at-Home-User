@@ -8,6 +8,7 @@ const JoinWaitList = ({
   loading,
   appointmentNumberLoader,
 }) => {
+  
   return (
     <div className="bg-[#b5d8dc] cursor-pointer flex flex-col justify-center h-[228px] w-[289px] rounded-[30px] border shadow-md p-4">
       {appointmentNumberLoader ? (

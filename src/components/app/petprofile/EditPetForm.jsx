@@ -7,6 +7,7 @@ import { RxCross2 } from "react-icons/rx";
 import { AddPetSchema } from "../../../schema/app/PetFormSchema";
 import axios from "../../../axios";
 import { ErrorToast, SuccessToast } from "../../global/Toaster";
+import { petBreeds } from "../../../static/staticData";
 const EditPetForm = ({
   isOpen,
   onClose,
@@ -16,45 +17,50 @@ const EditPetForm = ({
   setUpdate,
 }) => {
   const [loading, setLoading] = useState(false);
-  const { values, handleBlur, handleChange, handleSubmit, errors, touched } =
-    useFormik({
-      enableReinitialize: true,
-      initialValues: {
-        petName: petData?.name || "",
-        petType: petData?.type || "",
-        petBreed: petData?.breed || "",
-        petAge: petData?.age || "",
-        petDiscription: petData?.symptoms || "",
-      },
-      validationSchema: AddPetSchema,
+  const {
+    values,
+    handleBlur,
+    handleChange,
+    handleSubmit,
+    errors,
+    touched,
+    setFieldValue,
+  } = useFormik({
+    enableReinitialize: true,
+    initialValues: {
+      petName: petData?.name || "",
+      petType: petData?.type || "",
+      petBreed: petData?.breed || "",
+      petAge: petData?.age || "",
+      petDiscription: petData?.symptoms || "",
+    },
+    validationSchema: AddPetSchema,
 
-      onSubmit: async (values) => {
-        setLoading(true);
-        try {
-          const payload = {
-            petName: values.petName,
-            petBreed: values.petBreed,
-            petType: values.petType,
-            petAge: values.petAge,
-            symptoms: values.symptoms,
-          };
-          const response = await axios.post(
-            "/user/update-user-profile",
-            payload
-          );
-          if (response.status === 200) {
-            SuccessToast("Pet Profile Updated");
-            setEditPetModal(false);
-            setEditPetSuccess(true);
-            setUpdate((prev) => !prev);
-          }
-        } catch (error) {
-          ErrorToast(error?.response?.data?.message);
-        } finally {
-          setLoading(false);
+    onSubmit: async (values) => {
+      setLoading(true);
+      try {
+        const payload = {
+          petName: values.petName,
+          petBreed: values.petBreed,
+          petType: values.petType,
+          petAge: values.petAge,
+          symptoms: values.symptoms,
+        };
+        const response = await axios.post("/user/update-user-profile", payload);
+        if (response.status === 200) {
+          SuccessToast("Pet Profile Updated");
+          setEditPetModal(false);
+          setEditPetSuccess(true);
+          setUpdate((prev) => !prev);
         }
-      },
-    });
+      } catch (error) {
+        ErrorToast(error?.response?.data?.message);
+      } finally {
+        setLoading(false);
+      }
+    },
+  });
+  const availableBreeds = petBreeds[values.petType] || [];
 
   if (!isOpen) return null;
 
@@ -88,7 +94,10 @@ const EditPetForm = ({
           <div className="relative w-full">
             <select
               value={values.petType}
-              onChange={handleChange}
+              onChange={(e) => {
+                handleChange(e);
+                setFieldValue("petBreed", ""); // reset breed when type changes
+              }}
               name="petType"
               id="petType"
               onBlur={handleBlur}
@@ -114,19 +123,38 @@ const EditPetForm = ({
               </p>
             )}
           </div>
-
-          <GlobalInputs
-            placeholder="Enter Pet Breed"
-            value={values.petBreed}
-            type="text"
-            name="petBreed"
-            id="petBreed"
-            onChange={handleChange}
-            onBlur={handleBlur}
-            error={errors.petBreed}
-            touched={touched.petBreed}
-            max={50}
-          />
+          <div className="relative w-full">
+            <select
+              value={values.petBreed}
+              onChange={handleChange}
+              name="petBreed"
+              id="petBreed"
+              onBlur={handleBlur}
+              disabled={!values.petType}
+              className={`appearance-none w-full rounded-xl px-4 py-3 h-[49px] pr-10 text-[14px] bg-white text-[#616161] border placeholder:text-gray-400 outline-none transition ${
+                errors.petBreed && touched.petBreed
+                  ? "border-red-500 ring-1 ring-red-500"
+                  : "border focus:border-[#10C0B6] focus:ring-2 focus:ring-[#10C0B6]"
+              }`}
+            >
+              <option value="">
+                {values.petType ? "Select Breed" : "Select Pet Type First"}
+              </option>
+              {availableBreeds.map((breed, i) => (
+                <option key={i} value={breed}>
+                  {breed}
+                </option>
+              ))}
+            </select>
+            <div className="pointer-events-none absolute inset-y-0 right-3 flex items-center text-[#616161]">
+              <IoChevronDown />
+            </div>
+            {errors.petBreed && touched.petBreed && (
+              <p className="text-red-500 text-[12px] mt-1 font-medium">
+                {errors.petBreed}
+              </p>
+            )}
+          </div>
 
           <GlobalInputs
             placeholder="Enter Pet Age"
