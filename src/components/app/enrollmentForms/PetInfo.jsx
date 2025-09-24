@@ -4,7 +4,7 @@ import GlobalInputs from "../../global/GlobalInputs";
 import { IoChevronDown } from "react-icons/io5";
 import { FaCheck } from "react-icons/fa";
 import GlobalButton from "../../global/GlobalButton";
-import { petBreeds } from "../../../static/staticData";
+import { petBreeds } from "../../../static/StaticData";
 
 const PetInfo = ({
   values,

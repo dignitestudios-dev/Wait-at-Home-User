@@ -7,7 +7,7 @@ import { RxCross2 } from "react-icons/rx";
 import { AddPetSchema } from "../../../schema/app/PetFormSchema";
 import axios from "../../../axios";
 import { ErrorToast, SuccessToast } from "../../global/Toaster";
-import { petBreeds } from "../../../static/staticData";
+import { petBreeds } from "../../../static/StaticData";
 const EditPetForm = ({
   isOpen,
   onClose,

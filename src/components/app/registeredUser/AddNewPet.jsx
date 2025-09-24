@@ -4,7 +4,7 @@ import { IoChevronDown } from "react-icons/io5";
 import GlobalButton from "../../global/GlobalButton";
 import { Form, FieldArray } from "formik";
 import { RxCross2 } from "react-icons/rx";
-import { petBreeds } from "../../../static/staticData";
+import { petBreeds } from "../../../static/StaticData";
 
 const AddNewPet = ({
   isOpen,
