@@ -17,8 +17,9 @@ const AddPetForm = ({
   setAddPetModal,
   setUpdate,
 }) => {
-  if (!isOpen) return null;
   const [loading, setLoading] = useState(false);
+  const [isOther, setIsOther] = useState({});
+  if (!isOpen) return null;
   return (
     <Formik
       initialValues={AddPet}
@@ -27,7 +28,6 @@ const AddPetForm = ({
         setSubmitting(true);
         setLoading(true);
         try {
-          // Array of pets as payload
           const payload = {
             pet: values.pets.map((pet) => ({
               petName: pet.petName,
@@ -62,6 +62,7 @@ const AddPetForm = ({
         errors,
         touched,
         isSubmitting,
+        setFieldValue,
       }) => (
         <div className="fixed inset-0 z-50 bg-black bg-opacity-40 flex items-center justify-center">
           <div className="relative bg-gradient-to-br from-[#A0E6E1] to-[#C3B4D3] rounded-2xl w-[471px] max-w-xl p-6 shadow-lg max-h-[90vh] overflow-y-auto">
@@ -81,143 +82,171 @@ const AddPetForm = ({
               <FieldArray name="pets">
                 {(arrayHelpers) => (
                   <>
-                   {values.pets.map((pet, index) => {
-                  const availableBreeds = petBreeds[pet.petType] || [];
-                  return (
-                    <div key={index} className="mb-2 border-b pb-2">
-                      {/* Pet Name */}
-                      <GlobalInputs
-                        placeholder="Enter Pet’s Name"
-                        value={pet.petName}
-                        type="text"
-                        name={`pets.${index}.petName`}
-                        onChange={handleChange}
-                        onBlur={handleBlur}
-                        error={errors.pets?.[index]?.petName}
-                        touched={touched.pets?.[index]?.petName}
-                        max={50}
-                      />
+                    {values.pets.map((pet, index) => {
+                      const availableBreeds = petBreeds[pet.petType] || [];
+                      const handleBreedChange = (e) => {
+                        const value = e.target.value;
+                        if (value === "Other") {
+                          setIsOther((prev) => ({ ...prev, [index]: true }));
+                          setFieldValue(`pets.${index}.petBreed`, "");
+                        } else {
+                          setIsOther((prev) => ({ ...prev, [index]: false }));
+                          handleChange(e);
+                        }
+                      };
+                      return (
+                        <div key={index} className="mb-2 border-b pb-2">
+                          {/* Pet Name */}
+                          <GlobalInputs
+                            placeholder="Enter Pet’s Name"
+                            value={pet.petName}
+                            type="text"
+                            name={`pets.${index}.petName`}
+                            onChange={handleChange}
+                            onBlur={handleBlur}
+                            error={errors.pets?.[index]?.petName}
+                            touched={touched.pets?.[index]?.petName}
+                            max={50}
+                          />
 
-                      {/* Pet Type */}
-                      <div className="relative w-full mb-2">
-                        <select
-                          value={pet.petType}
-                          onChange={(e) => {
-                            handleChange(e);
-                            // reset breed when type changes
-                            setFieldValue(`pets.${index}.petBreed`, "");
-                          }}
-                          name={`pets.${index}.petType`}
-                          onBlur={handleBlur}
-                          className={`appearance-none w-full rounded-xl px-4 py-3 h-[49px] pr-10 text-[14px] bg-white text-[#616161] border ${
-                            errors.pets?.[index]?.petType &&
-                            touched.pets?.[index]?.petType
-                              ? "border-red-500 ring-1 ring-red-500"
-                              : "border focus:border-[#10C0B6] focus:ring-2 focus:ring-[#10C0B6]"
-                          }`}
-                        >
-                          <option value="">Select Pet Type</option>
-                          <option value="dog">Dog</option>
-                          <option value="cat">Cat</option>
-                          <option value="bird">Bird</option>
-                          <option value="rabbit">Rabbit</option>
-                          <option value="other">Other</option>
-                        </select>
-                        <div className="pointer-events-none absolute inset-y-0 right-3 flex items-center text-[#616161]">
-                          <IoChevronDown />
-                        </div>
-                        {errors.pets?.[index]?.petType &&
-                          touched.pets?.[index]?.petType && (
-                            <p className="text-red-500 text-[12px] mt-1 font-medium">
-                              {errors.pets[index].petType}
-                            </p>
+                          {/* Pet Type */}
+                          <div className="relative w-full mb-2">
+                            <select
+                              value={pet.petType}
+                              onChange={(e) => {
+                                handleChange(e);
+                                // reset breed when type changes
+                                setFieldValue(`pets.${index}.petBreed`, "");
+                              }}
+                              name={`pets.${index}.petType`}
+                              onBlur={handleBlur}
+                              className={`appearance-none w-full rounded-xl px-4 py-3 h-[49px] pr-10 text-[14px] bg-white text-[#616161] border ${
+                                errors.pets?.[index]?.petType &&
+                                touched.pets?.[index]?.petType
+                                  ? "border-red-500 ring-1 ring-red-500"
+                                  : "border focus:border-[#10C0B6] focus:ring-2 focus:ring-[#10C0B6]"
+                              }`}
+                            >
+                              <option value="">Select Pet Type</option>
+                              <option value="dog">Dog</option>
+                              <option value="cat">Cat</option>
+                              <option value="bird">Bird</option>
+                              <option value="rabbit">Rabbit</option>
+                              <option value="other">Other</option>
+                            </select>
+                            <div className="pointer-events-none absolute inset-y-0 right-3 flex items-center text-[#616161]">
+                              <IoChevronDown />
+                            </div>
+                            {errors.pets?.[index]?.petType &&
+                              touched.pets?.[index]?.petType && (
+                                <p className="text-red-500 text-[12px] mt-1 font-medium">
+                                  {errors.pets[index].petType}
+                                </p>
+                              )}
+                          </div>
+
+                          {/* Pet Breed - Dynamic */}
+                          <div className="relative w-full mb-2">
+                            <select
+                              value={isOther[index] ? "Other" : pet.petBreed}
+                              onChange={handleBreedChange}
+                              name={`pets.${index}.petBreed`}
+                              onBlur={handleBlur}
+                              disabled={!pet.petType}
+                              className={`appearance-none w-full rounded-xl px-4 py-3 h-[49px] pr-10 text-[14px] bg-white text-[#616161] border ${
+                                errors.pets?.[index]?.petBreed &&
+                                touched.pets?.[index]?.petBreed
+                                  ? "border-red-500 ring-1 ring-red-500"
+                                  : "border focus:border-[#10C0B6] focus:ring-2 focus:ring-[#10C0B6]"
+                              }`}
+                            >
+                              <option value="">
+                                {pet.petType
+                                  ? "Select Breed"
+                                  : "Select Pet Type First"}
+                              </option>
+                              {availableBreeds.slice(0, 8).map((breed, i) => (
+                                <option key={i} value={breed}>
+                                  {breed}
+                                </option>
+                              ))}
+                              {availableBreeds.length > 0 && (
+                                <option value="Other">Other</option>
+                              )}
+                            </select>
+                            <div className="pointer-events-none absolute inset-y-0 right-3 flex items-center text-[#616161]">
+                              <IoChevronDown />
+                            </div>
+                            {errors.pets?.[index]?.petBreed &&
+                              touched.pets?.[index]?.petBreed && (
+                                <p className="text-red-500 text-[12px] mt-1 font-medium">
+                                  {errors.pets[index].petBreed}
+                                </p>
+                              )}
+                          </div>
+
+                          {isOther[index] && (
+                            <input
+                              type="text"
+                              placeholder="Enter Breed"
+                              value={pet.petBreed}
+                              onChange={(e) =>
+                                setFieldValue(
+                                  `pets.${index}.petBreed`,
+                                  e.target.value
+                                )
+                              }
+                              className="w-full border rounded-lg p-2 mb-2"
+                            />
                           )}
-                      </div>
 
-                      {/* Pet Breed - Dynamic */}
-                      <div className="relative w-full mb-2">
-                        <select
-                          value={pet.petBreed}
-                          onChange={handleChange}
-                          name={`pets.${index}.petBreed`}
-                          onBlur={handleBlur}
-                          disabled={!pet.petType}
-                          className={`appearance-none w-full rounded-xl px-4 py-3 h-[49px] pr-10 text-[14px] bg-white text-[#616161] border ${
-                            errors.pets?.[index]?.petBreed &&
-                            touched.pets?.[index]?.petBreed
-                              ? "border-red-500 ring-1 ring-red-500"
-                              : "border focus:border-[#10C0B6] focus:ring-2 focus:ring-[#10C0B6]"
-                          }`}
-                        >
-                          <option value="">
-                            {pet.petType
-                              ? "Select Breed"
-                              : "Select Pet Type First"}
-                          </option>
-                          {availableBreeds.map((breed, i) => (
-                            <option key={i} value={breed}>
-                              {breed}
-                            </option>
-                          ))}
-                        </select>
-                        <div className="pointer-events-none absolute inset-y-0 right-3 flex items-center text-[#616161]">
-                          <IoChevronDown />
-                        </div>
-                        {errors.pets?.[index]?.petBreed &&
-                          touched.pets?.[index]?.petBreed && (
-                            <p className="text-red-500 text-[12px] mt-1 font-medium">
-                              {errors.pets[index].petBreed}
-                            </p>
+                          {/* Pet Age */}
+                          <GlobalInputs
+                            placeholder="Enter Pet Age"
+                            value={pet.petAge}
+                            type="text"
+                            name={`pets.${index}.petAge`}
+                            onChange={handleChange}
+                            onBlur={handleBlur}
+                            error={errors.pets?.[index]?.petAge}
+                            touched={touched.pets?.[index]?.petAge}
+                          />
+
+                          {/* Pet Description */}
+                          <textarea
+                            name={`pets.${index}.petDiscription`}
+                            placeholder="Enter Symptoms or Reasons for the visit"
+                            value={pet.petDiscription}
+                            onChange={handleChange}
+                            onBlur={handleBlur}
+                            className={`bg-white w-full rounded-[20px] h-[113px] px-4 py-4 ${
+                              errors.pets?.[index]?.petDiscription &&
+                              touched.pets?.[index]?.petDiscription
+                                ? "border-red-500 ring-1 ring-red-500"
+                                : "border focus:border-[#10C0B6] focus:ring-2 focus:ring-[#10C0B6]"
+                            }`}
+                          />
+                          {errors.pets?.[index]?.petDiscription &&
+                            touched.pets?.[index]?.petDiscription && (
+                              <p className="text-red-500 text-[12px] mt-1 font-medium">
+                                {errors.pets[index].petDiscription}
+                              </p>
+                            )}
+
+                          {/* Remove Button */}
+                          {index > 0 && (
+                            <button
+                              type="button"
+                              className="text-red-500 mt-2"
+                              onClick={() => arrayHelpers.remove(index)}
+                            >
+                              Remove
+                            </button>
                           )}
-                      </div>
-
-                      {/* Pet Age */}
-                      <GlobalInputs
-                        placeholder="Enter Pet Age"
-                        value={pet.petAge}
-                        type="text"
-                        name={`pets.${index}.petAge`}
-                        onChange={handleChange}
-                        onBlur={handleBlur}
-                        error={errors.pets?.[index]?.petAge}
-                        touched={touched.pets?.[index]?.petAge}
-                      />
-
-                      {/* Pet Description */}
-                      <textarea
-                        name={`pets.${index}.petDiscription`}
-                        placeholder="Enter Symptoms or Reasons for the visit"
-                        value={pet.petDiscription}
-                        onChange={handleChange}
-                        onBlur={handleBlur}
-                        className={`bg-white w-full rounded-[20px] h-[113px] px-4 py-4 ${
-                          errors.pets?.[index]?.petDiscription &&
-                          touched.pets?.[index]?.petDiscription
-                            ? "border-red-500 ring-1 ring-red-500"
-                            : "border focus:border-[#10C0B6] focus:ring-2 focus:ring-[#10C0B6]"
-                        }`}
-                      />
-                      {errors.pets?.[index]?.petDiscription &&
-                        touched.pets?.[index]?.petDiscription && (
-                          <p className="text-red-500 text-[12px] mt-1 font-medium">
-                            {errors.pets[index].petDiscription}
-                          </p>
-                        )}
-
-                      {/* Remove Button */}
-                      {index > 0 && (
-                        <button
-                          type="button"
-                          className="text-red-500 mt-2"
-                          onClick={() => arrayHelpers.remove(index)}
-                        >
-                          Remove
-                        </button>
-                      )}
-                    </div>
-                  );
-                })}
-                    <div className="flex justify-end">
+                        </div>
+                      );
+                    })}
+                    {/* <div className="flex justify-end">
                       <div className="w-[200px]">
                         <GlobalButton
                           onClick={() =>
@@ -232,7 +261,7 @@ const AddPetForm = ({
                           children={" + Add More"}
                         />
                       </div>
-                    </div>
+                    </div> */}
                   </>
                 )}
               </FieldArray>

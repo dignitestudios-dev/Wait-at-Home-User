@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import GlobalInputs from "../../global/GlobalInputs";
 import { IoChevronDown } from "react-icons/io5";
 import GlobalButton from "../../global/GlobalButton";
@@ -8,6 +8,7 @@ import { AddPetSchema } from "../../../schema/app/PetFormSchema";
 import axios from "../../../axios";
 import { ErrorToast, SuccessToast } from "../../global/Toaster";
 import { petBreeds } from "../../../static/StaticData";
+
 const EditPetForm = ({
   isOpen,
   onClose,
@@ -17,6 +18,8 @@ const EditPetForm = ({
   setUpdate,
 }) => {
   const [loading, setLoading] = useState(false);
+  const [isOther, setIsOther] = useState(false);
+
   const {
     values,
     handleBlur,
@@ -44,7 +47,7 @@ const EditPetForm = ({
           petBreed: values.petBreed,
           petType: values.petType,
           petAge: values.petAge,
-          symptoms: values.symptoms,
+          symptoms: values.petDiscription,
         };
         const response = await axios.post("/user/update-user-profile", payload);
         if (response.status === 200) {
@@ -60,9 +63,31 @@ const EditPetForm = ({
       }
     },
   });
-  const availableBreeds = petBreeds[values.petType] || [];
+
+  // Check if petBreed is outside the available list → mark as Other
+  useEffect(() => {
+    if (values.petType) {
+      const availableBreeds = petBreeds[values.petType] || [];
+      if (values.petBreed && !availableBreeds.includes(values.petBreed)) {
+        setIsOther(true);
+      }
+    }
+  }, [values.petType, values.petBreed]);
 
   if (!isOpen) return null;
+
+  const availableBreeds = petBreeds[values.petType] || [];
+
+  const handleBreedChange = (e) => {
+    const value = e.target.value;
+    if (value === "Other") {
+      setIsOther(true);
+      setFieldValue("petBreed", "");
+    } else {
+      setIsOther(false);
+      setFieldValue("petBreed", value);
+    }
+  };
 
   return (
     <div className="fixed inset-0 z-50 bg-black bg-opacity-40 flex items-center justify-center">
@@ -79,6 +104,7 @@ const EditPetForm = ({
           </button>
         </div>
         <form onSubmit={handleSubmit} className="space-y-3 mt-4">
+          {/* Pet Name */}
           <GlobalInputs
             placeholder="Enter Pet’s Name"
             value={values.petName}
@@ -91,17 +117,20 @@ const EditPetForm = ({
             touched={touched.petName}
             max={50}
           />
+
+          {/* Pet Type */}
           <div className="relative w-full">
             <select
               value={values.petType}
               onChange={(e) => {
                 handleChange(e);
-                setFieldValue("petBreed", ""); // reset breed when type changes
+                setFieldValue("petBreed", "");
+                setIsOther(false);
               }}
               name="petType"
               id="petType"
               onBlur={handleBlur}
-              className={`appearance-none w-full rounded-xl px-4 py-3 h-[49px] pr-10 text-[14px] bg-white text-[#616161] border placeholder:text-gray-400 outline-none transition ${
+              className={`appearance-none w-full rounded-xl px-4 py-3 h-[49px] pr-10 text-[14px] bg-white text-[#616161] border ${
                 errors.petType && touched.petType
                   ? "border-red-500 ring-1 ring-red-500"
                   : "border focus:border-[#10C0B6] focus:ring-2 focus:ring-[#10C0B6]"
@@ -117,21 +146,18 @@ const EditPetForm = ({
             <div className="pointer-events-none absolute inset-y-0 right-3 flex items-center text-[#616161]">
               <IoChevronDown />
             </div>
-            {errors.petType && touched && (
-              <p className="text-red-500 text-[12px] mt-1 font-medium">
-                {errors.petType}
-              </p>
-            )}
           </div>
+
+          {/* Pet Breed */}
           <div className="relative w-full">
             <select
-              value={values.petBreed}
-              onChange={handleChange}
+              value={isOther ? "Other" : values.petBreed}
+              onChange={handleBreedChange}
               name="petBreed"
               id="petBreed"
               onBlur={handleBlur}
               disabled={!values.petType}
-              className={`appearance-none w-full rounded-xl px-4 py-3 h-[49px] pr-10 text-[14px] bg-white text-[#616161] border placeholder:text-gray-400 outline-none transition ${
+              className={`appearance-none w-full rounded-xl px-4 py-3 h-[49px] pr-10 text-[14px] bg-white text-[#616161] border ${
                 errors.petBreed && touched.petBreed
                   ? "border-red-500 ring-1 ring-red-500"
                   : "border focus:border-[#10C0B6] focus:ring-2 focus:ring-[#10C0B6]"
@@ -140,22 +166,32 @@ const EditPetForm = ({
               <option value="">
                 {values.petType ? "Select Breed" : "Select Pet Type First"}
               </option>
-              {availableBreeds.map((breed, i) => (
+              {availableBreeds.slice(0, 8).map((breed, i) => (
                 <option key={i} value={breed}>
                   {breed}
                 </option>
               ))}
+              {availableBreeds.length > 0 && (
+                <option value="Other">Other</option>
+              )}
             </select>
             <div className="pointer-events-none absolute inset-y-0 right-3 flex items-center text-[#616161]">
               <IoChevronDown />
             </div>
-            {errors.petBreed && touched.petBreed && (
-              <p className="text-red-500 text-[12px] mt-1 font-medium">
-                {errors.petBreed}
-              </p>
-            )}
           </div>
 
+          {/* Custom Other Breed input */}
+          {isOther && (
+            <input
+              type="text"
+              placeholder="Enter Breed"
+              value={values.petBreed}
+              onChange={(e) => setFieldValue("petBreed", e.target.value)}
+              className="w-full border rounded-lg p-2"
+            />
+          )}
+
+          {/* Age */}
           <GlobalInputs
             placeholder="Enter Pet Age"
             value={values.petAge}
@@ -167,6 +203,8 @@ const EditPetForm = ({
             error={errors.petAge}
             touched={touched.petAge}
           />
+
+          {/* Description */}
           <textarea
             name="petDiscription"
             placeholder="Enter Symptoms or Reasons for the visit"
@@ -179,16 +217,14 @@ const EditPetForm = ({
               errors.petDiscription && touched.petDiscription
                 ? "border-red-500 ring-1 ring-red-500"
                 : "border focus:border-[#10C0B6] focus:ring-2 focus:ring-[#10C0B6]"
-            } `}
-          ></textarea>
-          {errors.petDiscription && touched.petDiscription && (
-            <p className="text-red-500 text-[12px] mt-1 font-medium">
-              {errors.petDiscription}
-            </p>
-          )}
+            }`}
+          />
 
+          {/* Submit */}
           <div className="pt-4">
-            <GlobalButton type="submit" loading={loading} children={"Update"} />
+            <GlobalButton type="submit" loading={loading}>
+              Update
+            </GlobalButton>
           </div>
         </form>
       </div>

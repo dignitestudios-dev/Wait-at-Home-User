@@ -36,7 +36,7 @@ const JoinWaitList = ({
             className={`w-full bg-[#5E2E86] text-white text-[16px] font-[500] py-3 rounded-full transition duration-200`}
             onClick={handleCancelEnrollment}
           >
-            Cancel Enrollment
+          Remove me from the list
           </button>
         </>
       ) : (

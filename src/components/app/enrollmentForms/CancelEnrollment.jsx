@@ -12,7 +12,7 @@ const CancelEnrollment = ({ isOpen, handleClick, onClose }) => {
             <img src={Alert} className="h-[62px] w-[62px]" alt="Success Tick" />
           </div>
 
-          <h2 className="text-[24px] font-[600]">Cancel Enrollment?</h2>
+          <h2 className="text-[24px] font-[600]">Remove me from the list</h2>
 
           <p className="text-[16px] font-[400] text-[#565656] max-w-[350px]">
             Are you sure you want to cancel your enrollment
@@ -22,7 +22,7 @@ const CancelEnrollment = ({ isOpen, handleClick, onClose }) => {
               onClick={handleClick}
               className={`w-[203px] bg-[#FFFFFFBF]  text-[#00908b] text-[14px] font-[600] py-3 rounded-[12px] transition duration-200 `}
             >
-              Cancel Enrollment
+              Remove me from the list
             </button>
             <button
               onClick={onClose}

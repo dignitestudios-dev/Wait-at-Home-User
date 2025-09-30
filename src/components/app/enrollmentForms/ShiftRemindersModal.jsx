@@ -29,6 +29,13 @@ const ShiftRemindersModal = ({
 
   const handleContinue = () => {
     if (
+      !selectedOptions.includes("email") &&
+      !selectedOptions.includes("phone")
+    ) {
+      setError("Please select at least one notification option.");
+      return;
+    }
+    if (
       (selectedOptions.includes("email") ||
         selectedOptions.includes("phone")) &&
       !reminderFrequency
@@ -78,13 +85,15 @@ const ShiftRemindersModal = ({
               <p className="text-[14px] font-[500]">Phone</p>
             </div>
           </div>
-
+ {error && (
+                <p className="text-red-600 text-sm mt-2 font-medium">{error}</p>
+              )}
           {/* Reminder Frequency Selection - sirf tab show hoga jab email/phone select ho */}
           {(selectedOptions.includes("email") ||
             selectedOptions.includes("phone")) && (
             <div className="mt-6">
               <h3 className="text-[18px] font-[600] mb-3">
-                When should we remind you?
+                We’ll remind you when it’s time to come in
               </h3>
               <div className="flex flex-wrap gap-3 justify-center">
                 {reminderOptions.map((min) => (
@@ -92,7 +101,7 @@ const ShiftRemindersModal = ({
                     key={min}
                     onClick={() => {
                       setReminderFrequency(min);
-                      setError(""); 
+                      setError("");
                     }}
                     className={`cursor-pointer px-4 py-2 rounded-lg border border-white ${
                       reminderFrequency === min

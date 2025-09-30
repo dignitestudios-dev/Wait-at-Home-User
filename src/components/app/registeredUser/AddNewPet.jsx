@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import GlobalInputs from "../../global/GlobalInputs";
 import { IoChevronDown } from "react-icons/io5";
 import GlobalButton from "../../global/GlobalButton";
@@ -17,6 +17,7 @@ const AddNewPet = ({
   values,
   loading,
 }) => {
+  const [isOther, setIsOther] = useState({});
   if (!isOpen) return null;
 
   return (
@@ -42,6 +43,17 @@ const AddNewPet = ({
               <>
                 {values.pets.map((pet, index) => {
                   const availableBreeds = petBreeds[pet.petType] || [];
+                  const handleBreedChange = (e) => {
+                    const value = e.target.value;
+                    if (value === "Other") {
+                      setIsOther((prev) => ({ ...prev, [index]: true }));
+                      setFieldValue(`pets.${index}.petBreed`, "");
+                    } else {
+                      setIsOther((prev) => ({ ...prev, [index]: false }));
+                      handleChange(e);
+                    }
+                  };
+
                   return (
                     <div key={index} className="mb-2 border-b pb-2">
                       {/* Pet Name */}
@@ -96,8 +108,8 @@ const AddNewPet = ({
                       {/* Pet Breed - Dynamic */}
                       <div className="relative w-full mb-2">
                         <select
-                          value={pet.petBreed}
-                          onChange={handleChange}
+                          value={isOther[index] ? "Other" : pet.petBreed}
+                          onChange={handleBreedChange}
                           name={`pets.${index}.petBreed`}
                           onBlur={handleBlur}
                           disabled={!pet.petType}
@@ -113,11 +125,14 @@ const AddNewPet = ({
                               ? "Select Breed"
                               : "Select Pet Type First"}
                           </option>
-                          {availableBreeds.map((breed, i) => (
+                          {availableBreeds.slice(0, 8).map((breed, i) => (
                             <option key={i} value={breed}>
                               {breed}
                             </option>
                           ))}
+                          {availableBreeds.length > 0 && (
+                            <option value="Other">Other</option>
+                          )}
                         </select>
                         <div className="pointer-events-none absolute inset-y-0 right-3 flex items-center text-[#616161]">
                           <IoChevronDown />
@@ -129,6 +144,21 @@ const AddNewPet = ({
                             </p>
                           )}
                       </div>
+
+                      {isOther[index] && (
+                        <input
+                          type="text"
+                          placeholder="Enter Breed"
+                          value={pet.petBreed}
+                          onChange={(e) =>
+                            setFieldValue(
+                              `pets.${index}.petBreed`,
+                              e.target.value
+                            )
+                          }
+                          className="w-full border rounded-lg p-2 mb-2"
+                        />
+                      )}
 
                       {/* Pet Age */}
                       <GlobalInputs
@@ -178,7 +208,7 @@ const AddNewPet = ({
                 })}
 
                 {/* Add More Button */}
-                <div className="flex justify-end mb-4">
+                {/* <div className="flex justify-end mb-4">
                   <button
                     type="button"
                     className="bg-[#10C0B6] text-white rounded-lg h-[40px] px-4"
@@ -194,14 +224,18 @@ const AddNewPet = ({
                   >
                     + Add More
                   </button>
-                </div>
+                </div> */}
               </>
             )}
           />
 
           {/* Submit Button */}
           <div className="pt-4">
-            <GlobalButton type="submit" children={"Add Pets"} loading={loading} />
+            <GlobalButton
+              type="submit"
+              children={"Add Pets"}
+              loading={loading}
+            />
           </div>
         </Form>
       </div>
