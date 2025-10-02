@@ -313,14 +313,14 @@ const Home = () => {
         <TopSection />
       </div>
       <div className="flex flex-col gap-6 lg:flex-row lg:gap-10">
-        <div className="flex justify-center lg:block">
+        <div className="flex justify-center mt-6 lg:block">
           <WaitingList
             appointmentList={appointmentList}
             appointmentListLoader={appointmentListLoader}
           />
         </div>
-        <div className="flex flex-col gap-6">
-          <div className="flex flex-col sm:flex-row gap-4">
+        <div className="flex w-full flex-col gap-6">
+          <div className="flex  flex-col sm:flex-row gap-4">
             <JoinWaitList
               appointmentNumber={appointmentNumber}
               isWaitList={isWaitList}
@@ -333,15 +333,17 @@ const Home = () => {
               appointmentNumberLoader={appointmentNumberLoader}
             />
 
-            <CurrentlyServing
+            {/* <CurrentlyServing
               appointmentListLoader={appointmentListLoader}
               currentlyServing={appointmentList}
-            />
+            /> */}
           </div>
           <EstimatedTime
+          appointmentNumber={appointmentNumber}
             data={estimateData}
             loading={estimateLoader}
             update={update}
+           handleCancelEnrollment={() => setCancelEnrollment(true)}
           />
         </div>
         <div className="flex justify-center lg:ms-auto">

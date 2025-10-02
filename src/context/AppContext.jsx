@@ -1,176 +1,176 @@
-  import React, { createContext, useContext, useEffect, useState } from "react";
-  import Cookies from "js-cookie";
-  import { ErrorToast } from "../components/global/Toaster";
-  import axios from "../axios";
-  import { useNavigate } from "react-router";
-  import { onMessageListener } from "../firebase/messages";
-  import { getFCMToken } from "../firebase/getFcmToken";
+import React, { createContext, useContext, useEffect, useState } from "react";
+import Cookies from "js-cookie";
+import { ErrorToast } from "../components/global/Toaster";
+import axios from "../axios";
+import { useNavigate } from "react-router";
+import { onMessageListener } from "../firebase/messages";
+import { getFCMToken } from "../firebase/getFcmToken";
 
-  export const AppContext = createContext();
+export const AppContext = createContext();
 
-  export const AppContextProvider = ({ children }) => {
-    const navigate = useNavigate();
-    const [isOpen, setIsOpen] = useState(false);
-    const [notificationUpdate, setNotificationUpdate] = useState(false);
-    const [notification, setNotification] = useState({ title: "", body: "" });
-    const [show, setShow] = useState(false);
-    const [fcmToken, setFcmToken] = useState("");
+export const AppContextProvider = ({ children }) => {
+  const navigate = useNavigate();
+  const [isOpen, setIsOpen] = useState(false);
+  const [notificationUpdate, setNotificationUpdate] = useState(false);
+  const [notification, setNotification] = useState({ title: "", body: "" });
+  const [show, setShow] = useState(false);
+  const [fcmToken, setFcmToken] = useState("");
 
-    const [token, setToken] = useState(() => {
-      return Cookies.get("token") || null;
-    });
-    const [isVerifiedEmail, setIsVerifiedEmail] = useState(() => {
-      return Cookies.get("isEmailVerified") || null;
-    });
-    const [isPhoneVerified, setIsPhoneVerified] = useState(() => {
-      return Cookies.get("isPhoneVerified") || null;
-    });
+  const [token, setToken] = useState(() => {
+    return Cookies.get("token") || null;
+  });
+  const [isVerifiedEmail, setIsVerifiedEmail] = useState(() => {
+    return Cookies.get("isEmailVerified") || null;
+  });
+  const [isPhoneVerified, setIsPhoneVerified] = useState(() => {
+    return Cookies.get("isPhoneVerified") || null;
+  });
 
-    const [userData, setUserData] = useState(() => {
-      const cookieData = Cookies.get("userData");
-      return cookieData ? JSON.parse(cookieData) : null;
-    });
-    const [petData, setPetData] = useState(() => {
-      const cookieData = Cookies.get("petData");
-      return cookieData ? JSON.parse(cookieData) : null;
-    });
-    const [appointmentData, setAppointmentData] = useState(() => {
-      const cookieData = Cookies.get("appointmentData");
-      return cookieData ? JSON.parse(cookieData) : null;
-    });
+  const [userData, setUserData] = useState(() => {
+    const cookieData = Cookies.get("userData");
+    return cookieData ? JSON.parse(cookieData) : null;
+  });
+  const [petData, setPetData] = useState(() => {
+    const cookieData = Cookies.get("petData");
+    return cookieData ? JSON.parse(cookieData) : null;
+  });
+  const [appointmentData, setAppointmentData] = useState(() => {
+    const cookieData = Cookies.get("appointmentData");
+    return cookieData ? JSON.parse(cookieData) : null;
+  });
 
-    const Auth = (data) => {
-      if (!data?.data) return;
+  const Auth = (data) => {
+    if (!data?.data) return;
 
-      if (data.data.user) {
-        Cookies.set("userData", JSON.stringify(data.data.user), { expires: 7 });
-        setUserData(data?.data?.user);
-      }
-      if (data.data.pets) {
-        Cookies.set("petData", JSON.stringify(data.data.pets), { expires: 7 });
-        setPetData(data.data.pets);
-      }
-      if (data.data.appointment) {
-        Cookies.set("appointmentData", JSON.stringify(data.data.appointment), {
-          expires: 7,
-        });
-        setAppointmentData(data.data.appointment);
-      }
-      if (data?.data?.token) {
-        Cookies.set("token", data?.data?.token, { expires: 7 });
-        setToken(data.data.token);
-      }
-      if (data?.data?.isEmailVerified) {
-        Cookies.set("isEmailVerified", data?.data?.isEmailVerified, {
-          expires: 7,
-        });
-        setIsVerifiedEmail(data?.data?.isEmailVerified);
-      }
-      if (data?.data?.isPhoneVerified) {
-        Cookies.set("isPhoneVerified", data?.data?.isPhoneVerified, {
-          expires: 7,
-        });
-        setIsPhoneVerified(data?.data?.isPhoneVerified);
-      }
-    };
-    const clearAllCookies = () => {
-      const cookies = document.cookie.split(";");
+    if (data.data.user) {
+      Cookies.set("userData", JSON.stringify(data.data.user), { expires: 7 });
+      setUserData(data?.data?.user);
+    }
+    if (data.data.pets) {
+      Cookies.set("petData", JSON.stringify(data.data.pets), { expires: 7 });
+      setPetData(data.data.pets);
+    }
+    if (data.data.appointment) {
+      Cookies.set("appointmentData", JSON.stringify(data.data.appointment), {
+        expires: 7,
+      });
+      setAppointmentData(data.data.appointment);
+    }
+    if (data?.data?.token) {
+      Cookies.set("token", data?.data?.token, { expires: 7 });
+      setToken(data.data.token);
+    }
+    if (data?.data?.isEmailVerified) {
+      Cookies.set("isEmailVerified", data?.data?.isEmailVerified, {
+        expires: 7,
+      });
+      setIsVerifiedEmail(data?.data?.isEmailVerified);
+    }
+    if (data?.data?.isPhoneVerified) {
+      Cookies.set("isPhoneVerified", data?.data?.isPhoneVerified, {
+        expires: 7,
+      });
+      setIsPhoneVerified(data?.data?.isPhoneVerified);
+    }
+  };
+  const clearAllCookies = () => {
+    const cookies = document.cookie.split(";");
 
-      for (let cookie of cookies) {
-        const eqPos = cookie.indexOf("=");
-        const name = eqPos > -1 ? cookie.substr(0, eqPos) : cookie;
-        Cookies.remove(name.trim());
-      }
+    for (let cookie of cookies) {
+      const eqPos = cookie.indexOf("=");
+      const name = eqPos > -1 ? cookie.substr(0, eqPos) : cookie;
+      Cookies.remove(name.trim());
+    }
 
-      setUserData(null);
-      setPetData(null);
-      setAppointmentData(null);
-      sessionStorage.clear();
-    };
-    const getAllAppoitment = async () => {
-      try {
-        const response = await axios.get("/appointment/get-all-appointments");
-        if (response.status === 200) {
-          if (response?.data?.data.length === 0) {
-            clearAllCookies();
-          }
+    setUserData(null);
+    setPetData(null);
+    setAppointmentData(null);
+    sessionStorage.clear();
+  };
+  const getAllAppoitment = async () => {
+    try {
+      const response = await axios.get("/appointment/get-all-appointments");
+      if (response.status === 200) {
+        if (response?.data?.data.length === 0) {
+          clearAllCookies();
         }
-      } catch (error) {
-        ErrorToast(error.response.data.message);
       }
-    };
-
-    onMessageListener()
-      .then((payload) => {
-        console.log("🚀 ~ .then ~ payload:", payload);
-        setShow(true);
-        setNotification({
-          title: payload.notification.title,
-          body: payload.notification.body,
-        });
-        setNotificationUpdate((prev) => !prev);
-        setTimeout(() => {
-          setShow(false);
-          setNotification({ title: "", body: "" });
-        }, 3000);
-      })
-      .catch((err) => console.log("failed: ", err));
-
-    const getFcm = async () => {
-      try {
-        const fcmTokenResponse = await getFCMToken();
-        setFcmToken(fcmTokenResponse);
-      } catch (err) {
-        console.log("🚀 ~ getFcm ~ err:", err);
-        ErrorToast(err);
-      }
-    };
-
-    useEffect(() => {
-      getAllAppoitment();
-      getFcm();
-    }, []);
-    const handleLogOut = () => {
-      clearAllCookies();
-      setToken(null);
-      setUserData(null);
-      setPetData(null);
-      setAppointmentData(null);
-      navigate("/app/home");
-    };
-    return (
-      <AppContext.Provider
-        value={{
-          isOpen,
-          setIsOpen,
-          userData,
-          petData,
-          appointmentData,
-          Auth,
-          clearAllCookies,
-          handleLogOut,
-          token,
-          isVerifiedEmail,
-          isPhoneVerified,
-          setIsPhoneVerified,
-          setIsVerifiedEmail,
-          setPetData,
-          show,
-          setShow,
-          notification,
-          setNotification,
-          notificationUpdate,
-          setNotificationUpdate,
-          fcmToken,
-        }}
-      >
-        {children}
-      </AppContext.Provider>
-    );
+    } catch (error) {
+      ErrorToast(error.response.data.message);
+    }
   };
 
-  const useApp = () => {
-    return useContext(AppContext);
+  onMessageListener()
+    .then((payload) => {
+      console.log("🚀 ~ .then ~ payload:", payload);
+      setShow(true);
+      setNotification({
+        title: payload.notification.title,
+        body: payload.notification.body,
+      });
+      setNotificationUpdate((prev) => !prev);
+      setTimeout(() => {
+        setShow(false);
+        setNotification({ title: "", body: "" });
+      }, 3000);
+    })
+    .catch((err) => console.log("failed: ", err));
+
+  const getFcm = async () => {
+    try {
+      const fcmTokenResponse = await getFCMToken();
+      setFcmToken(fcmTokenResponse);
+    } catch (err) {
+      console.log("🚀 ~ getFcm ~ err:", err);
+      ErrorToast(err);
+    }
   };
 
-  export default useApp;
+  useEffect(() => {
+    getAllAppoitment();
+    getFcm();
+  }, []);
+  const handleLogOut = () => {
+    clearAllCookies();
+    setToken(null);
+    setUserData(null);
+    setPetData(null);
+    setAppointmentData(null);
+    navigate("/app/home");
+  };
+  return (
+    <AppContext.Provider
+      value={{
+        isOpen,
+        setIsOpen,
+        userData,
+        petData,
+        appointmentData,
+        Auth,
+        clearAllCookies,
+        handleLogOut,
+        token,
+        isVerifiedEmail,
+        isPhoneVerified,
+        setIsPhoneVerified,
+        setIsVerifiedEmail,
+        setPetData,
+        show,
+        setShow,
+        notification,
+        setNotification,
+        notificationUpdate,
+        setNotificationUpdate,
+        fcmToken,
+      }}
+    >
+      {children}
+    </AppContext.Provider>
+  );
+};
+
+const useApp = () => {
+  return useContext(AppContext);
+};
+
+export default useApp;

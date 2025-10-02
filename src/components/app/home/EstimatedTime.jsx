@@ -4,7 +4,12 @@ import { FaClock } from "react-icons/fa";
 import { useFetchById, useGlobal } from "../../../hooks/api/Get";
 import { AppContext } from "../../../context/AppContext";
 
-const EstimatedTime = ({ update, data, loading }) => {
+const EstimatedTime = ({
+  update,
+  data,
+  handleCancelEnrollment,
+  appointmentNumber,
+}) => {
   const [time, setTime] = useState(0); // default 00:00
   const { appointmentData } = useContext(AppContext);
 
@@ -51,11 +56,21 @@ const EstimatedTime = ({ update, data, loading }) => {
 
   return (
     <div className="bg-[#b5d8dc] border backdrop-blur-sm rounded-3xl p-8 w-full shadow-lg">
-      <h2 className="text-xl font-medium text-gray-800 mb-8">
-        Estimated Wait Time
-      </h2>
+      <div className="flex  items-center justify-between ">
+        <h2 className="text-xl font-medium text-gray-800 ">
+          Estimated Wait Time
+        </h2>
+        {appointmentNumber?.appointmentNumber && (
 
-      <div className="relative flex items-center justify-center">
+        <button
+          className={`w-[230px] bg-[#5E2E86] text-white text-[16px] font-[500] py-3 rounded-full transition duration-200`}
+          onClick={handleCancelEnrollment}
+        >
+          Remove me from the list
+        </button>
+        )}
+      </div>
+      <div className="relative flex items-center justify-center mt-10">
         <div className="relative">
           <svg
             className="w-full h-full transform -rotate-90"

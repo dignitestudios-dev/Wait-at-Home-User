@@ -6,7 +6,7 @@ const WaitingList = ({ appointmentList, appointmentListLoader }) => {
 
   return (
     <>
-      <div className="relative bg-transparent cursor-pointer border border-white w-[281px] p-4 rounded-[30px] shadow-md mb-6 overflow-hidden">
+      <div className="relative bg-transparent cursor-pointer border border-white w-[350px] p-4 rounded-[30px] shadow-md mb-6 overflow-hidden">
         <div className="absolute inset-0 z-10 pointer-events-none rounded-[20px] backdrop-blur-[6px] bg-gradient-to-b from-[#10C0B6] to-[#684D7B]" />
 
         <h3 className="text-[18px] font-[500] text-white mb-4 z-20 relative">
