@@ -15,14 +15,11 @@ async function getDeviceFingerprint() {
 
 const instance = axios.create({
   baseURL: baseUrl,
-  headers: {
-    devicemodel: getDeviceFingerprint(),
-    deviceuniqueid: getDeviceFingerprint(),
-  },
+
   timeout: 10000, // 10 seconds timeout
 });
 
-instance.interceptors.request.use((request) => {
+instance.interceptors.request.use(async (request) => {
   const token = Cookies.get("token");
   if (!navigator.onLine) {
     // No internet connection
@@ -32,10 +29,12 @@ instance.interceptors.request.use((request) => {
     return;
     // return Promise.reject(new Error("No internet connection"));
   }
-
+  const fingerprint = await getDeviceFingerprint();
   // Merge existing headers with token
   request.headers = {
-    ...request.headers, // Keep existing headers like devicemodel and deviceuniqueid
+    ...request.headers,
+    devicemodel: fingerprint,
+    deviceuniqueid: fingerprint, // Keep existing headers like devicemodel and deviceuniqueid
     Accept: "application/json, text/plain, */*",
     ...(token && { Authorization: `Bearer ${token}` }), // Add Authorization only if token exists
   };
