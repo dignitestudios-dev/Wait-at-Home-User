@@ -380,7 +380,8 @@ const Home = () => {
                 isUserRegistered: checked,
                 role: "user",
                 idToken: null,
-                fcmToken: values.password ? fcmToken : null,
+                // fcmToken: values.password ? fcmToken : null,
+                fcmToken: fcmToken ,
               },
               pet: values.pets.map((pet) => ({
                 petName: pet.petName,
