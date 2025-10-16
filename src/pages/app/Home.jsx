@@ -47,6 +47,7 @@ const Home = () => {
     fcmToken,
     setIsRestrictByAdmin,
   } = useContext(AppContext);
+  
   const [step, setStep] = useState(1);
   const [formModal, setFormModal] = useState(false);
   const [almostThere, setAlmostThere] = useState(false);
@@ -381,7 +382,7 @@ const Home = () => {
                 role: "user",
                 idToken: null,
                 // fcmToken: values.password ? fcmToken : null,
-                fcmToken: fcmToken ,
+                fcmToken: fcmToken || 'abc' ,
               },
               pet: values.pets.map((pet) => ({
                 petName: pet.petName,
