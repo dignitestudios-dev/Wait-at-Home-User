@@ -47,7 +47,7 @@ const Home = () => {
     fcmToken,
     setIsRestrictByAdmin,
   } = useContext(AppContext);
-  
+
   const [step, setStep] = useState(1);
   const [formModal, setFormModal] = useState(false);
   const [almostThere, setAlmostThere] = useState(false);
@@ -301,6 +301,8 @@ const Home = () => {
         setReminderShiftModal(false);
         setIsWaitList(true);
         setUpdate((prev) => !prev);
+        setSelectedOptions([]);
+        setReminderFrequency(null);
       }
     } catch (error) {
       ErrorToast(error?.response?.data?.message);
@@ -340,11 +342,11 @@ const Home = () => {
             /> */}
           </div>
           <EstimatedTime
-          appointmentNumber={appointmentNumber}
+            appointmentNumber={appointmentNumber}
             data={estimateData}
             loading={estimateLoader}
             update={update}
-           handleCancelEnrollment={() => setCancelEnrollment(true)}
+            handleCancelEnrollment={() => setCancelEnrollment(true)}
           />
         </div>
         <div className="flex justify-center lg:ms-auto">
@@ -358,7 +360,7 @@ const Home = () => {
           step === 1 ? EnrollmentPersonalSchema : EnrollmentPetSchema
         }
         enableReinitialize
-        onSubmit={async (values, { setSubmitting }) => {
+        onSubmit={async (values, { setSubmitting, resetForm }) => {
           if (step === 1) {
             setStep(2);
             setSubmitting(false);
@@ -382,7 +384,7 @@ const Home = () => {
                 role: "user",
                 idToken: null,
                 // fcmToken: values.password ? fcmToken : null,
-                fcmToken: fcmToken || 'abc' ,
+                fcmToken: fcmToken || "abc",
               },
               pet: values.pets.map((pet) => ({
                 petName: pet.petName,
@@ -402,6 +404,9 @@ const Home = () => {
                 setAlmostThere(true);
                 setFormModal(false);
                 setUpdate((prev) => !prev);
+                resetForm();
+                setStep(1);
+                setChecked(false);
               }
             } catch (err) {
               ErrorToast(err.response?.data?.message || "Something went wrong");
