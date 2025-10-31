@@ -125,10 +125,10 @@ const VerifyPhone = ({
           </div>
 
           <h2 className="text-[19px] font-[600] capitalize mt-3">
-            Verify One-time password/code on number
+            Check your Email/Text messages
           </h2>
           <p className="text-[13px] font-[400] text-[#565656] mt-2">
-            One-time password/code code sent to your +1 {phoneFormater(phone)}
+            Enter the 4-digit code you received via email or text
           </p>
           <form onSubmit={handleSubmit}>
             <div className="flex gap-10 mb-2 justify-center mt-4">

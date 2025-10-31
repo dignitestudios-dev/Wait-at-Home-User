@@ -25,7 +25,7 @@ const AddNewPet = ({
       <div className="relative bg-gradient-to-br from-[#A0E6E1] to-[#C3B4D3] rounded-2xl w-[471px] max-w-xl p-6 shadow-lg max-h-[90vh] overflow-y-auto">
         <div className="flex justify-between border-b border-[#FFFFFF] pb-2">
           <h2 className="text-[18px] font-[600] text-[#212121] mb-2">
-            Add Pet Information
+            Tell us About Your Pet
           </h2>
           <button
             onClick={onClose}
@@ -58,7 +58,7 @@ const AddNewPet = ({
                     <div key={index} className="mb-2 border-b pb-2">
                       {/* Pet Name */}
                       <GlobalInputs
-                        placeholder="Enter Pet’s Name"
+                        placeholder="Pet’s Name"
                         value={pet.petName}
                         type="text"
                         name={`pets.${index}.petName`}
@@ -87,7 +87,7 @@ const AddNewPet = ({
                               : "border focus:border-[#10C0B6] focus:ring-2 focus:ring-[#10C0B6]"
                           }`}
                         >
-                          <option value="">Select Pet Type</option>
+                          <option value="">Pet Type</option>
                           <option value="dog">Dog</option>
                           <option value="cat">Cat</option>
                           <option value="bird">Bird</option>
@@ -123,7 +123,7 @@ const AddNewPet = ({
                           <option value="">
                             {pet.petType
                               ? "Select Breed"
-                              : "Select Pet Type First"}
+                              : "Pet Type First"}
                           </option>
                           {availableBreeds.slice(0, 8).map((breed, i) => (
                             <option key={i} value={breed}>
@@ -162,7 +162,7 @@ const AddNewPet = ({
 
                       {/* Pet Age */}
                       <GlobalInputs
-                        placeholder="Enter Pet Age"
+                        placeholder="Age"
                         value={pet.petAge}
                         type="text"
                         name={`pets.${index}.petAge`}
@@ -175,7 +175,7 @@ const AddNewPet = ({
                       {/* Pet Description */}
                       <textarea
                         name={`pets.${index}.petDiscription`}
-                        placeholder="Enter Symptoms or Reasons for the visit"
+                        placeholder="Reason for the visit"
                         value={pet.petDiscription}
                         onChange={handleChange}
                         onBlur={handleBlur}
@@ -233,7 +233,7 @@ const AddNewPet = ({
           <div className="pt-4">
             <GlobalButton
               type="submit"
-              children={"Add Pets"}
+              children={"Continue"}
               loading={loading}
             />
           </div>

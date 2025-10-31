@@ -39,7 +39,7 @@ const ProfileSidebar = ({
                 <IoSettingsOutline
                   className={activeTab === "setting" ? "text-[#5E2E86]" : ""}
                 />
-                <span className="hidden md:inline">Account Setting</span>
+                <span className="hidden md:inline">Account Settings</span>
               </button>
             </>
           ) : (

@@ -85,7 +85,7 @@ const EditProfileModal = ({
         <div>
           <div className="flex  justify-between border-b border-[#FFFFFF] pb-5 ">
             <h2 className="text-[18px] font-[600] text-[#212121] mb-2 ">
-              Enrollment
+              Update Profile
             </h2>
             <button
               onClick={onClose}
@@ -168,7 +168,7 @@ const EditProfileModal = ({
             </div>
             <div className="mt-3">
               <GlobalButton
-                children={"Update"}
+                children={"Continue"}
                 loading={loading}
                 type="submit"
               />

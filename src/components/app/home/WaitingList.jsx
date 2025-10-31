@@ -42,16 +42,20 @@ const WaitingList = ({ appointmentList, appointmentListLoader }) => {
                         ) : (
                           <div className="w-[32px] h-[32px] rounded-full flex items-center justify-center text-[12px] font-bold bg-[#10C0B6] text-white">
                             {item?.signUpRecord?.name
-                              ?.substring(0, 2)
-                              ?.toUpperCase()}
+                              ? item?.signUpRecord?.name
+                                  .split(" ")
+                                  .map((word) => word[0])
+                                  .join("")
+                                  .slice(0, 2)
+                              : ""}
                           </div>
                         )}
                         <span className="text-white font-[600] text-[14px]">
                           <span className="inline-block max-w-[110px] truncate align-middle">
                             {item?.pets?.map((pet) => pet?.petName).join(", ")}
                           </span>
-                          {" - "}
-                          {item?.signUpRecord?.name?.charAt(0)}
+
+                          {/* {item?.signUpRecord?.name?.charAt(0)} */}
                         </span>
                       </div>
                     </li>

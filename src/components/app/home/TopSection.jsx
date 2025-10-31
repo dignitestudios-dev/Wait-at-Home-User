@@ -12,11 +12,11 @@ const TopSection = () => {
         <div className="flex items-start gap-2 text-white text-[14px] font-[400] leading-relaxed">
           <IoAlertCircleOutline size={24} className="mt-1 min-w-[24px]" />
           <p>
-            We are processing patients in order. Stay nearby, and we’ll notify
-            you. Lorem ipsum dolor sit amet consectetur. Vulputate convallis
-            arcu ac etiam justo pretium eros purus. Enim nec quam in at dis
-            facilisi. Tortor at lorem non vitae pellentesque malesuada. Nec
-            gravida in nisi aliquam a.
+            Welcome to Wait at Home (TM) – the virtual waiting list for pets and
+            vets! Secure your place in line to see a doctor but do your waiting
+            at home instead of in the lobby. You will receive real-time updates
+            via email and/or text so you will know when to arrive at the clinic
+            with your pet.
           </p>
         </div>
       </div>

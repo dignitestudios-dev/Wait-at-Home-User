@@ -56,19 +56,10 @@ const EstimatedTime = ({
 
   return (
     <div className="bg-[#b5d8dc] border backdrop-blur-sm rounded-3xl p-8 w-full shadow-lg">
-      <div className="flex  items-center justify-between ">
-        <h2 className="text-xl font-medium text-gray-800 ">
+      <div className="flex  justify-center ">
+        <h2 className="text-xl text-center font-[600] text-[#684D7B] ">
           Estimated Wait Time
         </h2>
-        {appointmentNumber?.appointmentNumber && (
-
-        <button
-          className={`w-[230px] bg-[#5E2E86] text-white text-[16px] font-[500] py-3 rounded-full transition duration-200`}
-          onClick={handleCancelEnrollment}
-        >
-          Remove me from the list
-        </button>
-        )}
       </div>
       <div className="relative flex items-center justify-center mt-10">
         <div className="relative">
@@ -110,11 +101,21 @@ const EstimatedTime = ({
             <div className="text-[43.03px] font-bold text-[#684D7B]">
               {formatTime(time)}
             </div>
-            <div className="text-[12.55px] text-[#684D7B] mt-1">
+            {/* <div className="text-[12.55px] text-[#684D7B] mt-1">
               Estimated Waiting
-            </div>
+            </div> */}
           </div>
         </div>
+      </div>
+      <div className="flex justify-end">
+        {appointmentNumber?.appointmentNumber && (
+          <button
+            className={`w-[230px] bg-[#5E2E86] text-white text-[16px] font-[500] py-3 rounded-full transition duration-200`}
+            onClick={handleCancelEnrollment}
+          >
+            Take me off the Waiting List
+          </button>
+        )}
       </div>
     </div>
   );

@@ -17,6 +17,9 @@ const PersonalInfo = ({
   return (
     <div className="mt-6">
       <form onSubmit={handleSubmit}>
+        <p className="text-[13px]  text-[#565656] mb-2  mx-2">
+         You do not need to create an account/password to join the waiting list.
+        </p>
         <div className="px-1">
           <GlobalInputs
             placeholder="Enter Your Name"
@@ -67,7 +70,7 @@ const PersonalInfo = ({
             Heads Up!
           </strong>
           <p className="text-[13px]  text-[#565656] ">
-           Double-check email and phone. A code will be sent to both.
+            Double-check email and phone. A code will be sent to both.
           </p>
         </span>
       </div>

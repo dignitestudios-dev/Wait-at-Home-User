@@ -17,7 +17,7 @@ const DiscribeYourCaseForm = ({
           <h3 className="font-semibold text-gray-700 text-sm">
             Describe your case
           </h3>
-          <input
+          {/* <input
             type="text"
             id="title"
             name="title"
@@ -32,7 +32,7 @@ const DiscribeYourCaseForm = ({
             <p className="text-red-500 text-[12px]  font-medium">
               {errors.title}
             </p>
-          )}
+          )} */}
           <textarea
             placeholder="Description"
             rows={4}

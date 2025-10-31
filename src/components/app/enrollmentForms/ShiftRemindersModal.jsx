@@ -56,9 +56,7 @@ const ShiftRemindersModal = ({
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-60">
       <div className="bg-gradient-to-br from-[#A0E6E1] to-[#C3B4D3] w-[500px] max-h-[94vh] p-8 rounded-3xl shadow-lg relative text-gray-800 overflow-y-auto">
         <div className="flex flex-col items-center justify-center text-center space-y-4">
-          <h2 className="text-[24px] font-[600]">
-            How Would You Like to Receive Shift Notifications?
-          </h2>
+          <h2 className="text-[24px] font-[600]">How should we contact you?</h2>
           <span className="text-gray-500 font-[500]">
             (Select all that apply)
           </span>
@@ -85,16 +83,15 @@ const ShiftRemindersModal = ({
               <p className="text-[14px] font-[500]">Phone</p>
             </div>
           </div>
- {error && (
-                <p className="text-red-600 text-sm mt-2 font-medium">{error}</p>
-              )}
+          {error && (
+            <p className="text-red-600 text-sm mt-2 font-medium">{error}</p>
+          )}
           {/* Reminder Frequency Selection - sirf tab show hoga jab email/phone select ho */}
           {(selectedOptions.includes("email") ||
             selectedOptions.includes("phone")) && (
             <div className="mt-6">
               <h3 className="text-[18px] font-[600] mb-3">
-                We’ll remind you when it’s time to come in
-              </h3>
+We will let you know when it is time to come in, how much time do you need to get to here?              </h3>
               <div className="flex flex-wrap gap-3 justify-center">
                 {reminderOptions.map((min) => (
                   <div
@@ -122,8 +119,8 @@ const ShiftRemindersModal = ({
           {/* Error message */}
 
           <p className="text-[16px] font-[400] text-[#565656] max-w-[350px] mt-6">
-            Stay on top of your schedule! Choose how you’d like to receive
-            notifications and when you’d like reminders before your shift.
+            We will send you updates so you can monitor your place in line and
+            know when it is time to arrive at the clinic.
           </p>
         </div>
 

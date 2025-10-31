@@ -21,7 +21,13 @@ const ProfileInfo = ({ setEditModal, userProfileData }) => {
             ) : (
               <div className="flex justify-center items-center gap-2 rounded-full bg-[#00AAAD] h-20 w-20 cursor-pointer">
                 <span className="text-[18px] font-[600] text-white">
-                  {userProfileData?.user?.name?.charAt(0)}
+                  {userProfileData?.user?.name
+                    ? userProfileData?.user?.name
+                        .split(" ")
+                        .map((word) => word[0])
+                        .join("")
+                        .slice(0, 2)
+                    : ""}
                 </span>
               </div>
             )}

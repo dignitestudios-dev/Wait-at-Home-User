@@ -6,6 +6,7 @@ import { useLocation, useNavigate } from "react-router";
 import { AppContext } from "../../context/AppContext";
 import { IoArrowBack } from "react-icons/io5";
 import { IoMdArrowBack } from "react-icons/io";
+import { MdLocalHospital, MdOutlineLocalHospital } from "react-icons/md";
 
 const Navbar = () => {
   const navigate = useNavigate();
@@ -45,9 +46,14 @@ const Navbar = () => {
                 onClick={() => navigate(-1)}
               >
                 <IoMdArrowBack size={40} color="#5E2E86" />
-                <h2 className="text-[42px] font-[600] text-[#5E2E86]">
+                {/* <h2 className="text-[42px] font-[600] text-[#5E2E86]">
                   {titles[path]}
-                </h2>
+                </h2> */}
+                  <img
+                src={Logo}
+                alt="logo"
+                className="h-[50px] w-auto hidden md:block"
+              />
               </div>
             ) : (
               <img
@@ -61,12 +67,12 @@ const Navbar = () => {
           <div className="hidden min-[769px]:flex items-center gap-4 flex-wrap">
             <div className="flex items-center p-2 gap-2 w-[206px] bg-[#FF9E9E66] h-[66px] text-[#EE3131] rounded-[20px] border-[1.3px] border-[#EE3131] shadow-sm">
               <span className="bg-white flex justify-center items-center rounded-full h-[32px] w-[32px]">
-                <GoAlertFill className="text-[#EE3131]" size={17} />
+                <MdOutlineLocalHospital className="text-[#EE3131]" size={28} />
               </span>
               <div className="text-sm leading-tight">
                 <div className="font-[500] text-[18px]">+1 (800) 123 4567</div>
                 <div className="text-[13px] font-[400] text-[#000000]">
-                  Emergency Contact
+                  Emergency? Call Us
                 </div>
               </div>
             </div>
@@ -85,7 +91,13 @@ const Navbar = () => {
                   ) : (
                     <div className="flex items-center justify-center gap-2 rounded-[20px] bg-[#00AAAD] h-[42px] w-[42px] cursor-pointer">
                       <span className="text-[18px]  font-[600] text-white ">
-                        {userData?.name?.charAt(0)}
+                        {userData?.name
+                          ? userData.name
+                              .split(" ")
+                              .map((word) => word[0])
+                              .join("")
+                              .slice(0, 2)
+                          : ""}{" "}
                       </span>
                     </div>
                   )}
@@ -99,7 +111,13 @@ const Navbar = () => {
                     className="flex justify-center items-center gap-2 rounded-[20px] bg-[#00AAAD] h-[42px] w-[42px] cursor-pointer"
                   >
                     <span className="text-[18px] font-[600] text-white">
-                      {userData?.name?.charAt(0)}
+                      {userData?.name
+                        ? userData.name
+                            .split(" ")
+                            .map((word) => word[0])
+                            .join("")
+                            .slice(0, 2)
+                        : ""}{" "}
                     </span>
                   </div>
                   <div

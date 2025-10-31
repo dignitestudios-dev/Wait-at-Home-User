@@ -120,8 +120,8 @@ const Chat = () => {
                   </div>
                 </div>
                 <div className="bg-[#FFFFFF80] px-4 py-2 rounded-xl text-sm max-w-md  text-[#000000]">
-                  Hello! 😊 Please describe your issue so we can assist you
-                  better. Kindly fill out the details below:
+                  Hello – we are here to help. Please describe your pet’s
+                  symptoms and concerns
                 </div>
               </div>
               {messageBox ? (

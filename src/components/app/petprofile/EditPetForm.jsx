@@ -106,7 +106,7 @@ const EditPetForm = ({
         <form onSubmit={handleSubmit} className="space-y-3 mt-4">
           {/* Pet Name */}
           <GlobalInputs
-            placeholder="Enter Pet’s Name"
+            placeholder="Pet’s Name"
             value={values.petName}
             type="text"
             name="petName"
@@ -136,7 +136,7 @@ const EditPetForm = ({
                   : "border focus:border-[#10C0B6] focus:ring-2 focus:ring-[#10C0B6]"
               }`}
             >
-              <option value="">Select Pet Type</option>
+              <option value="">Pet Type</option>
               <option value="dog">Dog</option>
               <option value="cat">Cat</option>
               <option value="bird">Bird</option>
@@ -164,7 +164,7 @@ const EditPetForm = ({
               }`}
             >
               <option value="">
-                {values.petType ? "Select Breed" : "Select Pet Type First"}
+                {values.petType ? "Select Breed" : "Pet Type First"}
               </option>
               {availableBreeds.slice(0, 8).map((breed, i) => (
                 <option key={i} value={breed}>
@@ -193,7 +193,7 @@ const EditPetForm = ({
 
           {/* Age */}
           <GlobalInputs
-            placeholder="Enter Pet Age"
+            placeholder="Age"
             value={values.petAge}
             type="text"
             name="petAge"
@@ -207,7 +207,7 @@ const EditPetForm = ({
           {/* Description */}
           <textarea
             name="petDiscription"
-            placeholder="Enter Symptoms or Reasons for the visit"
+            placeholder="Reason for the visit"
             id="petDiscription"
             value={values.petDiscription}
             onChange={handleChange}

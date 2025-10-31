@@ -47,7 +47,7 @@ const PetInfo = ({
                     <div key={index} className="mb-2 border-b pb-2">
                       {/* Pet Name */}
                       <GlobalInputs
-                        placeholder="Enter Pet’s Name"
+                        placeholder="Pet’s Name"
                         value={pet.petName}
                         type="text"
                         name={`pets.${index}.petName`}
@@ -76,7 +76,7 @@ const PetInfo = ({
                               : "border focus:border-[#10C0B6] focus:ring-2 focus:ring-[#10C0B6]"
                           }`}
                         >
-                          <option value="">Select Pet Type</option>
+                          <option value="">Pet Type</option>
                           <option value="dog">Dog</option>
                           <option value="cat">Cat</option>
                           <option value="bird">Bird</option>
@@ -112,7 +112,7 @@ const PetInfo = ({
                           <option value="">
                             {pet.petType
                               ? "Select Breed"
-                              : "Select Pet Type First"}
+                              : "Pet Type First"}
                           </option>
                           {availableBreeds.slice(0, 8).map((breed, i) => (
                             <option key={i} value={breed}>
@@ -148,7 +148,7 @@ const PetInfo = ({
 
                       {/* Pet Age */}
                       <GlobalInputs
-                        placeholder="Enter Pet Age"
+                        placeholder="Age"
                         value={pet.petAge}
                         type="text"
                         name={`pets.${index}.petAge`}
@@ -161,7 +161,7 @@ const PetInfo = ({
                       {/* Pet Description */}
                       <textarea
                         name={`pets.${index}.petDiscription`}
-                        placeholder="Enter Symptoms or Reasons for the visit"
+                        placeholder="Reason for the visit"
                         value={pet.petDiscription}
                         onChange={handleChange}
                         onBlur={handleBlur}
@@ -238,7 +238,7 @@ const PetInfo = ({
                   }}
                   className="cursor-pointer"
                 >
-                  Save information for future use.
+                  Create Account
                 </span>
               </div>
             </label>

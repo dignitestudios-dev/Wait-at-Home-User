@@ -86,7 +86,7 @@ const SettingMainContent = ({ userProfileData, setUpdate }) => {
           </div>
           <NotificationToogle />
         </div> */}
-
+{/* 
         <div className="flex flex-col md:flex-row md:justify-between border-b-2 pb-3">
           <div>
             <h2 className="text-[16px] font-[600] capitalize">
@@ -103,7 +103,7 @@ const SettingMainContent = ({ userProfileData, setUpdate }) => {
             notificationsToggle={options.notification}
             onClick={handleToggle}
           />
-        </div>
+        </div> */}
 
         <div className="border-b-2 pb-3">
           <div>

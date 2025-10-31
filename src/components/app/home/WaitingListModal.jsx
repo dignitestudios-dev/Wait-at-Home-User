@@ -44,14 +44,19 @@ const WaitingListModal = ({
                       ) : (
                         <div className="w-[32px] h-[32px] rounded-full flex items-center justify-center text-[12px] font-bold bg-[#10C0B6] text-white">
                           {item?.signUpRecord?.name
-                            ?.substring(0, 2)
-                            ?.toUpperCase()}
+                            ? item?.signUpRecord?.name
+                                .split(" ")
+                                .map((word) => word[0])
+                                .join("")
+                                .slice(0, 2)
+                            : ""}
                         </div>
                       )}
 
                       <span className="text-[#3F3F3F] font-[600] w-[250px] text-[14px] whitespace-normal break-words align-middle">
-                        {item?.pets?.map((pet) => pet?.petName).join(", ")} -{" "}
-                        {item?.signUpRecord?.name.charAt(0)}
+                        {item?.pets?.map((pet) => pet?.petName).join(", ")} 
+                        {/* -{" "}
+                        {item?.signUpRecord?.name.charAt(0)} */}
                       </span>
                     </div>
                   </li>

@@ -73,11 +73,10 @@ const ForgotPassword = () => {
 
         <div className="text-center mb-6 mt-5">
           <h2 className="text-[26px] sm:text-[28px] lg:text-[32px] font-[600] text-[#1F1F1F]">
-            Forget password
+            Forgot your Password?
           </h2>
           <p className="text-[#565656] text-[14px] font-[400] mt-1">
-            Please enter your registered email to get started on resetting your
-            password
+            Please enter your email to get started on resetting your password:
           </p>
         </div>
 
@@ -98,7 +97,7 @@ const ForgotPassword = () => {
             />
           </div>
 
-          <GlobalButton loading={loading} children={"Get OTP"} type="submit" />
+          <GlobalButton loading={loading} children={"Reset Password"} type="submit" />
         </form>
       </div>
     </div>
