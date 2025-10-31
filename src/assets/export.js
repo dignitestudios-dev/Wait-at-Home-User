@@ -37,9 +37,11 @@ import PurpleTick from "./purpleTick.png";
 import RadioActive from "./radioActive.png";
 import RadioInactive from "./radioInactive.png";
 import ClockHistory from "./clockhistory.png";
+import LogoWhite from "./logowhite.png";
 
 export {
   Logo,
+  LogoWhite,
   RadioActive,
   ClockHistory,
   RadioInactive,

@@ -110,9 +110,7 @@ const PetInfo = ({
                           }`}
                         >
                           <option value="">
-                            {pet.petType
-                              ? "Select Breed"
-                              : "Pet Type First"}
+                            {pet.petType ? "Select Breed" : "Pet Type First"}
                           </option>
                           {availableBreeds.slice(0, 8).map((breed, i) => (
                             <option key={i} value={breed}>
@@ -140,7 +138,10 @@ const PetInfo = ({
                           placeholder="Enter Breed"
                           value={pet.petBreed}
                           onChange={(e) =>
-                            setFieldValue(`pets.${index}.petBreed`, e.target.value)
+                            setFieldValue(
+                              `pets.${index}.petBreed`,
+                              e.target.value
+                            )
                           }
                           className="w-full border rounded-lg p-2 mb-2"
                         />
@@ -216,6 +217,10 @@ const PetInfo = ({
           />
 
           {/* Save Info Checkbox */}
+          <p className="text-[13px]  text-[#565656] mb-2  mx-2">
+            You do not need to create an account/password to join the waiting
+            list.
+          </p>
           <div className="flex items-center mb-3  gap-2 px-2 text-[14px] text-[#6B6B6B] mt-4">
             <label className="relative cursor-pointer">
               <input type="checkbox" className="peer hidden" />
@@ -231,6 +236,7 @@ const PetInfo = ({
                 >
                   {checked && <FaCheck size={14} color="#fff" />}
                 </div>
+
                 <span
                   onClick={() => {
                     setChecked(!checked);

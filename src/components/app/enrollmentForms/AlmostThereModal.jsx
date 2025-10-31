@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import { MobileLogo, Tick } from "../../../assets/export";
+import { LogoWhite, MobileLogo, Tick } from "../../../assets/export";
 import GlobalButton from "../../global/GlobalButton";
 import { IoIosArrowRoundBack } from "react-icons/io";
 import { phoneFormater } from "../../../lib/helpers";
@@ -18,7 +18,7 @@ const AlmostThereModal = ({ isOpen, onClose, handleClick, email, phone }) => {
         <div className="flex flex-col items-center justify-center text-center space-y-2">
           <div className="bg-[#00AAAD80] flex justify-center items-center w-[107px] h-[107px] rounded-full">
             <img
-              src={MobileLogo}
+              src={LogoWhite}
               className="h-[62px] w-[62px]"
               alt="Success Tick"
             />

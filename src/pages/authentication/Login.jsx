@@ -1,6 +1,6 @@
 import React, { useContext, useState } from "react";
 import { NavLink, useNavigate } from "react-router";
-import { Bgauth, DesktopLoginLogo } from "../../assets/export";
+import { Bgauth, DesktopLoginLogo, Logo } from "../../assets/export";
 import GlobalInputs from "../../components/global/GlobalInputs";
 import { useFormik } from "formik";
 import { loginValues } from "../../init/authentication/LoginValues";
@@ -54,9 +54,9 @@ const Login = () => {
       mx-auto lg:mx-0
       flex flex-col justify-center"
       >
-        <div className="flex justify-center mb-6">
+        <div className="flex justify-end items-center mb-6">
           <img
-            src={DesktopLoginLogo}
+            src={Logo}
             alt="Logo"
             className="w-[260px] sm:w-[300px] lg:w-[380.68px] h-auto"
           />
