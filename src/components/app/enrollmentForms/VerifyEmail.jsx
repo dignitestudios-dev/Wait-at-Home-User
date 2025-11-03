@@ -6,15 +6,27 @@ import { ErrorToast, SuccessToast } from "../../global/Toaster";
 import axios from "../../../axios";
 import CountDown from "../../global/CountDown";
 import { AppContext } from "../../../context/AppContext";
-const VerifyEmail = ({ isOpen, onClose, setVerifyPhonelModal, email }) => {
+import { FiEdit } from "react-icons/fi";
+import { MdOutlineCancel } from "react-icons/md";
+import { RxCross2 } from "react-icons/rx";
+
+const VerifyEmail = ({
+  isOpen,
+  onClose,
+  setVerifyPhonelModal,
+  setVerifyEmailModal,
+}) => {
   if (!isOpen) return null;
-  const { Auth, userData } = useContext(AppContext);
+  const { Auth, userData, setUserData, handleLogOut } = useContext(AppContext);
   const [otp, setOtp] = useState(Array(4).fill(""));
   const inputsRef = useRef([]);
   const [loading, setLoading] = useState(false);
   const [resendLoading, setResendLoading] = useState(false);
   const [isActive, setIsActive] = useState(true);
   const [seconds, setSeconds] = useState(30);
+  const [isEmailEditOpen, setIsEmailEditOpen] = useState(false);
+  const [newEmail, setNewEmail] = useState(userData?.email || "");
+
   const handleChange = (e, index) => {
     const value = e.target.value.replace(/[^0-9]/g, "");
     if (value) {
@@ -56,7 +68,7 @@ const VerifyEmail = ({ isOpen, onClose, setVerifyPhonelModal, email }) => {
     setLoading(true);
     try {
       let obj = {
-        email: userData?.email,
+        email: newEmail,
         otp: getOtpValue(),
       };
 
@@ -64,7 +76,8 @@ const VerifyEmail = ({ isOpen, onClose, setVerifyPhonelModal, email }) => {
 
       if (response.status === 200) {
         SuccessToast("Email Otp Verified Successfully");
-        Auth(response?.data);
+        Auth({ ...userData, email: newEmail });
+
         setVerifyPhonelModal(true);
         onClose();
       }
@@ -82,7 +95,7 @@ const VerifyEmail = ({ isOpen, onClose, setVerifyPhonelModal, email }) => {
   const handleResendOtp = async () => {
     try {
       setResendLoading(true);
-      let obj = { email: userData?.email };
+      let obj = { email: newEmail };
 
       const response = await axios.post("/auth/request-email-otp", obj);
 
@@ -98,9 +111,25 @@ const VerifyEmail = ({ isOpen, onClose, setVerifyPhonelModal, email }) => {
       setResendLoading(false);
     }
   };
+  const handleSaveEmail = () => {
+    if (!newEmail) return ErrorToast("Email cannot be empty");
+    setUserData((prev) => ({ ...prev, email: newEmail })); // Local update
+    SuccessToast("Email updated");
+    handleResendOtp();
+    setIsEmailEditOpen(false);
+  };
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-60">
       <div className="bg-gradient-to-br from-[#A0E6E1] to-[#C3B4D3] w-[471px] p-6 rounded-3xl shadow-lg relative text-gray-800 flex flex-col">
+        <div
+          className="flex cursor-pointer justify-end"
+          onClick={() => {
+            handleLogOut();
+            setVerifyEmailModal(false);
+          }}
+        >
+          <RxCross2 size={30} color="white" />
+        </div>
         {/* <div
           className="bg-white w-[48px] h-[48px] flex justify-center items-center rounded-[14px] cursor-pointer mb-6"
           onClick={onClose}
@@ -116,8 +145,17 @@ const VerifyEmail = ({ isOpen, onClose, setVerifyPhonelModal, email }) => {
           <h2 className="text-[21px] font-[600] capitalize mt-3">
             Check your Email/Text messages
           </h2>
-          <p className="text-[13px] font-[400] text-[#565656] mt-2">
-            Enter the 4-digit code you received via email or text {email}
+          <p className="text-[13px] font-[400] text-[#565656] mt-2 ">
+            Enter the 4-digit code you received via email or text
+            <span className="flex justify-center items-center gap-2">
+              {newEmail}
+
+              {/* <FiEdit
+                className="cursor-pointer text-[#181818]"
+                size={18}
+                onClick={() => setIsEmailEditOpen(true)}
+              /> */}
+            </span>
           </p>
           <form onSubmit={handleSubmit}>
             <div className="flex gap-10 mb-2 justify-center mt-4">
@@ -168,6 +206,30 @@ const VerifyEmail = ({ isOpen, onClose, setVerifyPhonelModal, email }) => {
           </form>
         </div>
       </div>
+      {isEmailEditOpen && (
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-40 z-50">
+          <div className="bg-white p-5 rounded-xl w-[350px] flex flex-col gap-4">
+            <h3 className="text-lg font-semibold">Edit Email</h3>
+            <input
+              type="email"
+              className="w-full border rounded-lg p-2"
+              value={newEmail}
+              onChange={(e) => setNewEmail(e.target.value)}
+            />
+            <div className="flex w-full justify-between gap-2">
+              <button
+                className="px-4 w-full py-2 bg-gray-300 rounded-full"
+                onClick={() => setIsEmailEditOpen(false)}
+              >
+                Cancel
+              </button>
+              <div className="w-full">
+                <GlobalButton children={"Save"} onClick={handleSaveEmail} />
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

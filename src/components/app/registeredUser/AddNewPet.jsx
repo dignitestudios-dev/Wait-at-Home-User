@@ -43,16 +43,16 @@ const AddNewPet = ({
               <>
                 {values.pets.map((pet, index) => {
                   const availableBreeds = petBreeds[pet.petType] || [];
-                  const handleBreedChange = (e) => {
-                    const value = e.target.value;
-                    if (value === "Other") {
-                      setIsOther((prev) => ({ ...prev, [index]: true }));
-                      setFieldValue(`pets.${index}.petBreed`, "");
-                    } else {
-                      setIsOther((prev) => ({ ...prev, [index]: false }));
-                      handleChange(e);
-                    }
-                  };
+                  // const handleBreedChange = (e) => {
+                  //   const value = e.target.value;
+                  //   if (value === "Other") {
+                  //     setIsOther((prev) => ({ ...prev, [index]: true }));
+                  //     setFieldValue(`pets.${index}.petBreed`, "");
+                  //   } else {
+                  //     setIsOther((prev) => ({ ...prev, [index]: false }));
+                  //     handleChange(e);
+                  //   }
+                  // };
 
                   return (
                     <div key={index} className="mb-2 border-b pb-2">
@@ -106,7 +106,7 @@ const AddNewPet = ({
                       </div>
 
                       {/* Pet Breed - Dynamic */}
-                      <div className="relative w-full mb-2">
+                      {/* <div className="relative w-full mb-2">
                         <select
                           value={isOther[index] ? "Other" : pet.petBreed}
                           onChange={handleBreedChange}
@@ -158,8 +158,31 @@ const AddNewPet = ({
                           }
                           className="w-full border rounded-lg p-2 mb-2"
                         />
-                      )}
-
+                      )} */}
+                      <div className="relative w-full mb-2">
+                        <input
+                          type="text"
+                          placeholder={
+                            pet.petType ? "Enter Breed" : "Pet Type First"
+                          }
+                          value={pet.petBreed}
+                          name={`pets.${index}.petBreed`}
+                          onChange={handleChange}
+                          onBlur={handleBlur}
+                          className={`w-full rounded-xl px-4 py-3 h-[49px] text-[14px] bg-white text-[#616161] border ${
+                            errors.pets?.[index]?.petBreed &&
+                            touched.pets?.[index]?.petBreed
+                              ? "border-red-500 ring-1 ring-red-500"
+                              : "border focus:border-[#10C0B6] focus:ring-2 focus:ring-[#10C0B6]"
+                          }`}
+                        />
+                        {errors.pets?.[index]?.petBreed &&
+                          touched.pets?.[index]?.petBreed && (
+                            <p className="text-red-500 text-[12px] mt-1 font-medium">
+                              {errors.pets[index].petBreed}
+                            </p>
+                          )}
+                      </div>
                       {/* Pet Age */}
                       <GlobalInputs
                         placeholder="Age"

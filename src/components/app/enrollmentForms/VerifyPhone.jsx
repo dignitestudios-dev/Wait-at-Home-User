@@ -7,6 +7,7 @@ import { ErrorToast, SuccessToast } from "../../global/Toaster";
 import CountDown from "../../global/CountDown";
 import axios from "../../../axios";
 import { phoneFormater } from "../../../lib/helpers";
+import { RxCross2 } from "react-icons/rx";
 const VerifyPhone = ({
   isOpen,
   onClose,
@@ -14,9 +15,10 @@ const VerifyPhone = ({
   phone,
   email,
   setVirtualListModal,
+  setVerifyPhonelModal,
 }) => {
   if (!isOpen) return null;
-  const { Auth, userData } = useContext(AppContext);
+  const { Auth, userData ,handleLogOut} = useContext(AppContext);
   const [otp, setOtp] = useState(Array(4).fill(""));
   const inputsRef = useRef([]);
   const [loading, setLoading] = useState(false);
@@ -118,7 +120,15 @@ const VerifyPhone = ({
         >
           <IoIosArrowRoundBack size={24} />
         </div> */}
-
+        <div
+          className="flex cursor-pointer justify-end"
+          onClick={() => {
+            handleLogOut();
+            setVerifyPhonelModal(false);
+          }}
+        >
+          <RxCross2 size={30} color="white" />
+        </div>
         <div className="flex flex-col items-center justify-center text-center ">
           <div className="bg-[#00AAAD80] flex justify-center items-center w-[107px] h-[107px] rounded-full">
             <img src={Phone} className="h-[62px] w-[62px]" alt="Mail Icon" />

@@ -162,6 +162,7 @@ export const AppContextProvider = ({ children }) => {
         notificationUpdate,
         setNotificationUpdate,
         fcmToken,
+        setUserData,
       }}
     >
       {children}

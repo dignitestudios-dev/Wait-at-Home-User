@@ -517,6 +517,7 @@ const Home = () => {
         onClose={() => setVerifyEmailModal(false)}
         setVerifyPhonelModal={setVerifyPhonelModal}
         email={values.email}
+        setVerifyEmailModal={setVerifyEmailModal}
       />
       <VerifyPhone
         email={values.email}
@@ -526,6 +527,7 @@ const Home = () => {
           setVerifyPhonelModal(false);
           setVirtualListModal(true);
         }}
+        setVerifyPhonelModal={setVerifyPhonelModal}
         setVirtualListModal={setVirtualListModal}
         phone={values.phone}
       />

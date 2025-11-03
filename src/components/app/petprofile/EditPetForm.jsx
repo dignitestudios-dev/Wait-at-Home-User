@@ -149,7 +149,7 @@ const EditPetForm = ({
           </div>
 
           {/* Pet Breed */}
-          <div className="relative w-full">
+          {/* <div className="relative w-full">
             <select
               value={isOther ? "Other" : values.petBreed}
               onChange={handleBreedChange}
@@ -178,10 +178,10 @@ const EditPetForm = ({
             <div className="pointer-events-none absolute inset-y-0 right-3 flex items-center text-[#616161]">
               <IoChevronDown />
             </div>
-          </div>
+          </div> */}
 
           {/* Custom Other Breed input */}
-          {isOther && (
+          {/* {isOther && (
             <input
               type="text"
               placeholder="Enter Breed"
@@ -189,7 +189,31 @@ const EditPetForm = ({
               onChange={(e) => setFieldValue("petBreed", e.target.value)}
               className="w-full border rounded-lg p-2"
             />
-          )}
+          )} */}
+          {/* Pet Breed */}
+          <div className="relative w-full mb-2">
+            <input
+              type="text"
+              placeholder={
+                values.petType ? "Enter Breed" : "Select Pet Type First"
+              }
+              value={values.petBreed}
+              name="petBreed"
+              id="petBreed"
+              onChange={handleChange}
+              onBlur={handleBlur}
+              className={`w-full rounded-xl px-4 py-3 h-[49px] text-[14px] bg-white text-[#616161] border ${
+                errors.petBreed && touched.petBreed
+                  ? "border-red-500 ring-1 ring-red-500"
+                  : "border focus:border-[#10C0B6] focus:ring-2 focus:ring-[#10C0B6]"
+              }`}
+            />
+            {errors.petBreed && touched.petBreed && (
+              <p className="text-red-500 text-[12px] mt-1 font-medium">
+                {errors.petBreed}
+              </p>
+            )}
+          </div>
 
           {/* Age */}
           <GlobalInputs
