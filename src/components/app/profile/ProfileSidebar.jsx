@@ -63,8 +63,8 @@ const ProfileSidebar = ({
             onClick={() => handleLogOut()}
             className="flex justify-center items-center gap-2 p-2 w-full rounded-[16px] bg-white text-[16px] font-[500] md:text-base"
           >
-            <CiLogout className="text-[#EE3131]" />
-            <span className="hidden md:inline text-[#EE3131]">Logout</span>
+            <CiLogout className="text-[#10C0B6]" />
+            <span className="hidden md:inline text-[#10C0B6]">Logout</span>
           </button>
         ) : (
           <></>

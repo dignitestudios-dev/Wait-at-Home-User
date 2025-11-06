@@ -32,7 +32,7 @@ const AlmostThereModal = ({ isOpen, onClose, handleClick, email, phone }) => {
           </p>
 
           <p className="text-[14px] font-[500]">
-            Note: The 4-digit One-time password/code has been sent to your
+            Verification codes have been sent to you at
           </p>
 
           <p className="text-[14px] font-[500] text-[#565656]">

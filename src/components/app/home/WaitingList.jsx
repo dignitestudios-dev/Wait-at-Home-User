@@ -20,7 +20,7 @@ const WaitingList = ({ appointmentList, appointmentListLoader }) => {
               (item) => item?.appointmentStatus === "pending"
             )?.length === 0 ? (
               <p className="text-center text-sm font-medium text-white my-8 relative z-20">
-                No pending bookings found
+                You’ll be first in line!
               </p>
             ) : (
               <ul className="relative z-20 max-h-[550px] overflow-y-auto pr-1 custom-scrollbar">

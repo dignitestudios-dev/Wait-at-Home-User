@@ -1,7 +1,5 @@
 import React, { useState, useEffect, useContext } from "react";
-import { CgLock } from "react-icons/cg";
 import { FaClock } from "react-icons/fa";
-import { useFetchById, useGlobal } from "../../../hooks/api/Get";
 import { AppContext } from "../../../context/AppContext";
 
 const EstimatedTime = ({
@@ -10,7 +8,7 @@ const EstimatedTime = ({
   handleCancelEnrollment,
   appointmentNumber,
 }) => {
-  const [time, setTime] = useState(0); // default 00:00
+  const [time, setTime] = useState(0);
   const { appointmentData } = useContext(AppContext);
 
   useEffect(() => {
@@ -22,15 +20,9 @@ const EstimatedTime = ({
   }, [data, appointmentData?.signUpRecord, update]);
 
   useEffect(() => {
-    if (!time) return; // agar time 0 hai to countdown na chale
+    if (!time) return;
     const interval = setInterval(() => {
-      setTime((prevTime) => {
-        if (prevTime <= 0) {
-          clearInterval(interval);
-          return 0;
-        }
-        return prevTime - 1;
-      });
+      setTime((prevTime) => (prevTime <= 0 ? 0 : prevTime - 1));
     }, 1000);
     return () => clearInterval(interval);
   }, [time]);
@@ -45,8 +37,7 @@ const EstimatedTime = ({
 
   const maxTime = data?.estimatedWaitMinutes
     ? data.estimatedWaitMinutes * 60
-    : 0; // agar API nahi call hui to 0 rakho
-
+    : 0;
   const radius = 45;
   const circumference = 2 * Math.PI * radius;
   const strokeDashoffset =
@@ -55,68 +46,84 @@ const EstimatedTime = ({
       : circumference;
 
   return (
-    <div className="bg-[#b5d8dc] border backdrop-blur-sm rounded-3xl p-8 w-full shadow-lg">
-      <div className="flex  justify-center ">
-        <h2 className="text-xl text-center font-[600] text-[#684D7B] ">
-          Estimated Wait Time
-        </h2>
-      </div>
-      <div className="relative flex items-center justify-center mt-10">
-        <div className="relative">
-          <svg
-            className="w-full h-full transform -rotate-90"
-            viewBox="0 0 100 100"
-          >
-            <defs>
-              <linearGradient id="gradientStroke" x1="1" y1="0" x2="0" y2="1">
-                <stop offset="0%" stopColor="#10C0B6" />
-                <stop offset="100%" stopColor="#684D7B" />
-              </linearGradient>
-            </defs>
+    <div
+      className="
+        bg-[#b5d8dc]
+        h-[228px] w-[289px]
+        border rounded-3xl
+        backdrop-blur-sm
+        shadow-lg
+        flex flex-col justify-between
+        p-4
+        overflow-hidden
+      "
+    >
+      {/* Title */}
+      <h2 className="text-xl text-center font-semibold text-[#684D7B] ">
+        Estimated Wait Time
+      </h2>
 
-            <circle
-              cx="50"
-              cy="50"
-              r="45"
-              fill="none"
-              stroke="rgba(255, 255, 255, 0.3)"
-              strokeWidth="8"
-            />
+      {/* Clock section */}
+      <div className="flex-1 flex items-center justify-center relative">
+        <svg
+          className="w-[120px] h-[120px] transform -rotate-90"
+          viewBox="0 0 100 100"
+        >
+          <defs>
+            <linearGradient id="gradientStroke" x1="1" y1="0" x2="0" y2="1">
+              <stop offset="0%" stopColor="#10C0B6" />
+              <stop offset="100%" stopColor="#684D7B" />
+            </linearGradient>
+          </defs>
 
-            <circle
-              cx="50"
-              cy="50"
-              r="45"
-              fill="none"
-              stroke="url(#gradientStroke)"
-              strokeWidth="8"
-              strokeDasharray={circumference}
-              strokeDashoffset={strokeDashoffset}
-              strokeLinecap="round"
-            />
-          </svg>
+          <circle
+            cx="50"
+            cy="50"
+            r="45"
+            fill="none"
+            stroke="rgba(255, 255, 255, 0.3)"
+            strokeWidth="8"
+          />
+          <circle
+            cx="50"
+            cy="50"
+            r="45"
+            fill="none"
+            stroke="url(#gradientStroke)"
+            strokeWidth="8"
+            strokeDasharray={circumference}
+            strokeDashoffset={strokeDashoffset}
+            strokeLinecap="round"
+          />
+        </svg>
 
-          <div className="absolute inset-0 flex flex-col items-center justify-center">
-            <FaClock size={25} className=" text-[#10C0B6] mb-2" />
-            <div className="text-[43.03px] font-bold text-[#684D7B]">
-              {formatTime(time)}
-            </div>
-            {/* <div className="text-[12.55px] text-[#684D7B] mt-1">
-              Estimated Waiting
-            </div> */}
+        <div className="absolute inset-0 flex flex-col items-center justify-center">
+          <FaClock size={25} className="text-[#10C0B6] mb-2" />
+          <div className="text-[18px] font-bold text-[#684D7B] leading-none">
+            {formatTime(time)}
           </div>
         </div>
       </div>
-      <div className="flex justify-end">
-        {appointmentNumber?.appointmentNumber && (
+
+      {/* Button */}
+      {appointmentNumber?.appointmentNumber && (
+        <div className="flex justify-center mt-3">
           <button
-            className={`w-[230px] bg-[#5E2E86] text-white text-[16px] font-[500] py-3 rounded-full transition duration-200`}
             onClick={handleCancelEnrollment}
+            className="
+              w-[230px]
+              bg-[#5E2E86]
+              text-white text-[14px] font-medium
+              py-2
+              rounded-full
+              hover:bg-[#4a1f68]
+              transition-all duration-200
+            "
           >
             Take me off the Waiting List
           </button>
-        )}
-      </div>
+        </div>
+      )}
     </div>
   );
 };

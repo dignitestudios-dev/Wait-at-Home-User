@@ -340,7 +340,6 @@ const Home = () => {
               appointmentListLoader={appointmentListLoader}
               currentlyServing={appointmentList}
             /> */}
-          </div>
           <EstimatedTime
             appointmentNumber={appointmentNumber}
             data={estimateData}
@@ -348,6 +347,7 @@ const Home = () => {
             update={update}
             handleCancelEnrollment={() => setCancelEnrollment(true)}
           />
+          </div>
         </div>
         <div className="flex justify-center lg:ms-auto">
           <AdScreen />

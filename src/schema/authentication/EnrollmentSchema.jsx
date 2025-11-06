@@ -42,7 +42,6 @@ export const EnrollmentPersonalSchema = Yup.object({
     .matches(/^[0-9]{10,15}$/, "Phone number must be 10 digits"),
 });
 
-
 export const EnrollmentPetSchema = Yup.object({
   pets: Yup.array().of(
     Yup.object().shape({
@@ -53,8 +52,10 @@ export const EnrollmentPetSchema = Yup.object({
           "Pet Name cannot be empty or just spaces.",
           (value) => value?.trim().length > 0
         )
-        .test("no-leading-space", "Pet Name cannot start with a space.", (value) =>
-          value ? !value.startsWith(" ") : true
+        .test(
+          "no-leading-space",
+          "Pet Name cannot start with a space.",
+          (value) => (value ? !value.startsWith(" ") : true)
         )
         .test(
           "no-multiple-spaces",
@@ -76,9 +77,7 @@ export const EnrollmentPetSchema = Yup.object({
         .typeError("Pet age must be a number")
         .required("Please enter your pet's age")
         .min(0, "Pet age cannot be negative"),
-      petDiscription: Yup.string()
-        .required("Please describe your pet")
-        .min(10, "Description should be at least 10 characters"),
+      petDiscription: Yup.string().required("Please describe your pet"),
     })
   ),
   password: Yup.string().matches(

@@ -34,9 +34,7 @@ export const AddPetSchema = Yup.object({
         .typeError("Pet age must be a number")
         .required("Please enter your pet's age")
         .min(0, "Pet age cannot be negative"),
-      petDiscription: Yup.string()
-        .required("Please describe your pet")
-        .min(10, "Description should be at least 10 characters"),
+      petDiscription: Yup.string().required("Please describe your pet"),
     })
   ),
 });
