@@ -2,6 +2,7 @@ import React from "react";
 import { PurpleTick } from "../../../assets/export";
 import { RxCounterClockwiseClock } from "react-icons/rx";
 import { LiaCheckDoubleSolid } from "react-icons/lia";
+import { IoMdCheckmark } from "react-icons/io";
 
 const RequestSubmited = ({ handleClick, chartStart }) => {
   return (
@@ -22,7 +23,7 @@ const RequestSubmited = ({ handleClick, chartStart }) => {
         // onClick={handleClick}
         className="bg-[#FFFFFF59] cursor-pointer text-[14px] font-[500] w-[178px] h-[48px] flex items-center justify-center  gap-2 mx-auto mt-4 rounded-[32px] "
       >
-        {chartStart ? <LiaCheckDoubleSolid /> : <RxCounterClockwiseClock />}
+        {chartStart ? <IoMdCheckmark  /> : <RxCounterClockwiseClock />}
         {chartStart ? "Chat Started" : "Please Wait"}
       </div>
     </div>

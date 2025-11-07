@@ -30,7 +30,7 @@ const PersonalInfo = ({
             max={50}
           />
           <GlobalInputs
-            placeholder="Enter Your Email"
+            placeholder="Enter Your Email *"
             value={values.email}
             onChange={handleChange}
             onBlur={handleBlur}
