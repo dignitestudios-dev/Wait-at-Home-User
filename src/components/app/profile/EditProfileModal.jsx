@@ -96,7 +96,7 @@ const EditProfileModal = ({
           </div>
           <form onSubmit={handleSubmit}>
             <div className="flex gap-3 items-center my-4">
-              <div className="w-[80px] h-[80px] rounded-full overflow-hidden bg-white shadow">
+              {/* <div className="w-[80px] h-[80px] rounded-full overflow-hidden bg-white shadow">
                 <img
                   src={
                     preview || userProfileData?.user?.profilePicture || UserPro
@@ -104,8 +104,8 @@ const EditProfileModal = ({
                   alt="Profile"
                   className="w-full h-full object-cover"
                 />
-              </div>
-              <div>
+              </div> */}
+              {/* <div>
                 <label className="text-[#000] font-[500] text-[16px] cursor-pointer">
                   Upload Picture
                   <input
@@ -127,6 +127,17 @@ const EditProfileModal = ({
                     {errors.profilePic}
                   </div>
                 )}
+              </div> */}
+               <div className="flex justify-center items-center gap-2 rounded-full bg-[#00AAAD] h-20 w-20 cursor-pointer">
+                <span className="text-[18px] font-[600] text-white">
+                    {userProfileData?.user?.name
+                    ? userProfileData?.user?.name
+                        .split(" ")
+                        .map((word) => word[0])
+                        .join("")
+                        .slice(0, 2)
+                    : ""}
+                </span>
               </div>
             </div>
             <div className="space-y-3">
