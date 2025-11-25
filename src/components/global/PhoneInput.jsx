@@ -55,7 +55,7 @@ const PhoneInputs = ({
           type="text"
           className={`outline-none w-full placeholder:text-[16px] placeholder:font-[400] placeholder:text-[#616161] 
           text-[#181818] h-[49px] ${isDisabled ? "bg-gray-100 " : "bg-white"}`}
-          placeholder="123-456-7890"
+          placeholder="123-456-7890 *"
           value={value}
           onChange={handlePhoneChange}
           onBlur={onBlur}

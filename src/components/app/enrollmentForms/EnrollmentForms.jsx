@@ -45,7 +45,7 @@ const EnrollmentModal = ({
               className="h-10 w-auto object-contain"
             />
             <h2 className="text-[20px] font-semibold text-[#212121]">
-              Join Wait at Home
+              Join the Waiting List
             </h2>
           </div>
 

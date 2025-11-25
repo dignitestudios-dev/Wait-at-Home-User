@@ -316,7 +316,7 @@ const Home = () => {
         <TopSection />
       </div>
       <div className="flex flex-col gap-6 lg:flex-row lg:gap-10">
-        <div className="flex justify-center mt-6 lg:block">
+        <div className="flex justify-center  lg:block">
           <WaitingList
             appointmentList={appointmentList}
             appointmentListLoader={appointmentListLoader}

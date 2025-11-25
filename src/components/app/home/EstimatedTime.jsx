@@ -38,8 +38,10 @@ const EstimatedTime = ({
   const maxTime = data?.estimatedWaitMinutes
     ? data.estimatedWaitMinutes * 60
     : 0;
+
   const radius = 45;
   const circumference = 2 * Math.PI * radius;
+
   const strokeDashoffset =
     maxTime > 0
       ? circumference - (time / maxTime) * circumference
@@ -50,7 +52,7 @@ const EstimatedTime = ({
       className="
         bg-[#b5d8dc]
         h-[228px] w-[289px]
-        border rounded-3xl
+        rounded-3xl
         backdrop-blur-sm
         shadow-lg
         flex flex-col justify-between
@@ -58,15 +60,25 @@ const EstimatedTime = ({
         overflow-hidden
       "
     >
-      {/* Title */}
-      <h2 className="text-xl text-center font-semibold text-[#684D7B] ">
+      <h2 className="text-xl text-center font-semibold text-[#684D7B]">
         Estimated Wait Time
       </h2>
 
       {/* Clock section */}
       <div className="flex-1 flex items-center justify-center relative">
+
+        {/* Gradient Background Behind the Circle */}
+        <div
+          className="absolute w-[110px] h-[110px] rounded-full"
+          style={{
+            background:
+              "radial-gradient(circle at center, rgba(16,192,182,0.55), rgba(104,77,123,0.18))",
+            filter: "blur(4px)",
+          }}
+        />
+
         <svg
-          className="w-[120px] h-[120px] transform -rotate-90"
+          className="w-[120px] h-[120px] transform -rotate-90 relative z-10"
           viewBox="0 0 100 100"
         >
           <defs>
@@ -84,6 +96,7 @@ const EstimatedTime = ({
             stroke="rgba(255, 255, 255, 0.3)"
             strokeWidth="8"
           />
+
           <circle
             cx="50"
             cy="50"
@@ -97,15 +110,14 @@ const EstimatedTime = ({
           />
         </svg>
 
-        <div className="absolute inset-0 flex flex-col items-center justify-center">
-          <FaClock size={25} className="text-[#10C0B6] mb-2" />
+        <div className="absolute inset-0 flex flex-col items-center justify-center z-20">
+          <FaClock size={25} className="text-[#10C0B6] mb-1" />
           <div className="text-[18px] font-bold text-[#684D7B] leading-none">
             {formatTime(time)}
           </div>
         </div>
       </div>
 
-      {/* Button */}
       {appointmentNumber?.appointmentNumber && (
         <div className="flex justify-center mt-3">
           <button
@@ -114,8 +126,7 @@ const EstimatedTime = ({
               w-[230px]
               bg-[#5E2E86]
               text-white text-[14px] font-medium
-              py-2
-              rounded-full
+              py-2 rounded-full
               hover:bg-[#4a1f68]
               transition-all duration-200
             "

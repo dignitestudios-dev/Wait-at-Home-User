@@ -23,6 +23,7 @@ const PetInfo = ({
 
   return (
     <div className="mt-6">
+      <h2 className="text-[14px] font-[500] mx-2 ">Tell us About Your Pet</h2>
       <Form>
         <div className="px-1 pt-3 custom-scrollbar overflow-y-auto h-[450px] ">
           <FieldArray
@@ -151,7 +152,7 @@ const PetInfo = ({
                         <input
                           type="text"
                           placeholder={
-                            pet.petType ? "Enter Breed" : "Pet Type First"
+                            pet.petType ? "Breed" : "Breed"
                           }
                           value={pet.petBreed}
                           name={`pets.${index}.petBreed`}
@@ -307,7 +308,7 @@ const PetInfo = ({
         {/* Submit Button */}
         <div className="absolute bottom-2 w-full right-0 left-0 p-3">
           <GlobalButton loading={loading} type="submit">
-            Submit
+            Continue
           </GlobalButton>
         </div>
       </Form>
