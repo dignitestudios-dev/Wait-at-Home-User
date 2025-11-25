@@ -95,7 +95,7 @@ const ExistingPet = ({
       <div className="bg-gradient-to-br from-[#A0E6E1] to-[#C3B4D3] w-[471px] p-6 rounded-3xl shadow-lg relative text-gray-800 flex flex-col">
         <div className="flex justify-between border-b border-[#FFFFFF] pb-5">
           <h2 className="text-[18px] font-[600] text-[#212121] mb-2">
-            Join Wait at Home
+            Join the Waiting List
           </h2>
           <button
             onClick={onClose}
