@@ -146,7 +146,7 @@ const VerifyEmail = ({
             Check your Email/Text messages
           </h2>
           <p className="text-[13px] font-[400] text-[#565656] mt-2 ">
-            Enter the 4-digit code you received via email or text
+            We will send a verification code to both your email and phone{" "}
             <span className="flex justify-center items-center gap-2">
               {newEmail}
 
@@ -156,6 +156,7 @@ const VerifyEmail = ({
                 onClick={() => setIsEmailEditOpen(true)}
               /> */}
             </span>
+            Please review your information and click continue to proceed
           </p>
           <form onSubmit={handleSubmit}>
             <div className="flex gap-10 mb-2 justify-center mt-4">

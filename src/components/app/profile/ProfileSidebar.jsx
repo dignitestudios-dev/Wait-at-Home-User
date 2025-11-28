@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { CiLogout } from "react-icons/ci";
 import { FaRegUser } from "react-icons/fa";
 import { IoSettingsOutline } from "react-icons/io5";
+import { MdLogout } from "react-icons/md";
 
 const ProfileSidebar = ({
   setActiveTab,
@@ -61,10 +62,10 @@ const ProfileSidebar = ({
         {userData?.isUserRegistered ? (
           <button
             onClick={() => handleLogOut()}
-            className="flex justify-center items-center gap-2 p-2 w-full rounded-[16px] bg-white text-[16px] font-[500] md:text-base"
+            className="flex justify-center items-center gap-2 p-2 w-full rounded-[16px] bg-[#10C0B6] text-[16px] font-[500] md:text-base"
           >
-            <CiLogout className="text-[#10C0B6]" />
-            <span className="hidden md:inline text-[#10C0B6]">Logout</span>
+            <MdLogout  color="white"  />
+            <span className="hidden md:inline text-white">Logout</span>
           </button>
         ) : (
           <></>

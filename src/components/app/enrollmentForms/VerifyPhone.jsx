@@ -18,13 +18,14 @@ const VerifyPhone = ({
   setVerifyPhonelModal,
 }) => {
   if (!isOpen) return null;
-  const { Auth, userData ,handleLogOut} = useContext(AppContext);
+  const { Auth, userData, handleLogOut } = useContext(AppContext);
   const [otp, setOtp] = useState(Array(4).fill(""));
   const inputsRef = useRef([]);
   const [loading, setLoading] = useState(false);
   const [resendLoading, setResendLoading] = useState(false);
   const [isActive, setIsActive] = useState(true);
   const [seconds, setSeconds] = useState(30);
+  const [newphone, setPhone] = useState(userData?.phone || "");
 
   const handleChange = (e, index) => {
     const value = e.target.value.replace(/[^0-9]/g, "");
@@ -138,7 +139,9 @@ const VerifyPhone = ({
             Check your Email/Text messages
           </h2>
           <p className="text-[13px] font-[400] text-[#565656] mt-2">
-            Enter the 4-digit code you received via email or text
+            We will send a verification code to both your email and phone{" "}
+            {newphone}{" "}
+            Please review your information and click continue to proceed
           </p>
           <form onSubmit={handleSubmit}>
             <div className="flex gap-10 mb-2 justify-center mt-4">

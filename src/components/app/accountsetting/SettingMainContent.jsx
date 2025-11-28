@@ -114,8 +114,8 @@ const SettingMainContent = ({ userProfileData, setUpdate }) => {
               </span>{" "}
             </h2>
             <p className="text-[13px] text-[#4E4E4E]">
-              Lorem ipsum dolor sit amet consectetur. Ipsum aliquam est nam urna
-              odio lectus a.
+             Choose how you get updates and reminders for your pet’s appointments and important alerts.
+ 
             </p>
           </div>
           <div>

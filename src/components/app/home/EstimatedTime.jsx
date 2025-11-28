@@ -111,7 +111,7 @@ const EstimatedTime = ({
         </svg>
 
         <div className="absolute inset-0 flex flex-col items-center justify-center z-20">
-          <FaClock size={25} className="text-[#10C0B6] mb-1" />
+          <FaClock size={25} className="text-[#684D7B] mb-1" />
           <div className="text-[18px] font-bold text-[#684D7B] leading-none">
             {formatTime(time)}
           </div>
