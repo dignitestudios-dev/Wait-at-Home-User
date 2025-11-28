@@ -35,13 +35,10 @@ const AlmostThereModal = ({ isOpen, onClose, handleClick, email, phone }) => {
 
           <h2 className="text-[24px] font-[600]">You're Almost There!</h2>
 
-          <p className="text-[16px] font-[400] text-[#565656] max-w-[350px]">
+          <p className="text-[16px] font-[400] text-[#565656]">
             We just need to confirm that we have your correct email and phone
-            number. Please review and click continue to proceed
-          </p>
-
-          <p className="text-[14px] font-[500]">
-            We will send a verification code to both your email and phone{" "}
+            number. We will send a verification code to both your email and
+            phone. Please review your information and click continue to proceed
           </p>
 
           <p className="text-[14px] font-[500] text-[#565656]">
@@ -52,7 +49,6 @@ const AlmostThereModal = ({ isOpen, onClose, handleClick, email, phone }) => {
               +1 {phoneFormater(userData?.phone)}
             </span>
           </p>
-          <p className="text-[14px] font-[500] text-[#565656]"> Please review your information and click continue to proceed</p>
           <div className="w-full pt-4">
             <GlobalButton children={"Continue"} onClick={handleClick} />
           </div>

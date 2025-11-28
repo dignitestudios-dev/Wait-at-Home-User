@@ -143,10 +143,10 @@ const VerifyEmail = ({
           </div>
 
           <h2 className="text-[21px] font-[600] capitalize mt-3">
-            Check your Email/Text messages
+            Check your Email
           </h2>
           <p className="text-[13px] font-[400] text-[#565656] mt-2 ">
-            We will send a verification code to both your email and phone{" "}
+            We will send a verification code to your email{" "}
             <span className="flex justify-center items-center gap-2">
               {newEmail}
 

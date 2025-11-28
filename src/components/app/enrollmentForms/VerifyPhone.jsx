@@ -136,10 +136,10 @@ const VerifyPhone = ({
           </div>
 
           <h2 className="text-[19px] font-[600] capitalize mt-3">
-            Check your Email/Text messages
+            Check your Text messages
           </h2>
           <p className="text-[13px] font-[400] text-[#565656] mt-2">
-            We will send a verification code to both your email and phone{" "}
+            We will send a verification code to your phone{" "}
             {newphone}{" "}
             Please review your information and click continue to proceed
           </p>

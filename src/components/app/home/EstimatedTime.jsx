@@ -51,7 +51,7 @@ const EstimatedTime = ({
     <div
       className="
         bg-[#b5d8dc]
-        h-[228px] w-[289px]
+        w-[289px]
         rounded-3xl
         backdrop-blur-sm
         shadow-lg
@@ -66,10 +66,9 @@ const EstimatedTime = ({
 
       {/* Clock section */}
       <div className="flex-1 flex items-center justify-center relative">
-
         {/* Gradient Background Behind the Circle */}
         <div
-          className="absolute w-[110px] h-[110px] rounded-full"
+          className="absolute w-[140px] h-[140px] rounded-full"
           style={{
             background:
               "radial-gradient(circle at center, rgba(16,192,182,0.55), rgba(104,77,123,0.18))",
@@ -78,7 +77,7 @@ const EstimatedTime = ({
         />
 
         <svg
-          className="w-[120px] h-[120px] transform -rotate-90 relative z-10"
+          className="w-[150px] h-[150px] transform -rotate-90 relative z-10"
           viewBox="0 0 100 100"
         >
           <defs>
