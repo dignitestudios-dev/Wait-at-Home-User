@@ -17,17 +17,15 @@ const VirtualListModal = ({ isOpen, handleClick }) => {
             <img src={Clock} className="h-[62px] w-[62px]" alt="Success Tick" />
           </div>
 
-          <h2 className="text-[24px] font-[600]">
-            You’re in the Virtual Waiting List!
-          </h2>
+          <h2 className="text-[24px] font-[600]">You’re on the Wait at Home</h2>
 
           <p className="text-[16px] font-[400] text-[#565656] max-w-[350px]">
-            You’ve been added to the Virtual Waiting List. Please wait at home
-            and keep an eye on the list progress.
+            Please check back to monitor your progress on the virtual waiting
+            list.
           </p>
 
           <p className="text-[14px] font-[500]">
-            Note: We’ll notify you when your turn is near—stay ready!
+            We will contact you when it is time to come in, Thanks!
           </p>
         </div>
       </div>

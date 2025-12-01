@@ -86,7 +86,7 @@ const SettingMainContent = ({ userProfileData, setUpdate }) => {
           </div>
           <NotificationToogle />
         </div> */}
-{/* 
+        {/* 
         <div className="flex flex-col md:flex-row md:justify-between border-b-2 pb-3">
           <div>
             <h2 className="text-[16px] font-[600] capitalize">
@@ -114,8 +114,9 @@ const SettingMainContent = ({ userProfileData, setUpdate }) => {
               </span>{" "}
             </h2>
             <p className="text-[13px] text-[#4E4E4E]">
-             Choose how you get updates and reminders for your pet’s appointments and important alerts.
- 
+              Let us know how would you like us to communicate with you going forward.
+              <br />
+              (We are committed to your privacy and will not sell your contact information to any third parties.)
             </p>
           </div>
           <div>
@@ -142,10 +143,10 @@ const SettingMainContent = ({ userProfileData, setUpdate }) => {
             <h2 className="text-[16px] cursor-pointer font-[600] capitalize">
               Change password
             </h2>
-            <p className="text-[13px] text-[#4E4E4E]">
+            {/* <p className="text-[13px] text-[#4E4E4E]">
               Lorem ipsum dolor sit amet consectetur. Ipsum aliquam est nam urna
               odio lectus a.
-            </p>
+            </p> */}
           </div>
           <IoIosArrowForward size={24} />
         </div>
@@ -158,10 +159,10 @@ const SettingMainContent = ({ userProfileData, setUpdate }) => {
             <h2 className="text-[16px] cursor-pointer font-[600] capitalize">
               Delete Account
             </h2>
-            <p className="text-[13px] text-[#4E4E4E]">
+            {/* <p className="text-[13px] text-[#4E4E4E]">
               Lorem ipsum dolor sit amet consectetur. Ipsum aliquam est nam urna
               odio lectus a.
-            </p>
+            </p> */}
           </div>
           <IoIosArrowForward size={24} />
         </div>
