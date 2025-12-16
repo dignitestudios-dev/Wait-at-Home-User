@@ -289,6 +289,7 @@ const Home = () => {
   }, [profileData]);
 
   const [reminderFrequency, setReminderFrequency] = useState(0); // default 30 min
+  const [reminderOffsetMinutes, setReminderOffsetMinutes] = useState(0); // default 30 min
   const [notificationLoading, setNotificationLoading] = useState(false);
 
   const handleToggle = async (payload) => {
@@ -303,6 +304,7 @@ const Home = () => {
         setUpdate((prev) => !prev);
         setSelectedOptions([]);
         setReminderFrequency(null);
+        setReminderOffsetMinutes(null)
       }
     } catch (error) {
       ErrorToast(error?.response?.data?.message);
@@ -547,6 +549,8 @@ const Home = () => {
         setReminderFrequency={setReminderFrequency}
         handleClick={handleToggle}
         loading={notificationLoading}
+        reminderOffsetMinutes={reminderOffsetMinutes}
+        setReminderOffsetMinutes={setReminderOffsetMinutes}
       />
       <CancelEnrollment
         isOpen={cancelEnrollment}

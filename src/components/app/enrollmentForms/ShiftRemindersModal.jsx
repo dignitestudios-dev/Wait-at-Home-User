@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Message, Mobile } from "../../../assets/export";
 import GlobalButton from "../../global/GlobalButton";
 
-const reminderOptions = [90, 60, 30, 15, 5]; // reminder frequencies
+const reminderOptions = [90, 60, 30, 15, 5];
 
 const ShiftRemindersModal = ({
   isOpen,
@@ -12,6 +12,8 @@ const ShiftRemindersModal = ({
   loading,
   reminderFrequency,
   setReminderFrequency,
+  setReminderOffsetMinutes,
+  reminderOffsetMinutes
 }) => {
   if (!isOpen) return null;
 
@@ -49,6 +51,7 @@ const ShiftRemindersModal = ({
       isPhoneEnabled: selectedOptions.includes("phone"),
       isEmailEnabled: selectedOptions.includes("email"),
       reminderFrequency,
+      reminderOffsetMinutes
     });
   };
 
@@ -89,31 +92,66 @@ const ShiftRemindersModal = ({
           {/* Reminder Frequency Selection - sirf tab show hoga jab email/phone select ho */}
           {(selectedOptions.includes("email") ||
             selectedOptions.includes("phone")) && (
-            <div className="mt-6">
-              <h3 className="text-[18px] font-[600] mb-3">
-We will let you know when it is time to come in, how much time do you need to get to here?              </h3>
-              <div className="flex flex-wrap gap-3 justify-center">
-                {reminderOptions.map((min) => (
-                  <div
-                    key={min}
-                    onClick={() => {
-                      setReminderFrequency(min);
-                      setError("");
-                    }}
-                    className={`cursor-pointer px-4 py-2 rounded-lg border border-white ${
-                      reminderFrequency === min
-                        ? "bg-white text-gray-800"
-                        : "bg-[#FFFFFF26] text-white"
-                    }`}
-                  >
-                    {min} min
-                  </div>
-                ))}
+            <>
+              <div className="mt-6">
+                <h3 className="text-[18px] font-[600] mb-3">
+                  How often would you like to be reminded of your updated place
+                  in line? 
+                </h3>
+                <div className="flex flex-wrap gap-3 justify-center">
+                  {reminderOptions.map((min) => (
+                    <div
+                      key={min}
+                      onClick={() => {
+                        setReminderOffsetMinutes(min);
+                        setError("");
+                      }}
+                      className={`cursor-pointer px-4 py-2 rounded-lg border border-white ${
+                        reminderOffsetMinutes === min
+                          ? "bg-white text-gray-800"
+                          : "bg-[#FFFFFF26] text-white"
+                      }`}
+                    >
+                      {min} min
+                    </div>
+                  ))}
+                </div>
+                {error && (
+                  <p className="text-red-600 text-sm mt-2 font-medium">
+                    {error}
+                  </p>
+                )}
+              </div>{" "}
+              <div className="mt-6">
+                <h3 className="text-[18px] font-[600] mb-3">
+                  We will let you know when it is time to come in, how much time
+                  do you need to get to here?{" "}
+                </h3>
+                <div className="flex flex-wrap gap-3 justify-center">
+                  {reminderOptions.map((min) => (
+                    <div
+                      key={min}
+                      onClick={() => {
+                        setReminderFrequency(min);
+                        setError("");
+                      }}
+                      className={`cursor-pointer px-4 py-2 rounded-lg border border-white ${
+                        reminderFrequency === min
+                          ? "bg-white text-gray-800"
+                          : "bg-[#FFFFFF26] text-white"
+                      }`}
+                    >
+                      {min} min
+                    </div>
+                  ))}
+                </div>
+                {error && (
+                  <p className="text-red-600 text-sm mt-2 font-medium">
+                    {error}
+                  </p>
+                )}
               </div>
-              {error && (
-                <p className="text-red-600 text-sm mt-2 font-medium">{error}</p>
-              )}
-            </div>
+            </>
           )}
 
           {/* Error message */}
