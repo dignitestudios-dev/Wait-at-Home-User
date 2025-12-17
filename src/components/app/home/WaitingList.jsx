@@ -31,7 +31,7 @@ const WaitingList = ({ appointmentList, appointmentListLoader }) => {
                     <li key={index}>
                       <div className="flex gap-3 items-center py-2">
                         <span className="min-w-[20px] text-right text-white font-[600] text-[14px]">
-                          {index + 1}
+                          {index + 1}  , {item?.appointmentNumber}
                         </span>
                         {item?.profilePicture ? (
                           <img
