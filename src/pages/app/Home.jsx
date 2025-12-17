@@ -304,7 +304,7 @@ const Home = () => {
         setUpdate((prev) => !prev);
         setSelectedOptions([]);
         setReminderFrequency(null);
-        setReminderOffsetMinutes(null)
+        setReminderOffsetMinutes(null);
       }
     } catch (error) {
       ErrorToast(error?.response?.data?.message);
@@ -342,13 +342,13 @@ const Home = () => {
               appointmentListLoader={appointmentListLoader}
               currentlyServing={appointmentList}
             /> */}
-          <EstimatedTime
-            appointmentNumber={appointmentNumber}
-            data={estimateData}
-            loading={estimateLoader}
-            update={update}
-            handleCancelEnrollment={() => setCancelEnrollment(true)}
-          />
+            <EstimatedTime
+              appointmentNumber={appointmentNumber}
+              data={estimateData}
+              loading={estimateLoader}
+              update={update}
+              handleCancelEnrollment={() => setCancelEnrollment(true)}
+            />
           </div>
         </div>
         <div className="flex justify-center lg:ms-auto">
@@ -542,6 +542,7 @@ const Home = () => {
       />
 
       <ShiftRemindersModal
+        appointmentData={appointmentData}
         isOpen={reminderShiftModal}
         selectedOptions={selectedOptions}
         setSelectedOptions={setSelectedOptions}
@@ -581,6 +582,7 @@ const Home = () => {
         setExistingPet={setExistingPet}
         onClose={() => setExistingPet(false)}
         setAddPetModal={setAddPetModal}
+        setReminderShiftModal={setReminderShiftModal}
       />
 
       <AddPetSuccess

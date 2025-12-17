@@ -13,11 +13,14 @@ const ShiftRemindersModal = ({
   reminderFrequency,
   setReminderFrequency,
   setReminderOffsetMinutes,
-  reminderOffsetMinutes
+  reminderOffsetMinutes,
+  appointmentData,
 }) => {
+  
   if (!isOpen) return null;
-
-  const [error, setError] = useState("");
+  const [contactError, setContactError] = useState("");
+  const [offsetError, setOffsetError] = useState("");
+  const [frequencyError, setFrequencyError] = useState("");
 
   const toggleOption = (option) => {
     setSelectedOptions((prev) =>
@@ -25,33 +28,43 @@ const ShiftRemindersModal = ({
         ? prev.filter((item) => item !== option)
         : [...prev, option]
     );
+    setContactError("");
   };
 
   const isSelected = (option) => selectedOptions.includes(option);
 
   const handleContinue = () => {
+    setContactError("");
+    setOffsetError("");
+    setFrequencyError("");
+
+    // Contact method validation
     if (
       !selectedOptions.includes("email") &&
       !selectedOptions.includes("phone")
     ) {
-      setError("Please select at least one notification option.");
-      return;
-    }
-    if (
-      (selectedOptions.includes("email") ||
-        selectedOptions.includes("phone")) &&
-      !reminderFrequency
-    ) {
-      setError("Please select a reminder time.");
+      setContactError("Please select at least one notification option.");
       return;
     }
 
-    setError("");
+    // Reminder offset validation
+    if (!reminderOffsetMinutes) {
+      setOffsetError("Please select how often you want to be reminded.");
+      return;
+    }
+
+    // Reminder frequency validation
+    if (!reminderFrequency) {
+      setFrequencyError("Please select how much time you need to get here.");
+      return;
+    }
+
     handleClick({
       isPhoneEnabled: selectedOptions.includes("phone"),
       isEmailEnabled: selectedOptions.includes("email"),
       reminderFrequency,
-      reminderOffsetMinutes
+      reminderOffsetMinutes,
+      appointmentId: appointmentData[0]?._id,
     });
   };
 
@@ -86,9 +99,12 @@ const ShiftRemindersModal = ({
               <p className="text-[14px] font-[500]">Phone</p>
             </div>
           </div>
-          {error && (
-            <p className="text-red-600 text-sm mt-2 font-medium">{error}</p>
+          {contactError && (
+            <p className="text-red-600 text-sm mt-2 font-medium">
+              {contactError}
+            </p>
           )}
+
           {/* Reminder Frequency Selection - sirf tab show hoga jab email/phone select ho */}
           {(selectedOptions.includes("email") ||
             selectedOptions.includes("phone")) && (
@@ -96,7 +112,7 @@ const ShiftRemindersModal = ({
               <div className="mt-6">
                 <h3 className="text-[18px] font-[600] mb-3">
                   How often would you like to be reminded of your updated place
-                  in line? 
+                  in line?
                 </h3>
                 <div className="flex flex-wrap gap-3 justify-center">
                   {reminderOptions.map((min) => (
@@ -104,7 +120,7 @@ const ShiftRemindersModal = ({
                       key={min}
                       onClick={() => {
                         setReminderOffsetMinutes(min);
-                        setError("");
+                        setOffsetError("");
                       }}
                       className={`cursor-pointer px-4 py-2 rounded-lg border border-white ${
                         reminderOffsetMinutes === min
@@ -116,9 +132,9 @@ const ShiftRemindersModal = ({
                     </div>
                   ))}
                 </div>
-                {error && (
+                {offsetError && (
                   <p className="text-red-600 text-sm mt-2 font-medium">
-                    {error}
+                    {offsetError}
                   </p>
                 )}
               </div>{" "}
@@ -133,7 +149,7 @@ const ShiftRemindersModal = ({
                       key={min}
                       onClick={() => {
                         setReminderFrequency(min);
-                        setError("");
+                        setFrequencyError("");
                       }}
                       className={`cursor-pointer px-4 py-2 rounded-lg border border-white ${
                         reminderFrequency === min
@@ -145,9 +161,9 @@ const ShiftRemindersModal = ({
                     </div>
                   ))}
                 </div>
-                {error && (
+                {frequencyError && (
                   <p className="text-red-600 text-sm mt-2 font-medium">
-                    {error}
+                    {frequencyError}
                   </p>
                 )}
               </div>

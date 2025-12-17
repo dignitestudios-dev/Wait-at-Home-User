@@ -13,6 +13,7 @@ const ExistingPet = ({
   setVirtualListModal,
   setUpdate,
   setAddPetModal,
+  setReminderShiftModal,
 }) => {
   if (!isOpen) return null;
   const { Auth } = useContext(AppContext);
@@ -78,9 +79,10 @@ const ExistingPet = ({
         const response = await axios.post("/user/create-appointment", payload);
         if (response.status === 200) {
           SuccessToast(response.data.message);
-          Auth(response?.data); 
+          Auth(response?.data);
           setExistingPet(false);
           setUpdate((prev) => !prev);
+          setReminderShiftModal(true);
         }
       } catch (error) {
         ErrorToast(error?.response?.data?.message);
