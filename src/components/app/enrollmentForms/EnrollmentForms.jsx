@@ -21,8 +21,9 @@ const EnrollmentModal = ({
   checked,
   setChecked,
   setFieldValue,
-
+  isCreateAccount,
   loading,
+  setIsCreateAccount,
 }) => {
   const handlePhoneChange = (e) => {
     const rawValue = e.target.value.replace(/\D/g, "");
@@ -51,7 +52,11 @@ const EnrollmentModal = ({
 
           {/* Right Section - Close Button */}
           <button
-            onClick={onClose}
+            onClick={() => {
+              onClose();
+              setIsCreateAccount(false);
+              setStep(1)
+            }}
             className="h-9 w-9 bg-gray-100 hover:bg-gray-200 flex justify-center items-center rounded-full text-gray-700 hover:text-black transition-all duration-200"
           >
             <RxCross2 size={20} />
@@ -106,6 +111,7 @@ const EnrollmentModal = ({
                 setChecked={setChecked}
                 checked={checked}
                 setFieldValue={setFieldValue}
+                isCreateAccount={isCreateAccount}
               />
             )}
           </div>

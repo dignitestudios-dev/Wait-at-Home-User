@@ -11,11 +11,9 @@ const TopSection = () => {
       <div className="flex items-center gap-3 ">
         {/* <img src={LogoWhite} className="w-[40px]" alt="" /> */}
         <h2 className=" font-medium text-white mb-2">
-          Welcome to Wait at Home <sup>(TM)</sup> – the virtual waiting list for
-          pets and vets! Secure your place in line to see a doctor but do your
-          waiting at home instead of in the lobby. You will receive real-time
-          updates via email and/or text so you will know when to arrive at the
-          clinic with your pet.
+        Welcome to Wait at Home™ — the virtual waiting experience designed for pets and their families.
+Reserve your place in line without sitting in a busy lobby. We will send real-time text and email updates so you know when to arrive with your pet.
+ 
         </h2>
       </div>
       {userData?.isUserRegistered && <ChatAndNotiBtn />}

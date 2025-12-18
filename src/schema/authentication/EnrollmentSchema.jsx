@@ -64,11 +64,6 @@ export const EnrollmentPetSchema = Yup.object({
         )
         .test("no-numbers", "Pet Name cannot contain numbers.", (value) =>
           value ? !/\d/.test(value) : true
-        )
-        .test(
-          "first-letter-uppercase",
-          "First letter must be uppercase.",
-          (value) => (value ? /^[A-Z]/.test(value.trim()) : true)
         ),
 
       petType: Yup.string().required("Please select your pet type"),

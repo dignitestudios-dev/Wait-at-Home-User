@@ -146,7 +146,7 @@ const VerifyEmail = ({
             Check your Email
           </h2>
           <p className="text-[13px] font-[400] text-[#565656] mt-2 ">
-            We will send a verification code to your email{" "}
+            We are sending a verification code to your email{" "}
             <span className="flex justify-center items-center gap-2">
               {newEmail}
 

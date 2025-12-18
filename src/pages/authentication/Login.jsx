@@ -12,7 +12,9 @@ import { ErrorToast, SuccessToast } from "../../components/global/Toaster";
 
 const Login = () => {
   const navigate = useNavigate();
+
   const [loading, setLoading] = useState(false);
+
   const { Auth, fcmToken } = useContext(AppContext);
   const { values, handleBlur, handleChange, handleSubmit, errors, touched } =
     useFormik({
@@ -116,7 +118,14 @@ const Login = () => {
           </div>
 
           <GlobalButton children={"Login"} type="submit" loading={loading} />
+          <div></div>
         </form>
+        <button
+          className="cursor-pointer"
+          onClick={() => navigate("/app/home", { state: { isModal: true } })}
+        >
+          Create Account
+        </button>
       </div>
     </div>
   );

@@ -121,7 +121,7 @@ const SettingMainContent = ({ userProfileData, setUpdate }) => {
           </div>
           <div>
             <ReminderOption
-              label="Number"
+              label="Text"
               checked={options.phone}
               loading={notificationLoader}
               onChange={() => toggleOption("phone")}

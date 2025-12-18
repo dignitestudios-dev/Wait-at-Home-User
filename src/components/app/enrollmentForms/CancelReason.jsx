@@ -10,6 +10,7 @@ const CancelReason = ({
   cancelReasonDiscription,
   errorReasonDiscription,
   cancelLoading,
+  setIsSkip
 }) => {
   if (!isOpen) return null;
 
@@ -18,7 +19,8 @@ const CancelReason = ({
       <div className="bg-gradient-to-br from-[#A0E6E1] to-[#C3B4D3] w-[471px] p-8 rounded-3xl shadow-lg relative text-gray-800">
         <div className="flex justify-between border-b border-[#FFFFFF] pb-5">
           <h2 className="text-[18px] font-[600] text-[#212121] mb-2">
-            Cancellation Reason
+            Let us know how we can improve
+
           </h2>
           <button
             onClick={onClose}
@@ -29,7 +31,8 @@ const CancelReason = ({
         </div>
         <form action="" onSubmit={handleClick}>
           <textarea
-            placeholder="Write here"
+            placeholder="Why did you decide to take your name off the Wait at Home list? 
+"
             value={cancelReasonDiscription}
             onChange={handleChange}
             className={`bg-white w-full mt-7 rounded-[20px] h-[113px] px-4 py-4 border  ${
@@ -44,14 +47,19 @@ const CancelReason = ({
             </p>
           )}
           <div className="flex flex-col justify-center items-center space-y-3 mt-10">
-            <div
-              onClick={onClose}
-              className="text-[18px] cursor-pointer font-[600] text-[#00000080]"
-            >
-              Skip
-            </div>
+          <div
+  onClick={() => {
+    setIsSkip(true);
+    handleClick();
+  }}
+  className="cursor-pointer font-[500] text-[#00000080]"
+>
+  Skip
+</div>
+
             <button
               type="submit"
+                onClick={() => setIsSkip(false)}
               className="w-full bg-[#00AAAD] hover:bg-[#00908b] text-white text-[14px] font-[600] py-3 rounded-[12px] transition duration-200"
             >
               <div className="flex justify-center items-center">

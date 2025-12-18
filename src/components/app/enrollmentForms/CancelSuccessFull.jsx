@@ -16,7 +16,7 @@ const CancelSuccessFull = ({ isOpen, onClose }) => {
           </div>
           <h2 className="text-[24px] font-[600]">Cancelled Successfully</h2>
           <p className="text-[16px] font-[400] text-[#565656] max-w-[350px]">
-            Your enrollment has been cancelled successfully
+            You have left the waiting list.
           </p>
         </div>
       </div>

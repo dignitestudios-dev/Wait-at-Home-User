@@ -4,6 +4,7 @@ import { IoAlertCircleOutline } from "react-icons/io5";
 import GlobalButton from "../../global/GlobalButton";
 import PhoneInputs from "../../global/PhoneInput";
 import { phoneFormater } from "../../../lib/helpers";
+import { MobileLogo } from "../../../assets/export";
 
 const PersonalInfo = ({
   values,
@@ -53,24 +54,23 @@ const PersonalInfo = ({
             touched={touched.phone}
           />
         </div>
-        <div className=" p-3 absolute bottom-0 w-full right-0 left-0 ">
+           <div className="flex items-start gap-2 mt-3 text-sm text-gray-600">
+        <img
+          src={MobileLogo}
+          className="w-[32px] h-[32px] object-contain mt-1"
+          alt=""
+        />
+        <span className="text-[13px] text-[#565656]">
+          We’ll send a verification code to your phone and email. Please make
+          sure both are correct.
+        </span>
+      </div>
+        <div className=" p-3 ">
           <GlobalButton type={"submit"} children={"Next"} />
         </div>
       </form>
 
-      <div className="flex items-start text-sm mt-2 text-gray-600">
-        <span className="text-xl mr-2">
-          <IoAlertCircleOutline size={24} className="mt-1 min-w-[24px]" />
-        </span>
-        <span>
-          <strong className="text-black text-[13px] font-[600] ">
-            Heads Up!
-          </strong>
-          <p className="text-[13px]  text-[#565656] ">
-            Double-check email and phone. A code will be sent to both.
-          </p>
-        </span>
-      </div>
+   
     </div>
   );
 };

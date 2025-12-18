@@ -72,7 +72,7 @@ const ShiftRemindersModal = ({
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-60">
       <div className="bg-gradient-to-br from-[#A0E6E1] to-[#C3B4D3] w-[500px] max-h-[94vh] p-8 rounded-3xl shadow-lg relative text-gray-800 overflow-y-auto">
         <div className="flex flex-col items-center justify-center text-center space-y-4">
-          <h2 className="text-[24px] font-[600]">How should we contact you?</h2>
+          <h2 className="text-[24px] font-[600]">Let’s keep in touch</h2>
           <span className="text-gray-500 font-[500]">
             (Select all that apply)
           </span>
@@ -128,7 +128,7 @@ const ShiftRemindersModal = ({
                           : "bg-[#FFFFFF26] text-white"
                       }`}
                     >
-                      {min} min
+                      Every {min} min
                     </div>
                   ))}
                 </div>
@@ -173,8 +173,8 @@ const ShiftRemindersModal = ({
           {/* Error message */}
 
           <p className="text-[16px] font-[400] text-[#565656] max-w-[350px] mt-6">
-            We will send you updates so you can monitor your place in line and
-            know when it is time to arrive at the clinic.
+          {/* Let us know how you would like us to contact you with updates.  */}
+
           </p>
         </div>
 

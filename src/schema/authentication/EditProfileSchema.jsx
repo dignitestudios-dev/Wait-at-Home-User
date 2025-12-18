@@ -18,11 +18,6 @@ export const EditProfileSchema = Yup.object({
     )
     .test("no-numbers", "First name cannot contain numbers.", (value) =>
       value ? !/\d/.test(value) : true
-    )
-    .test(
-      "first-letter-uppercase",
-      "First letter must be uppercase.",
-      (value) => (value ? /^[A-Z]/.test(value.trim()) : true)
     ),
   email: Yup.string()
     .email("Please enter a valid email address")

@@ -31,6 +31,7 @@ import AddPetSuccess from "../../components/app/petprofile/AddPetSuccess";
 import { AddPet } from "../../init/app/PetForm";
 import { AddPetSchema } from "../../schema/app/PetFormSchema";
 import GoogleAd from "../../components/global/GoogleAd";
+import { useLocation } from "react-router";
 const Home = () => {
   const {
     Auth,
@@ -48,8 +49,13 @@ const Home = () => {
     setIsRestrictByAdmin,
   } = useContext(AppContext);
 
+  const location = useLocation();
+
   const [step, setStep] = useState(1);
   const [formModal, setFormModal] = useState(false);
+  const [isCreateAccount, setIsCreateAccount] = useState(
+    location?.state?.isModal || false
+  );
   const [almostThere, setAlmostThere] = useState(false);
   const [verifyEmailModal, setVerifyEmailModal] = useState(false);
   const [verifyPhonelModal, setVerifyPhonelModal] = useState(false);
@@ -76,6 +82,16 @@ const Home = () => {
   const latestAppointment = Array.isArray(appointmentData)
     ? appointmentData[appointmentData.length - 1]
     : appointmentData;
+  useEffect(() => {
+    if (isCreateAccount) {
+      setFormModal(true);
+      setChecked(true);
+
+      // ✅ state ko clear kar do so reload par false rahe
+      window.history.replaceState({}, document.title);
+    }
+  }, []);
+
   const {
     values,
     handleBlur,
@@ -140,10 +156,13 @@ const Home = () => {
       setErrorReasonDiscription("");
     }
   };
+  const [isSkip, setIsSkip] = useState(false);
 
   const handleCancelSubmit = async (e) => {
-    e.preventDefault();
-    if (!cancelReasonDiscription.trim()) {
+    if (e) e.preventDefault();
+
+    // If not skipping, validate description
+    if (!isSkip && !cancelReasonDiscription.trim()) {
       setErrorReasonDiscription("Please fill in the description.");
       return;
     }
@@ -156,14 +175,16 @@ const Home = () => {
       ErrorToast("No appointment found to cancel.");
       return;
     }
-    setCancelLoading(true);
+    if (!isSkip) {
+      setCancelLoading(true);
+    }
     try {
       const response = await axios.post(
         "/appointment/cancel-appointment",
         payload
       );
       if (response.status === 200) {
-        SuccessToast(response.data.message);
+        SuccessToast("You have left the waiting list.");
         setCancelSuccessFull(true);
         setCancelReason(false);
         setUpdate((prev) => !prev);
@@ -432,6 +453,8 @@ const Home = () => {
             setChecked={setChecked}
             checked={checked}
             setFieldValue={formikProps.setFieldValue}
+            isCreateAccount={isCreateAccount}
+            setIsCreateAccount={setIsCreateAccount}
           />
         )}
       </Formik>
@@ -566,6 +589,7 @@ const Home = () => {
         isOpen={cancelReason}
         onClose={() => setCancelReason(false)}
         handleClick={handleCancelSubmit}
+        setIsSkip={setIsSkip}
         cancelReasonDiscription={cancelReasonDiscription}
         handleChange={handleCancelChange}
         errorReasonDiscription={errorReasonDiscription}
