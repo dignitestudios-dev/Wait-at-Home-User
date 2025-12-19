@@ -10,7 +10,8 @@ const CancelReason = ({
   cancelReasonDiscription,
   errorReasonDiscription,
   cancelLoading,
-  setIsSkip
+  isSkipLoading,
+  setErrorReasonDiscription,
 }) => {
   if (!isOpen) return null;
 
@@ -20,7 +21,6 @@ const CancelReason = ({
         <div className="flex justify-between border-b border-[#FFFFFF] pb-5">
           <h2 className="text-[18px] font-[600] text-[#212121] mb-2">
             Let us know how we can improve
-
           </h2>
           <button
             onClick={onClose}
@@ -46,20 +46,20 @@ const CancelReason = ({
               {errorReasonDiscription}
             </p>
           )}
+
           <div className="flex flex-col justify-center items-center space-y-3 mt-10">
-          <div
-  onClick={() => {
-    setIsSkip(true);
-    handleClick();
-  }}
-  className="cursor-pointer font-[500] text-[#00000080]"
->
-  Skip
-</div>
+            <div
+              onClick={() => {
+                setErrorReasonDiscription("");
+                handleClick(null, true);
+              }}
+              className="cursor-pointer font-[500] text-[#00000080]"
+            >
+              {isSkipLoading ? "Skip......" : "Skip"}
+            </div>
 
             <button
               type="submit"
-                onClick={() => setIsSkip(false)}
               className="w-full bg-[#00AAAD] hover:bg-[#00908b] text-white text-[14px] font-[600] py-3 rounded-[12px] transition duration-200"
             >
               <div className="flex justify-center items-center">

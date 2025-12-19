@@ -123,13 +123,13 @@ const OtpForgot = () => {
           </div>
         </div>
 
-        <div className="text-center mb-6 mt-5">
-          <h2 className="text-[26px] sm:text-[28px] lg:text-[32px] font-[600] text-[#1F1F1F]">
-            Verify OTP!
+        <div className="text-center mb-6 ">
+          <h2 className="text-[18px] sm:text-[28px] lg:text-[18px] font-[600] text-[#1F1F1F]">
+            Please enter the one time code sent to your <span className="text-gray-400">leo@gmail.com</span>
           </h2>
-          <p className="text-[#565656] text-[14px] font-[400] mt-1">
-            Please OTP code sent to your leo@gmail.com
-          </p>
+          {/* <p className="text-[#565656] text-[14px] font-[400] mt-1">
+            Please enter the one time code sent to your leo@gmail.com
+          </p> */}
         </div>
 
         <form className="space-y-4" onSubmit={handleSubmit}>

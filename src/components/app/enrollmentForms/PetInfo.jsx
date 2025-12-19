@@ -18,10 +18,10 @@ const PetInfo = ({
   setChecked,
   setFieldValue,
   loading,
-  isCreateAccount
+  isCreateAccount,
 }) => {
   const [isOther, setIsOther] = useState({});
-const isAccountChecked = isCreateAccount || checked;
+  const isAccountChecked = isCreateAccount || checked;
 
   return (
     <div className="mt-6">
@@ -153,9 +153,7 @@ const isAccountChecked = isCreateAccount || checked;
                       <div className="relative w-full mb-2">
                         <input
                           type="text"
-                          placeholder={
-                            pet.petType ? "Breed" : "Breed"
-                          }
+                          placeholder={pet.petType ? "Breed" : "Breed"}
                           value={pet.petBreed}
                           name={`pets.${index}.petBreed`}
                           onChange={handleChange}
@@ -246,25 +244,31 @@ const isAccountChecked = isCreateAccount || checked;
 
           {/* Save Info Checkbox */}
           <p className="text-[13px]  text-[#565656] mb-2  mx-2">
-          You do not need to create an account to join the Wait at Home list, but creating an account will make signing in faster next time.
+            {isCreateAccount
+              ? "Please enter your password to create your account"
+              : "  You do not need to create an account to join the Wait at Home list, but creating an account will make signing in faster next time."}
           </p>
           <div className="flex items-center mb-3  gap-2 px-2 text-[14px] text-[#6B6B6B] mt-4">
             <label className="relative cursor-pointer">
               <input type="checkbox" className="peer hidden" />
               <div className="flex items-center gap-2 text-[14px] text-[#6B6B6B]">
                 <div
-  className={`w-[24px] h-[24px] rounded-[6px] border cursor-pointer flex items-center justify-center transition-all
-    ${isAccountChecked ? "bg-[#10C0B6] border-[#10C0B6]" : "bg-transparent border-[#6B6B6B]"}
+                  className={`w-[24px] h-[24px] rounded-[6px] border cursor-pointer flex items-center justify-center transition-all
+    ${
+      isAccountChecked
+        ? "bg-[#10C0B6] border-[#10C0B6]"
+        : "bg-transparent border-[#6B6B6B]"
+    }
     ${isCreateAccount ? "cursor-not-allowed opacity-60" : ""}
   `}
-  onClick={() => {
-    if (isCreateAccount) return; // ❌ click disabled
-    setChecked(!checked);
-    setFieldValue("password", "");
-  }}
->
-  {isAccountChecked && <FaCheck size={14} color="#fff" />}
-</div>
+                  onClick={() => {
+                    if (isCreateAccount) return; // ❌ click disabled
+                    setChecked(!checked);
+                    setFieldValue("password", "");
+                  }}
+                >
+                  {isAccountChecked && <FaCheck size={14} color="#fff" />}
+                </div>
 
                 <span
                   onClick={() => {

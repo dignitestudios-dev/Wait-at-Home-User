@@ -77,17 +77,19 @@ const Home = () => {
   const [addPetModal, setAddPetModal] = useState(false);
   const [addPetSuccess, setAddPetSuccess] = useState(false);
   const [creatAppoitmentLoading, setCreatAppoitmentLoading] = useState(false);
+  const [isSkip, setIsSkip] = useState(false);
+  const [isSkipLoading, setIsSkipLoading] = useState(false);
+
   const validateSchema =
     step == 1 ? EnrollmentPersonalSchema : EnrollmentPetSchema;
   const latestAppointment = Array.isArray(appointmentData)
     ? appointmentData[appointmentData.length - 1]
     : appointmentData;
+
   useEffect(() => {
     if (isCreateAccount) {
       setFormModal(true);
       setChecked(true);
-
-      // ✅ state ko clear kar do so reload par false rahe
       window.history.replaceState({}, document.title);
     }
   }, []);
@@ -156,56 +158,46 @@ const Home = () => {
       setErrorReasonDiscription("");
     }
   };
-  const [isSkip, setIsSkip] = useState(false);
 
-  const handleCancelSubmit = async (e) => {
-    if (e) e.preventDefault();
+const handleCancelSubmit = async (e, skip = false) => {
+  if (e) e.preventDefault();
 
-    // If not skipping, validate description
-    if (!isSkip && !cancelReasonDiscription.trim()) {
-      setErrorReasonDiscription("Please fill in the description.");
-      return;
-    }
+  // ✅ sirf submit par validation
+  if (!skip && !cancelReasonDiscription.trim()) {
+    setErrorReasonDiscription("Please fill in the description.");
+    return;
+  }
 
+  if (!latestAppointment) {
+    ErrorToast("No appointment found to cancel.");
+    return;
+  }
+
+  // loaders
+  skip ? setIsSkipLoading(true) : setCancelLoading(true);
+
+  try {
     const payload = {
       appointmentId: appointmentData?.map((item) => item?._id),
-      cancelReason: cancelReasonDiscription,
+      cancelReason: skip ? "" : cancelReasonDiscription,
     };
-    if (!latestAppointment) {
-      ErrorToast("No appointment found to cancel.");
-      return;
+
+    const response = await axios.post(
+      "/appointment/cancel-appointment",
+      payload
+    );
+
+    if (response.status === 200) {
+      SuccessToast("You have left the waiting list.");
+      setCancelReason(false);
+      setCancelReasonDiscription("");
     }
-    if (!isSkip) {
-      setCancelLoading(true);
-    }
-    try {
-      const response = await axios.post(
-        "/appointment/cancel-appointment",
-        payload
-      );
-      if (response.status === 200) {
-        SuccessToast("You have left the waiting list.");
-        setCancelSuccessFull(true);
-        setCancelReason(false);
-        setUpdate((prev) => !prev);
-        setCancelReasonDiscription("");
-        setTimeout(() => {
-          setCancelSuccessFull(false);
-        }, 2000);
-        if (userData?.isUserRegistered) {
-          Cookies.remove("appointmentData");
-          Cookies.remove("petData");
-          setPetData(null);
-        } else {
-          clearAllCookies();
-        }
-      }
-    } catch (error) {
-      ErrorToast(error.response.data.message);
-    } finally {
-      setCancelLoading(false);
-    }
-  };
+  } catch (error) {
+    ErrorToast(error.response?.data?.message);
+  } finally {
+    skip ? setIsSkipLoading(false) : setCancelLoading(false);
+  }
+};
 
   const handleCreateAppoitment = async () => {
     const payload = {
@@ -585,14 +577,17 @@ const Home = () => {
         onClose={() => setCancelEnrollment(false)}
       />
       <CancelReason
+      isSkipLoading={isSkipLoading}
         cancelLoading={cancelLoading}
         isOpen={cancelReason}
         onClose={() => setCancelReason(false)}
         handleClick={handleCancelSubmit}
-        setIsSkip={setIsSkip}
+        
         cancelReasonDiscription={cancelReasonDiscription}
         handleChange={handleCancelChange}
         errorReasonDiscription={errorReasonDiscription}
+        setErrorReasonDiscription={setErrorReasonDiscription}
+        
       />
       <CancelSuccessFull
         isOpen={cancelSuccessFull}
