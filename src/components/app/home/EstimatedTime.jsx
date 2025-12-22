@@ -11,13 +11,33 @@ const EstimatedTime = ({
   const [time, setTime] = useState(0);
   const { appointmentData } = useContext(AppContext);
 
+  const appointmentDate = new Date(data?.appointmentTime);
+
+  const now = new Date();
+  const diffInSeconds = Math.max(0, Math.floor((appointmentDate - now) / 1000));
   useEffect(() => {
-    if (data && typeof data.estimatedWaitMinutes === "number") {
-      setTime(data.estimatedWaitMinutes * 60);
-    } else {
-      setTime(0);
+    if (!data?.appointmentTime) {
+      setTime(0); 
+      return;
     }
-  }, [data, appointmentData?.signUpRecord, update]);
+
+    const updateTime = () => {
+      const now = new Date();
+      const appointmentDate = new Date(data.appointmentTime);
+
+      const diffInSeconds = Math.max(
+        0,
+        Math.floor((appointmentDate - now) / 1000)
+      );
+
+      setTime(diffInSeconds);
+    };
+
+    updateTime(); // initial call
+    const interval = setInterval(updateTime, 1000);
+
+    return () => clearInterval(interval);
+  }, [data?.appointmentTime]);
 
   useEffect(() => {
     if (!time) return;
@@ -26,14 +46,13 @@ const EstimatedTime = ({
     }, 1000);
     return () => clearInterval(interval);
   }, [time]);
-
-  const formatTime = (seconds) => {
-    const hrs = Math.floor(seconds / 3600);
-    const mins = Math.floor((seconds % 3600) / 60);
-    return `${hrs.toString().padStart(2, "0")}:${mins
-      .toString()
-      .padStart(2, "0")}`;
-  };
+ const formatTime = (seconds) => {
+  const hrs = Math.floor(seconds / 3600);
+  const mins = Math.floor((seconds % 3600) / 60);
+  return `${hrs.toString().padStart(2, "0")}:${mins
+    .toString()
+    .padStart(2, "0")}`;
+};
 
   const maxTime = data?.estimatedWaitMinutes
     ? data.estimatedWaitMinutes * 60
