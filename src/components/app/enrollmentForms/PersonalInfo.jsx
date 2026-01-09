@@ -16,7 +16,7 @@ const PersonalInfo = ({
   handlePhoneChange,
 }) => {
   return (
-    <div className="mt-6">
+    <div className="mt-6 ">
       <form onSubmit={handleSubmit}>
         <div className="px-1">
           <GlobalInputs
@@ -54,23 +54,22 @@ const PersonalInfo = ({
             touched={touched.phone}
           />
         </div>
-           <div className="flex items-start gap-2 mt-3 text-sm text-gray-600">
-        <img
-          src={MobileLogo}
-          className="w-[32px] h-[32px] object-contain mt-1"
-          alt=""
-        />
-        <span className="text-[13px] text-[#565656]">
-          We’ll send a verification code to your phone and email. Please make
-          sure both are correct.
-        </span>
-      </div>
+        <div className="flex items-start gap-2 mt-3 text-sm text-gray-600">
+          <img
+            src={MobileLogo}
+            className="w-[32px] h-[32px] object-contain mt-1"
+            alt=""
+          />
+          <span className="text-[13px] text-[#565656]">
+            To ensure we have the right contact information for you, we will be
+            sending a verification code to your phone and your email. Please
+            double check that both are correct.
+          </span>
+        </div>
         <div className=" p-3 ">
           <GlobalButton type={"submit"} children={"Next"} />
         </div>
       </form>
-
-   
     </div>
   );
 };

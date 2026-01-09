@@ -55,7 +55,7 @@ const EnrollmentModal = ({
             onClick={() => {
               onClose();
               setIsCreateAccount(false);
-              setStep(1)
+              setStep(1);
             }}
             className="h-9 w-9 bg-gray-100 hover:bg-gray-200 flex justify-center items-center rounded-full text-gray-700 hover:text-black transition-all duration-200"
           >
@@ -63,7 +63,7 @@ const EnrollmentModal = ({
           </button>
         </div>
 
-        <div className=" h-[600px]  px-2">
+        <div className="  px-2">
           <div className="flex-1 ">
             <div className="flex mt-8 mb-4 border-b rounded-sm border-gray-300">
               <button
@@ -88,31 +88,35 @@ const EnrollmentModal = ({
             </div>
 
             {step === 1 ? (
-              <PersonalInfo
-                handleSubmit={handleSubmit}
-                handleChange={handleChange}
-                handleBlur={handleBlur}
-                values={values}
-                errors={errors}
-                touched={touched}
-                handlePhoneChange={handlePhoneChange}
-              />
+              <div >
+                <PersonalInfo
+                  handleSubmit={handleSubmit}
+                  handleChange={handleChange}
+                  handleBlur={handleBlur}
+                  values={values}
+                  errors={errors}
+                  touched={touched}
+                  handlePhoneChange={handlePhoneChange}
+                />
+              </div>
             ) : (
-              <PetInfo
-                loading={loading}
-                handleSubmit={handleSubmit}
-                handleChange={handleChange}
-                handleBlur={handleBlur}
-                values={values}
-                errors={errors}
-                touched={touched}
-                passwordError={passwordError}
-                setPasswordError={setPasswordError}
-                setChecked={setChecked}
-                checked={checked}
-                setFieldValue={setFieldValue}
-                isCreateAccount={isCreateAccount}
-              />
+              <div className="h-[530px]">
+                <PetInfo
+                  loading={loading}
+                  handleSubmit={handleSubmit}
+                  handleChange={handleChange}
+                  handleBlur={handleBlur}
+                  values={values}
+                  errors={errors}
+                  touched={touched}
+                  passwordError={passwordError}
+                  setPasswordError={setPasswordError}
+                  setChecked={setChecked}
+                  checked={checked}
+                  setFieldValue={setFieldValue}
+                  isCreateAccount={isCreateAccount}
+                />
+              </div>
             )}
           </div>
         </div>

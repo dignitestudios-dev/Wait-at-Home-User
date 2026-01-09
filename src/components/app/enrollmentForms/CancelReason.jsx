@@ -53,7 +53,7 @@ const CancelReason = ({
                 setErrorReasonDiscription("");
                 handleClick(null, true);
               }}
-              className="cursor-pointer font-[500] text-[#00000080]"
+              className="cursor-pointer font-[600] text-[14px]  text-[#00000080]"
             >
               {isSkipLoading ? "Skip......" : "Skip"}
             </div>

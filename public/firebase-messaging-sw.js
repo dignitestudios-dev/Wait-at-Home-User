@@ -6,7 +6,6 @@ importScripts(
   "https://www.gstatic.com/firebasejs/9.1.0/firebase-messaging-compat.js"
 );
 
-// Firebase configuration
 const firebaseConfig = {
   apiKey: "AIzaSyC-1KZqpZMp3fAPXiMYVQ0XUg3wa9K8QQM",
   authDomain: "workathome-39c21.firebaseapp.com",
@@ -46,7 +45,7 @@ if ("serviceWorker" in navigator) {
 
 // Handle background messages
 messaging.onBackgroundMessage(function (payload) {
-  // Customize notification here
+  console.log("Received background message: ", payload);
   const notificationTitle = payload.notification.title;
   const notificationOptions = {
     body: payload.notification.body,

@@ -18,8 +18,8 @@ const VirtualListModal = ({ isOpen, handleClick }) => {
           </div>
 
           <h2 className="text-[24px] font-[600]">
-            You’re on the waiting list! We will let you know when it is time to
-            come in.{" "}
+            You’re on the waiting list! <br /> We will let you know when it is
+            time to come in.{" "}
           </h2>
 
           {/* <p className="text-[16px] font-[400] text-[#565656] max-w-[350px]">

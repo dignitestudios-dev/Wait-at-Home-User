@@ -17,7 +17,7 @@ const CancelEnrollment = ({ isOpen, handleClick, onClose }) => {
           </h2>
 
           <p className="text-[16px] font-[400] text-[#565656] max-w-[350px]">
-            “Clicking “Yes” below will mean you lose your place in line. Are you
+            Clicking “Yes” below will mean you lose your place in line. Are you
             sure?
           </p>
           <div className="flex gap-4 ">
