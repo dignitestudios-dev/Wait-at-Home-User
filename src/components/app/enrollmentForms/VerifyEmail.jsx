@@ -23,7 +23,7 @@ const VerifyEmail = ({
   const [loading, setLoading] = useState(false);
   const [resendLoading, setResendLoading] = useState(false);
   const [isActive, setIsActive] = useState(true);
-  const [seconds, setSeconds] = useState(30);
+  const [seconds, setSeconds] = useState(60);
   const [isEmailEditOpen, setIsEmailEditOpen] = useState(false);
   const [newEmail, setNewEmail] = useState(userData?.email || "");
 
@@ -89,7 +89,7 @@ const VerifyEmail = ({
     }
   };
   const handleRestart = () => {
-    setSeconds(30);
+    setSeconds(60);
     setIsActive(true);
   };
   const handleResendOtp = async () => {
@@ -156,7 +156,7 @@ const VerifyEmail = ({
                 onClick={() => setIsEmailEditOpen(true)}
               /> */}
             </span>
-            Please review your information and click continue to proceed
+            Please enter the 4 digit code and click verify to proceed
           </p>
           <form onSubmit={handleSubmit}>
             <div className="flex gap-10 mb-2 justify-center mt-4">

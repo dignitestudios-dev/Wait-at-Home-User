@@ -1,5 +1,5 @@
 import React from "react";
-import { Alert, Clock } from "../../../assets/export";
+import { Alert, Clock, LogoWhite } from "../../../assets/export";
 
 const CancelEnrollment = ({ isOpen, handleClick, onClose }) => {
   if (!isOpen) return null;
@@ -9,7 +9,7 @@ const CancelEnrollment = ({ isOpen, handleClick, onClose }) => {
       <div className="bg-gradient-to-br flex flex-col justify-center items-center from-[#A0E6E1] to-[#C3B4D3] w-[471px]  p-8 rounded-3xl shadow-lg relative text-gray-800 ">
         <div className="flex flex-col items-center justify-center text-center space-y-3">
           <div className="bg-[#00AAAD80] flex justify-center items-center w-[107px] h-[107px] rounded-full">
-            <img src={Alert} className="h-[62px] w-[62px]" alt="Success Tick" />
+            <img src={LogoWhite} className="h-[62px] w-[62px]" alt="Success Tick" />
           </div>
 
           <h2 className="text-[24px] font-[600]">

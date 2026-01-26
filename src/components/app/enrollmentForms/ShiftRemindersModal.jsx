@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Message, Mobile } from "../../../assets/export";
 import GlobalButton from "../../global/GlobalButton";
 
-const reminderOptions = [90, 60, 30, 15, 5];
+const reminderOptions = [90, 60, 30, 15, 5,45];
 
 const ShiftRemindersModal = ({
   isOpen,

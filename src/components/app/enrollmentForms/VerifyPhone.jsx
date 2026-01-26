@@ -24,7 +24,7 @@ const VerifyPhone = ({
   const [loading, setLoading] = useState(false);
   const [resendLoading, setResendLoading] = useState(false);
   const [isActive, setIsActive] = useState(true);
-  const [seconds, setSeconds] = useState(30);
+  const [seconds, setSeconds] = useState(60);
   const [newphone, setPhone] = useState(userData?.phone || "");
 
   const handleChange = (e, index) => {
@@ -140,8 +140,17 @@ const VerifyPhone = ({
           </h2>
           <p className="text-[13px] font-[400] text-[#565656] mt-2">
             We are sending a verification code to your phone{" "}
-            {newphone}{" "}
-            Please review your information and click continue to proceed
+            
+               <span className="flex justify-center items-center gap-2">
+              {newphone}
+
+              {/* <FiEdit
+                className="cursor-pointer text-[#181818]"
+                size={18}
+                onClick={() => setIsEmailEditOpen(true)}
+              /> */}
+            </span>
+            Please enter the 4 digit code and click verify to proceed
           </p>
           <form onSubmit={handleSubmit}>
             <div className="flex gap-10 mb-2 justify-center mt-4">
