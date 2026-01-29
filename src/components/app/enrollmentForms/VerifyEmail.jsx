@@ -156,7 +156,7 @@ const VerifyEmail = ({
                 onClick={() => setIsEmailEditOpen(true)}
               /> */}
             </span>
-            Please enter the 4 digit code and click verify to proceed
+            Please enter the 4 digit code and click verify to proceed.
           </p>
           <form onSubmit={handleSubmit}>
             <div className="flex gap-10 mb-2 justify-center mt-4">
