@@ -227,7 +227,7 @@ const VerifyPhone = ({
               disabled={skipLoading || loading}
               className="font-medium mb-2 hover:underline"
             >
-              {skipLoading ? "Skipping..." : "Skip"}
+              {skipLoading ? "Skipping..." : "Please click here if you don’t have access to a phone that can receive text messages."}
             </button>
             <GlobalButton
               loading={loading}
