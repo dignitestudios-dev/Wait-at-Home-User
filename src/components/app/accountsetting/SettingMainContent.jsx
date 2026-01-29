@@ -109,7 +109,7 @@ const SettingMainContent = ({ userProfileData, setUpdate }) => {
           <div>
             <h2 className="text-[16px] font-[600] ">
               Notifications{" "}
-              <span className="text-gray-500 font-[500] ">
+              <span className="text-black font-[500] ">
                 (Select all that apply)
               </span>{" "}
             </h2>

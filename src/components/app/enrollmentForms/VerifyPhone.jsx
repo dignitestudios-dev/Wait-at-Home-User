@@ -138,7 +138,7 @@ const VerifyPhone = ({
           <h2 className="text-[19px] font-[600] capitalize mt-3">
             Check your Text messages
           </h2>
-          <p className="text-[13px] font-[400] text-[#565656] mt-2">
+          <p className="text-[13px] font-[400] text-[#000] mt-2">
             We are sending a verification code to your phone{" "}
             
                <span className="flex justify-center items-center gap-2">
@@ -168,7 +168,7 @@ const VerifyPhone = ({
               ))}
             </div>
             <div className="flex items-center justify-center gap-2  mt-4 mb-3 relative z-10">
-              <p className="text-sm flex gap-2 text-[#565656]">
+              <p className="flex gap-2 text-[#000]">
                 Didn’t receive code?{" "}
                 {isActive ? (
                   <CountDown

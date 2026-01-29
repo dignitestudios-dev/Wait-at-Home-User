@@ -72,12 +72,11 @@ const PetInfo = ({
                           }}
                           name={`pets.${index}.petType`}
                           onBlur={handleBlur}
-                          className={`appearance-none w-full rounded-xl px-4 py-3 h-[49px] pr-10 text-[14px] bg-white text-[#616161] border ${
-                            errors.pets?.[index]?.petType &&
-                            touched.pets?.[index]?.petType
+                          className={`appearance-none w-full rounded-xl px-4 py-3 h-[49px] pr-10 text-[14px] bg-white text-[#616161] border ${errors.pets?.[index]?.petType &&
+                              touched.pets?.[index]?.petType
                               ? "border-red-500 ring-1 ring-red-500"
                               : "border focus:border-[#10C0B6] focus:ring-2 focus:ring-[#10C0B6]"
-                          }`}
+                            }`}
                         >
                           <option value="">Pet Type</option>
                           <option value="dog">Dog</option>
@@ -158,12 +157,11 @@ const PetInfo = ({
                           name={`pets.${index}.petBreed`}
                           onChange={handleChange}
                           onBlur={handleBlur}
-                          className={`w-full rounded-xl px-4 py-3 h-[49px] text-[14px] bg-white text-[#616161] border ${
-                            errors.pets?.[index]?.petBreed &&
-                            touched.pets?.[index]?.petBreed
+                          className={`w-full rounded-xl px-4 py-3 h-[49px] text-[14px] bg-white text-[#616161] border ${errors.pets?.[index]?.petBreed &&
+                              touched.pets?.[index]?.petBreed
                               ? "border-red-500 ring-1 ring-red-500"
                               : "border focus:border-[#10C0B6] focus:ring-2 focus:ring-[#10C0B6]"
-                          }`}
+                            }`}
                         />
                         {errors.pets?.[index]?.petBreed &&
                           touched.pets?.[index]?.petBreed && (
@@ -192,12 +190,11 @@ const PetInfo = ({
                         value={pet.petDiscription}
                         onChange={handleChange}
                         onBlur={handleBlur}
-                        className={`bg-white w-full rounded-[20px] h-[113px] px-4 py-4 ${
-                          errors.pets?.[index]?.petDiscription &&
-                          touched.pets?.[index]?.petDiscription
+                        className={`bg-white w-full rounded-[20px] h-[113px] px-4 py-4 ${errors.pets?.[index]?.petDiscription &&
+                            touched.pets?.[index]?.petDiscription
                             ? "border-red-500 ring-1 ring-red-500"
                             : "border focus:border-[#10C0B6] focus:ring-2 focus:ring-[#10C0B6]"
-                        }`}
+                          }`}
                       />
                       {errors.pets?.[index]?.petDiscription &&
                         touched.pets?.[index]?.petDiscription && (
@@ -243,7 +240,7 @@ const PetInfo = ({
           />
 
           {/* Save Info Checkbox */}
-          <p className="text-[13px]  text-[#565656] mb-2  mx-2">
+          <p className="text-[13px]  text-[#000] mb-2  mx-2">
             {isCreateAccount
               ? "Please enter your password to create your account"
               : "  You do not need to create an account to join the Wait at Home list, but creating an account will make signing in faster next time."}
@@ -254,11 +251,10 @@ const PetInfo = ({
               <div className="flex items-center gap-2 text-[14px] text-[#6B6B6B]">
                 <div
                   className={`w-[24px] h-[24px] rounded-[6px] border cursor-pointer flex items-center justify-center transition-all
-    ${
-      isAccountChecked
-        ? "bg-[#10C0B6] border-[#10C0B6]"
-        : "bg-transparent border-[#6B6B6B]"
-    }
+    ${isAccountChecked
+                      ? "bg-[#10C0B6] border-[#10C0B6]"
+                      : "bg-transparent border-[#6B6B6B]"
+                    }
     ${isCreateAccount ? "cursor-not-allowed opacity-60" : ""}
   `}
                   onClick={() => {
@@ -275,7 +271,7 @@ const PetInfo = ({
                     setChecked(!checked);
                     setFieldValue("password", "");
                   }}
-                  className="cursor-pointer"
+                  className="cursor-pointer text-black"
                 >
                   Create Account
                 </span>

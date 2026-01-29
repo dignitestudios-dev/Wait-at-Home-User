@@ -35,7 +35,7 @@ const AlmostThereModal = ({ isOpen, onClose, handleClick, email, phone }) => {
 
           <h2 className="text-[24px] font-[600]">You're Almost There!</h2>
 
-          <p className="text-[16px] font-[400] text-[#565656]">
+          <p className="text-[16px] font-[400] text-[#000]">
             We will be sending a verification code to your email and your phone
             to confirm that we have the correct contact information. Please
             review the information below and click continue to proceed.

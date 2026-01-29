@@ -60,7 +60,7 @@ const PersonalInfo = ({
             className="w-[32px] h-[32px] object-contain mt-1"
             alt=""
           />
-          <span className="text-[13px] text-[#565656]">
+          <span className="text-[13px] text-black">
             To ensure we have the right contact information for you, we will be
             sending a verification code to your phone and your email. Please
             double check that both are correct.

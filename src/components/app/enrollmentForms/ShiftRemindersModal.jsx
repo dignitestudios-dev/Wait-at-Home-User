@@ -73,7 +73,7 @@ const ShiftRemindersModal = ({
       <div className="bg-gradient-to-br from-[#A0E6E1] to-[#C3B4D3] w-[500px] max-h-[94vh] p-8 rounded-3xl shadow-lg relative text-gray-800 overflow-y-auto">
         <div className="flex flex-col items-center justify-center text-center space-y-4">
           <h2 className="text-[24px] font-[600]">Let’s keep in touch</h2>
-          <span className="text-gray-500 font-[500]">
+          <span className="text-black font-[500]">
             (Select all that apply)
           </span>
 

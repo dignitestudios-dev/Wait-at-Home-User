@@ -145,7 +145,7 @@ const VerifyEmail = ({
           <h2 className="text-[21px] font-[600] capitalize mt-3">
             Check your Email
           </h2>
-          <p className="text-[13px] font-[400] text-[#565656] mt-2 ">
+          <p className="text-[13px] font-[400] text-[#000] mt-2 ">
             We are sending a verification code to your email{" "}
             <span className="flex justify-center items-center gap-2">
               {newEmail}
@@ -175,7 +175,7 @@ const VerifyEmail = ({
             </div>
 
             <div className="flex items-center justify-center gap-2  mt-4 mb-3 relative z-10">
-              <p className="text-center flex gap-2 text-[16px] leading-[21.6px] text-[#565656]">
+              <p className="text-center flex gap-2 text-[16px] leading-[21.6px] text-[#000]">
                 Didn&apos;t receive the code yet?
                 {isActive ? (
                   <CountDown
