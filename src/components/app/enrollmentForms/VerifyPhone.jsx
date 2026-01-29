@@ -16,16 +16,19 @@ const VerifyPhone = ({
   email,
   setVirtualListModal,
   setVerifyPhonelModal,
+  setIsSkip,
 }) => {
   if (!isOpen) return null;
   const { Auth, userData, handleLogOut } = useContext(AppContext);
   const [otp, setOtp] = useState(Array(4).fill(""));
   const inputsRef = useRef([]);
   const [loading, setLoading] = useState(false);
+  const [skipLoading, setSkipLoading] = useState(false);
   const [resendLoading, setResendLoading] = useState(false);
   const [isActive, setIsActive] = useState(true);
   const [seconds, setSeconds] = useState(60);
   const [newphone, setPhone] = useState(userData?.phone || "");
+  const [skippedMessage, setSkippedMessage] = useState("");
 
   const handleChange = (e, index) => {
     const value = e.target.value.replace(/[^0-9]/g, "");
@@ -88,6 +91,35 @@ const VerifyPhone = ({
       setLoading(false);
     }
   };
+
+  const handleSkip = async (e) => {
+    e.preventDefault();
+    setSkipLoading(true);
+    try {
+      let obj = {
+        email: userData?.email,
+        phone: true,
+        otp: 1234,
+      };
+
+      const response = await axios.post("/auth/verify-reset-otp", obj);
+
+      if (response.status === 200) {
+        // Do NOT show success toast; show inline skipped message instead
+        setSkippedMessage("Skipped");
+        // mark skip so other modals can adapt
+        if (typeof setIsSkip === "function") setIsSkip(true);
+        Auth(response?.data);
+        setVirtualListModal(true);
+        onClose();
+      }
+    } catch (err) {
+      ErrorToast(err?.response?.data?.message);
+    } finally {
+      setSkipLoading(false);
+    }
+  };
+
   const handleRestart = () => {
     setSeconds(30);
     setIsActive(true);
@@ -140,8 +172,8 @@ const VerifyPhone = ({
           </h2>
           <p className="text-[13px] font-[400] text-[#000] mt-2">
             We are sending a verification code to your phone{" "}
-            
-               <span className="flex justify-center items-center gap-2">
+
+            <span className="flex justify-center items-center gap-2">
               {newphone}
 
               {/* <FiEdit
@@ -189,13 +221,25 @@ const VerifyPhone = ({
                 )}
               </p>
             </div>
-            <div className="w-full pt-2">
-              <GlobalButton
-                loading={loading}
-                children={"Verify"}
-                type="submit"
-              />
-            </div>
+            <button
+              type="button"
+              onClick={handleSkip}
+              disabled={skipLoading || loading}
+              className="font-medium mb-2 hover:underline"
+            >
+              {skipLoading ? "Skipping..." : "Skip"}
+            </button>
+            <GlobalButton
+              loading={loading}
+              children={"Verify"}
+              type="submit"
+            />
+
+
+
+            {skippedMessage && (
+              <p className="text-center text-[#000] mt-2">{skippedMessage}</p>
+            )}
           </form>
         </div>
       </div>

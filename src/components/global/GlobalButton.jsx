@@ -11,6 +11,7 @@ const GlobalButton = ({
     <button
       onClick={onClick}
       type={type}
+      disabled={disabled || loading}
       className={`w-full ${
         disabled
           ? " bg-gray-400 cursor-not-allowed"

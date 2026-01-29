@@ -218,19 +218,19 @@ const Home = () => {
       notes: "Hello",
       ...(petData && petData.length > 0
         ? {
-            petId: petData.map((p) => ({ petId: p?._id })), // 👈 array of objects
-          }
+          petId: petData.map((p) => ({ petId: p?._id })), // 👈 array of objects
+        }
         : {
-            pet: [
-              {
-                petName: petNewValues.petName,
-                petType: petNewValues.petType,
-                petBreed: petNewValues.petBreed,
-                petAge: Number(petNewValues.petAge),
-                symptoms: petNewValues.petDiscription,
-              },
-            ],
-          }),
+          pet: [
+            {
+              petName: petNewValues.petName,
+              petType: petNewValues.petType,
+              petBreed: petNewValues.petBreed,
+              petAge: Number(petNewValues.petAge),
+              symptoms: petNewValues.petDiscription,
+            },
+          ],
+        }),
     };
     setCreatAppoitmentLoading(true);
     try {
@@ -285,8 +285,8 @@ const Home = () => {
   const userId = userData?.signUpRecord
     ? userData.signUpRecord
     : appointmentData?.signUpRecord
-    ? appointmentData.signUpRecord
-    : "123";
+      ? appointmentData.signUpRecord
+      : "123";
 
   const { loading: appointmentNumberLoader, data: appointmentNumber } =
     useFetchById(
@@ -558,6 +558,7 @@ const Home = () => {
         }}
         setVerifyPhonelModal={setVerifyPhonelModal}
         setVirtualListModal={setVirtualListModal}
+        setIsSkip={setIsSkip}
         phone={values.phone}
       />
       <VirtualListModal
@@ -579,6 +580,7 @@ const Home = () => {
         loading={notificationLoading}
         reminderOffsetMinutes={reminderOffsetMinutes}
         setReminderOffsetMinutes={setReminderOffsetMinutes}
+        isSkip={isSkip}
       />
       <CancelEnrollment
         isOpen={cancelEnrollment}
