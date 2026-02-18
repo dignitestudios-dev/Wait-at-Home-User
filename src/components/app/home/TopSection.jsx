@@ -10,7 +10,7 @@ const TopSection = () => {
     <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4   rounded-xl">
       <div className="flex items-center gap-3 ">
         {/* <img src={LogoWhite} className="w-[40px]" alt="" /> */}
-        <h2 className=" text-xl  font-semibold text-[#684D7B]">
+        <h2 className=" text-xl  font-semibold text-black">
           Welcome to Wait at Home™ — the virtual waiting experience designed for pets and their families. <br />
           Reserve your place in line without sitting in a busy lobby. <br /> We will send real-time text and email updates so you know when to arrive with your pet.
 
