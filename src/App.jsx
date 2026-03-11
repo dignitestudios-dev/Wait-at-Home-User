@@ -9,12 +9,17 @@ import Cookies from "js-cookie";
 import { ProtectedRoutes } from "./routes/app/ProtectedRoutes";
 import { useContext } from "react";
 import { AppContext } from "./context/AppContext";
+import PrivacyPolicy from "./pages/app/PrivacyPolicy";
+import TermsConditions from "./pages/app/TermsCondition";
 function App() {
   const { token } = useContext(AppContext);
-  
+
   return (
     <Routes>
       <Route path="/" element={<Navigate to={"/app/home"} />} />
+      <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+      <Route path="/terms-conditions" element={<TermsConditions />} />
+
       <Route path="app" element={<DashboardLayout />}>
         <Route index element={<Home />} />
         {PublicRoutes?.map((Link, i) => (
