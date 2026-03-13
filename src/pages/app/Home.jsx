@@ -550,7 +550,7 @@ const Home = () => {
       />
       <VerifyPhone
         email={values.email}
-        isOpen={verifyPhonelModal}
+        isOpen={true}
         onClose={() => setVerifyPhonelModal(false)}
         handleClick={() => {
           setVerifyPhonelModal(false);

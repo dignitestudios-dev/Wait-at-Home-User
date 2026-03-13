@@ -8,6 +8,7 @@ import CountDown from "../../global/CountDown";
 import axios from "../../../axios";
 import { phoneFormater } from "../../../lib/helpers";
 import { RxCross2 } from "react-icons/rx";
+import { NavLink } from "react-router";
 const VerifyPhone = ({
   isOpen,
   onClose,
@@ -221,6 +222,26 @@ const VerifyPhone = ({
                 )}
               </p>
             </div>
+            <div className="flex items-start gap-3 mt-4 mb-4 text-left">
+              <input
+                type="checkbox"
+                id="terms"
+                className="mt-1 w-[16px] h-[16px] accent-[#00AAAD] cursor-pointer"
+              />
+
+              <label htmlFor="terms" className="text-[12px] leading-5 text-[#333]">
+                I agree to the{" "}
+                <NavLink to={'/terms-conditions'} className="underline cursor-pointer font-medium">
+                  Terms of Service
+                </NavLink>{" "}
+                and{" "}
+                <NavLink to={"/privacy-policy"} className="underline cursor-pointer font-medium">
+                  Privacy Policy
+                </NavLink>
+                , and I authorize the collection and use of my phone number for
+                two-factor authentication.
+              </label>
+            </div>
             <button
               type="button"
               onClick={handleSkip}
@@ -240,6 +261,7 @@ const VerifyPhone = ({
             {skippedMessage && (
               <p className="text-center text-[#000] mt-2">{skippedMessage}</p>
             )}
+
           </form>
         </div>
       </div>
