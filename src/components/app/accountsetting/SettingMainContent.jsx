@@ -9,16 +9,22 @@ import axios from "../../../axios";
 import { ErrorToast, SuccessToast } from "../../global/Toaster";
 import { useGlobal } from "../../../hooks/api/Get";
 const SettingMainContent = ({ userProfileData, setUpdate }) => {
+  console.log("🚀 ~ SettingMainContent ~ userProfileData:", userProfileData);
   const navigate = useNavigate();
   const [notificationsToggle, setNotificationsToggle] = useState(false);
   const [loading, setLoading] = useState(false);
+  const activeAppointment = userProfileData?.appointment?.find(
+    (appt) => !appt.isCancelled && appt.currentlyServing,
+  );
+
+  const appointmentId = activeAppointment?._id;
   const [options, setOptions] = useState({
     phone: false,
     email: false,
     notification: false,
   });
   const { loading: notificationLoader, data } = useGlobal(
-    "/user/get-notification-settings"
+    "/user/get-notification-settings",
   );
   const handleToggle = async () => {
     const newValue = !options.notification; // flip from options.notification
@@ -56,13 +62,18 @@ const SettingMainContent = ({ userProfileData, setUpdate }) => {
   }, [data]);
 
   const toggleOption = async (key) => {
+    console.log("🚀 ~ toggleOption ~ key:", key);
     try {
       const newValue = !options[key];
       setOptions((prev) => ({ ...prev, [key]: newValue }));
 
       const response = await axios.post("/user/notification-settings", {
+        // isEnabled: true,
         isPhoneEnabled: key === "phone" ? newValue : options.phone,
         isEmailEnabled: key === "email" ? newValue : options.email,
+        // reminderFrequency: 5,
+        // reminderOffsetMinutes: 30,
+        appointmentId,
       });
 
       if (response?.status === 200) {
@@ -114,9 +125,11 @@ const SettingMainContent = ({ userProfileData, setUpdate }) => {
               </span>{" "}
             </h2>
             <p className="text-[13px] text-[#4E4E4E]">
-              Let us know how would you like us to communicate with you going forward.
+              Let us know how would you like us to communicate with you going
+              forward.
               <br />
-              (We are committed to your privacy and will not sell your contact information to any third parties.)
+              (We are committed to your privacy and will not sell your contact
+              information to any third parties.)
             </p>
           </div>
           <div>

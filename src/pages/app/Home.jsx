@@ -54,7 +54,7 @@ const Home = () => {
   const [step, setStep] = useState(1);
   const [formModal, setFormModal] = useState(false);
   const [isCreateAccount, setIsCreateAccount] = useState(
-    location?.state?.isModal || false
+    location?.state?.isModal || false,
   );
   const [almostThere, setAlmostThere] = useState(false);
   const [verifyEmailModal, setVerifyEmailModal] = useState(false);
@@ -184,7 +184,7 @@ const Home = () => {
 
       const response = await axios.post(
         "/appointment/cancel-appointment",
-        payload
+        payload,
       );
 
       if (response.status === 200) {
@@ -218,19 +218,19 @@ const Home = () => {
       notes: "Hello",
       ...(petData && petData.length > 0
         ? {
-          petId: petData.map((p) => ({ petId: p?._id })), // 👈 array of objects
-        }
+            petId: petData.map((p) => ({ petId: p?._id })), // 👈 array of objects
+          }
         : {
-          pet: [
-            {
-              petName: petNewValues.petName,
-              petType: petNewValues.petType,
-              petBreed: petNewValues.petBreed,
-              petAge: Number(petNewValues.petAge),
-              symptoms: petNewValues.petDiscription,
-            },
-          ],
-        }),
+            pet: [
+              {
+                petName: petNewValues.petName,
+                petType: petNewValues.petType,
+                petBreed: petNewValues.petBreed,
+                petAge: Number(petNewValues.petAge),
+                symptoms: petNewValues.petDiscription,
+              },
+            ],
+          }),
     };
     setCreatAppoitmentLoading(true);
     try {
@@ -279,7 +279,7 @@ const Home = () => {
 
   const { loading: appointmentListLoader, data: appointmentList } = useGlobal(
     "/appointment/get-all-appointments",
-    update
+    update,
   );
 
   const userId = userData?.signUpRecord
@@ -291,13 +291,13 @@ const Home = () => {
   const { loading: appointmentNumberLoader, data: appointmentNumber } =
     useFetchById(
       `/appointment/get-user-appointment-number?userId=${userId}`,
-      update
+      update,
     );
 
   const { loading: profileLoading, data: profileData } = useGlobal(
     token ? "/user/get-user-profile" : null,
     1,
-    true
+    true,
   );
 
   const { loading: estimateLoader, data: estimateData } = useGlobal(
@@ -305,7 +305,7 @@ const Home = () => {
       ? `/appointment/get-estimated-wait-time?userId=${userId}`
       : null,
     1,
-    update
+    update,
   );
   useEffect(() => {
     if (profileData?.user?.isRestrictedByAdmin === true) {
@@ -503,7 +503,7 @@ const Home = () => {
           try {
             const response = await axios.post(
               "/user/create-appointment",
-              payload
+              payload,
             );
             if (response?.status === 200) {
               SuccessToast(response?.data?.message);

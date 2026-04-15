@@ -29,7 +29,6 @@ const Profile = () => {
   const [deleteLoading, setDeleteLoading] = useState(false);
   const { loading, data } = useGlobal("/user/get-user-profile", update);
   const handleDeletePet = async (petId) => {
-  
     setDeleteLoading(true);
     try {
       const response = await axios.delete(`/user/delete-pet/${petId}`);
@@ -69,7 +68,12 @@ const Profile = () => {
                 setUpdate={setUpdate}
               />
             )}
-            {activeTab === "setting" && <SettingMainContent  setUpdate={setUpdate}  userProfileData={data} />}
+            {activeTab === "setting" && (
+              <SettingMainContent
+                setUpdate={setUpdate}
+                userProfileData={data}
+              />
+            )}
           </>
         )}
       </div>
@@ -116,7 +120,7 @@ const Profile = () => {
         onClose={() => setDeletePet(false)}
         isOpen={deletePet}
         handleCLick={() => {
-          console.log(selectedPet,"selectedPet")
+          console.log(selectedPet, "selectedPet");
           if (selectedPet?.id) {
             handleDeletePet(selectedPet.id);
           }
