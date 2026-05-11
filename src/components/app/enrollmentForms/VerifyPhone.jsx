@@ -231,11 +231,14 @@ const VerifyPhone = ({
 
               <label htmlFor="terms" className="text-[12px] leading-5 text-[#333]">
                 I agree to the{" "}
-                <NavLink to={'/terms-conditions'} className="underline cursor-pointer font-medium">
+                <NavLink
+                  target="_blank"
+                  rel="noopener noreferrer" to={'/terms-conditions'} className="underline cursor-pointer font-medium">
                   Terms of Service
                 </NavLink>{" "}
                 and{" "}
-                <NavLink to={"/privacy-policy"} className="underline cursor-pointer font-medium">
+                <NavLink target="_blank"
+                  rel="noopener noreferrer" to={"/privacy-policy"} className="underline cursor-pointer font-medium">
                   Privacy Policy
                 </NavLink>
                 , and I authorize the collection and use of my phone number for
