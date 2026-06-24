@@ -338,7 +338,8 @@ const Home = () => {
     }
   };
   return (
-    <div className="p-2">
+    <div className="p-2 min-h-screen">
+
       <div className="mb-6">
         <TopSection />
       </div>
