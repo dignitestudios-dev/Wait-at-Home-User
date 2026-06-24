@@ -87,34 +87,7 @@ const SettingMainContent = ({ userProfileData, setUpdate }) => {
   return (
     <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-20">
       <div className="lg:col-span-8 space-y-8">
-        {/* <div className="flex flex-col md:flex-row md:justify-between border-b-2 pb-3">
-          <div>
-            <h2 className="text-[16px] font-[600] capitalize">Notifications</h2>
-            <p className="text-[13px] text-[#4E4E4E]">
-              Lorem ipsum dolor sit amet consectetur. Ipsum aliquam est nam urna
-              odio lectus a.
-            </p>
-          </div>
-          <NotificationToogle />
-        </div> */}
-        {/* 
-        <div className="flex flex-col md:flex-row md:justify-between border-b-2 pb-3">
-          <div>
-            <h2 className="text-[16px] font-[600] capitalize">
-              Receive updates/newsletters from Palmer and Riley
-            </h2>
-            <p className="text-[13px] text-[#4E4E4E]">
-              Lorem ipsum dolor sit amet consectetur. Ipsum aliquam est nam urna
-              odio lectus a.
-            </p>
-          </div>
-          <NotificationToogle
-            userProfileData={userProfileData}
-            loader={loading}
-            notificationsToggle={options.notification}
-            onClick={handleToggle}
-          />
-        </div> */}
+
 
         <div className="border-b-2 pb-3">
           <div>
@@ -156,10 +129,7 @@ const SettingMainContent = ({ userProfileData, setUpdate }) => {
             <h2 className="text-[16px] cursor-pointer font-[600] capitalize">
               Change password
             </h2>
-            {/* <p className="text-[13px] text-[#4E4E4E]">
-              Lorem ipsum dolor sit amet consectetur. Ipsum aliquam est nam urna
-              odio lectus a.
-            </p> */}
+
           </div>
           <IoIosArrowForward size={24} />
         </div>
@@ -172,10 +142,7 @@ const SettingMainContent = ({ userProfileData, setUpdate }) => {
             <h2 className="text-[16px] cursor-pointer font-[600] capitalize">
               Delete Account
             </h2>
-            {/* <p className="text-[13px] text-[#4E4E4E]">
-              Lorem ipsum dolor sit amet consectetur. Ipsum aliquam est nam urna
-              odio lectus a.
-            </p> */}
+
           </div>
           <IoIosArrowForward size={24} />
         </div>

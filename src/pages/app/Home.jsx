@@ -218,19 +218,19 @@ const Home = () => {
       notes: "Hello",
       ...(petData && petData.length > 0
         ? {
-            petId: petData.map((p) => ({ petId: p?._id })), // 👈 array of objects
-          }
+          petId: petData.map((p) => ({ petId: p?._id })), // 👈 array of objects
+        }
         : {
-            pet: [
-              {
-                petName: petNewValues.petName,
-                petType: petNewValues.petType,
-                petBreed: petNewValues.petBreed,
-                petAge: Number(petNewValues.petAge),
-                symptoms: petNewValues.petDiscription,
-              },
-            ],
-          }),
+          pet: [
+            {
+              petName: petNewValues.petName,
+              petType: petNewValues.petType,
+              petBreed: petNewValues.petBreed,
+              petAge: Number(petNewValues.petAge),
+              symptoms: petNewValues.petDiscription,
+            },
+          ],
+        }),
     };
     setCreatAppoitmentLoading(true);
     try {
@@ -378,7 +378,6 @@ const Home = () => {
         </div>
         <div className="flex justify-center lg:ms-auto">
           <AdScreen />
-          {/* <GoogleAd dataAdSlot={'5642921217'} /> */}
         </div>
       </div>
       <Formik

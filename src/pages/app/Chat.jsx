@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import ChatAndNotiBtn from "../../components/global/ChatAndNotiBtn";
 import { AdminImg, Adthree } from "../../assets/export";
+import GoogleAd from "../../components/global/GoogleAd";
 import DiscribeYourCaseForm from "../../components/app/chat/DiscribeYourCaseForm";
 import { ChatFormShema } from "../../schema/app/ChatFormShema";
 import { ChatFormValues } from "../../init/app/ChatFormValues";
@@ -160,20 +161,7 @@ const Chat = () => {
             <ChatAndNotiBtn />
           </div>
           <div className="relative rounded-[12px] overflow-hidden shadow-md">
-            <img
-              src={Adthree}
-              alt="Advertisement"
-              className="w-full h-auto object-contain"
-            />
-            <div className="absolute bottom-0 left-0 w-full px-3 py-4 bg-gradient-to-t from-black/80 via-black/40 to-transparent text-white">
-              <h3 className="text-[32px] sm:text-[42px] font-[600] mb-1 text-center">
-                Ads
-              </h3>
-              <p className="text-[12px] sm:text-[13px] text-center font-[400] leading-5">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-                eiusmod tempor incididunt ut labore et dolore magna aliqua.
-              </p>
-            </div>
+            <GoogleAd dataAdSlot={"5642921217"} />
           </div>
         </div>
       </div>
