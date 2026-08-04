@@ -30,6 +30,7 @@ const VerifyPhone = ({
   const [seconds, setSeconds] = useState(60);
   const [newphone, setPhone] = useState(userData?.phone || "");
   const [skippedMessage, setSkippedMessage] = useState("");
+  const [agreeToTerms, setAgreeToTerms] = useState(false);
 
   const handleChange = (e, index) => {
     const value = e.target.value.replace(/[^0-9]/g, "");
@@ -62,6 +63,10 @@ const VerifyPhone = ({
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (!agreeToTerms) {
+      ErrorToast("Please agree to the Terms of Service and Privacy Policy");
+      return;
+    }
     const isOtpFilled = otp.every((digit) => digit !== "");
 
     if (!isOtpFilled) {
@@ -95,6 +100,10 @@ const VerifyPhone = ({
 
   const handleSkip = async (e) => {
     e.preventDefault();
+    if (!agreeToTerms) {
+      ErrorToast("Please agree to the Terms of Service and Privacy Policy");
+      return;
+    }
     setSkipLoading(true);
     try {
       let obj = {
@@ -226,6 +235,8 @@ const VerifyPhone = ({
               <input
                 type="checkbox"
                 id="terms"
+                checked={agreeToTerms}
+                onChange={(e) => setAgreeToTerms(e.target.checked)}
                 className="mt-1 w-[16px] h-[16px] accent-[#00AAAD] cursor-pointer"
               />
 
